@@ -7,6 +7,7 @@ export default function App() {
     <View style={styles.container}>
       <Text>Welcome to the Who's Down app!</Text>
       <Text>This is Aarish</Text>
+      <Text>This is Anjali!</Text>
     </View>
   );
 }
