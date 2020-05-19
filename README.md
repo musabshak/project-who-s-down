@@ -1,24 +1,51 @@
-# Project Name
+# Who's Down
+![](https://i.imgur.com/M3TWiwW.jpg)
 
-![Team Photo](Insert a Team Photo URL here)
-[*how?*](https://help.github.com/articles/about-readmes/#relative-links-and-image-paths-in-readme-files)
 
-TODO: short project description, some sample screenshots or mockups
+## Project Description
+ReactNative application for event creators and event seekers.
+![](https://i.imgur.com/g5awbh8.png)
 
 ## Architecture
 
-TODO:  descriptions of code organization and tools and libraries used
+Main Components
+- MapView
+    - Geographic event view
+    - Google maps API
+- EventFeed
+    - List-display of events
+- NewEvent
+    - Event creation view
+- EventInfoPreview
+    - Little thing that comes up on google maps
+- EventInfo
+    - Event 
+- EventChat
+    - Event specific chat board/group chat
+    - Requires user sign-in
+- Settings
+- UserProfile
+- SignIn
+    - Sign in/up page
 
 ## Setup
 
-TODO: how to get the project dev environment up and running, npm install etc
+- Pull the project repo
+- ```yarn install```
+- ```expo start``` -- this opens up expo interface in the browser, and then you can choose how you'd like to see the app
 
 ## Deployment
 
-TODO: how to deploy the project
-
+Since we're using React Native, we will have both an Andoid and iOS app that will be deployed to the Play store and App store respectively. 
 ## Authors
 
-TODO: list of authors
+* Arjun Bhatt
+* Anjali Chikkula
+* Sihao Huang
+* Aarish Iyer
+* Musab Shakeel
+* April Zhang
+
 
 ## Acknowledgments
+We are proud of our whiteboard drawings:)
