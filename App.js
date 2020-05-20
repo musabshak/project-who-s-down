@@ -10,6 +10,7 @@ export default function App() {
       <Text>This is Anjali!</Text>
       <Text>This is Arjun :D</Text>
       <Text>This is Musab</Text>
+      <Text>This is Sihao</Text>
     </View>
   );
 }
