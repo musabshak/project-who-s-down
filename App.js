@@ -8,7 +8,7 @@ export default function App() {
       <Text>Welcome to the Who's Down app!</Text>
       <Text>This is Aarish</Text>
       <Text>This is Anjali!</Text>
-      <Text>This is Arjun!</Text>
+      <Text>This is Arjun :D</Text>
     </View>
   );
 }
