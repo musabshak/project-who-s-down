@@ -15,6 +15,9 @@ The api server returns the newly created event object as a confirmation message.
 The event title is extracted from this return event object and displayed on the
 screen. This demonstrates communication of data between the frontend and the api 
 server.
+- For some reason, the event title is not displayed in the confirmation prompt
+when the app is run on a phone. It displays properly when viewed in the browser.
+Need to debug this.
 
 ## Architecture
 
