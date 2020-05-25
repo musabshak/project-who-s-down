@@ -1,25 +1,34 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+// import { StyleSheet, Text, View } from 'react-native';
+import thunk from 'redux-thunk';
+import { Provider } from 'react-redux';
+import { createStore, applyMiddleware, compose } from 'redux';
+import NewEventPage from './src/new_event';
+import reducers from './src/new_event/reducers';
 
+// disable really annoying in app warnings
+console.disableYellowBox = true;
+
+// this creates the store with the reducers, and does some other stuff to initialize devtools
+// boilerplate to copy, don't have to know
+const store = createStore(reducers, {}, compose(
+  applyMiddleware(thunk),
+  window.__REDUX_DEVTOOLS_EXTENSION__ ? window.__REDUX_DEVTOOLS_EXTENSION__() : (f) => f,
+));
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Welcome to the Who's Down app!</Text>
-      <Text>This is Aarish</Text>
-      <Text>This is Anjali!</Text>
-      <Text>This is Arjun :D</Text>
-      <Text>This is Musab</Text>
-      <Text>This is Sihao</Text>
-    </View>
+    <Provider store={store}>
+      <NewEventPage />
+    </Provider>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+// const styles = StyleSheet.create({
+//   container: {
+//     flex: 1,
+//     backgroundColor: '#fff',
+//     alignItems: 'center',
+//     justifyContent: 'center',
+//   },
+// });
