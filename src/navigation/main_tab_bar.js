@@ -5,7 +5,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/FontAwesome';
 import MyEvents from '../components/my_events';
 import Discovery from './discovery';
-import AddEvents from '../components/new_event';
+import NewEventPage from '../components/new_event';
 
 const Tab = createBottomTabNavigator();
 
@@ -36,7 +36,7 @@ const MainTabBar = () => {
         })}
       >
         <Tab.Screen name="Discovery" component={Discovery} />
-        <Tab.Screen name="New Events" component={AddEvents} />
+        <Tab.Screen name="New Events" component={NewEventPage} />
         <Tab.Screen name="My Events" component={MyEvents} />
       </Tab.Navigator>
     </NavigationContainer>
