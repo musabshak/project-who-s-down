@@ -20,7 +20,7 @@ export default function App() {
         <Text>Welcome to the Who's Down app!</Text>
         <Text>This is Aarish</Text>
         <Text>This is Anjali!</Text>
-        <Text>This is Arjun :DD</Text>
+        <Text>This is Arjun :DDD</Text>
         <GeographicDisplay />
       </View>
     </Provider>
