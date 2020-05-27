@@ -1,12 +1,12 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import ReactDOM from 'react-dom';
+import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware, compose } from 'redux';
-import thunk from 'redux-thunk';
-import reducers from './reducers';
-import GeographicDisplay from './src/GeographicDisplay';
-import NewEventPage from './src/new_event';
+import MainTabBar from './src/navigation/main_tab_bar';
+import reducers from './src/components/new_event/reducers';
+// import GeographicDisplay from './src/GeographicDisplay';
+// import NewEventPage from './src/components/new_event';
 
 // disable really annoying in app warnings
 console.disableYellowBox = true;
@@ -22,12 +22,9 @@ export default function App() {
   return (
     <Provider store={store}>
       <View style={styles.container}>
-        <Text>Welcome to the Whos Down app!</Text>
-        <Text>This is Aarish</Text>
-        <Text>This is Anjali!</Text>
-        <Text>This is Arjun :DDD</Text>
-        <GeographicDisplay />
-        <NewEventPage />
+        {/* <GeographicDisplay /> */}
+        {/* <NewEventPage /> */}
+        <MainTabBar />
       </View>
     </Provider>
   );
