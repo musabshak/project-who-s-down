@@ -3,7 +3,8 @@ import { connect } from 'react-redux';
 import { StyleSheet, Text, View } from 'react-native';
 import MapView from 'react-native-maps';
 import Geolocation from 'react-native-geolocation-service';
-
+import * as Permissions from 'expo-permissions';
+import * as Location from 'expo-location';
 
 const YOUR_API_KEY = 'YOUR_API_KEY';
 const eventList = [];
@@ -11,17 +12,46 @@ const eventList = [];
 class GeographicDisplay extends Component {
   constructor(props) {
     super(props);
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        const location = JSON.stringify(position);
-
-        this.setState({ location });
+    this.state = {
+      errorMessage: '',
+      location: {},
+      didWeAskForLocation: false,
+      region: {
+        latitude: 37.78825,
+        longitude: -122.4324,
+        latitudeDelta: 0.0922,
+        longitudeDelta: 0.0421,
       },
-      (error) => Alert.alert(error.message),
-      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
-    );
+    };
   }
 
+  // eslint-disable-next-line react/no-deprecated
+  componentWillMount() {
+    this._getLocation();
+  }
+
+  _getLocation = async () => {
+    const { status } = await Permissions.askAsync(Permissions.LOCATION);
+  
+
+    if (status !== 'granted') {
+      console.log('permission not granted');
+      this.setState({
+        errorMessage: 'PERMISSION NOT GRANTED',
+      });
+    }
+
+    const location = await Location.getCurrentPositionAsync();
+    this.setState({
+      location,
+      region: {
+        longitude: location.coords.longitude,
+        latitude: location.coords.latitude,
+        latitudeDelta: 0.0922,
+        longitudeDelta: 0.0421,
+      },
+    });
+  }
 
   // this function creates the map, and is to be called by render
   createMap = () => {
@@ -30,30 +60,19 @@ class GeographicDisplay extends Component {
         <Text>This should be the map view!</Text>
         <MapView
           style={{
-            flex: 1,
+            flex: 0.5,
           }}
-          initialRegion={{
-            latitude: 37.78825,
-            longitude: -122.4324,
-            latitudeDelta: 0.0922,
-            longitudeDelta: 0.0421,
-          }}
+          region={this.state.region}
         />
       </View>
     );
   }
-  // var uluru = { lat: -25.344, lng: 131.036 };
-  // // The map, centered at Uluru
-  // var map = new Map({ zoom: 4, center: uluru });
-  // // The marker, positioned at Uluru
-  // var marker = new Marker({ position: uluru, map: map });
-  // return map, marker
 
   render() {
     return (
       <View>
         <Text>This is the mapview component</Text>
-        <Text>I think youre at </Text>
+        <Text>I think youre at {JSON.stringify(this.state.location)}</Text>
         {this.createMap()}
       </View>
     );
