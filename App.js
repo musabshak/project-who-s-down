@@ -5,6 +5,8 @@ import { Provider } from 'react-redux';
 import { createStore, applyMiddleware, compose } from 'redux';
 import MainTabBar from './src/navigation/main_tab_bar';
 import reducers from './src/components/new_event/reducers';
+// import GeographicDisplay from './src/GeographicDisplay';
+// import NewEventPage from './src/components/new_event';
 
 // disable really annoying in app warnings
 console.disableYellowBox = true;
@@ -19,16 +21,20 @@ const store = createStore(reducers, {}, compose(
 export default function App() {
   return (
     <Provider store={store}>
-      <MainTabBar />
+      <View style={styles.container}>
+        {/* <GeographicDisplay /> */}
+        {/* <NewEventPage /> */}
+        <MainTabBar />
+      </View>
     </Provider>
   );
 }
 
 const styles = StyleSheet.create({
-   container: {
-     flex: 1,
-     backgroundColor: '#fff',
-     alignItems: 'center',
-     justifyContent: 'center',
-   },
- });
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+});
