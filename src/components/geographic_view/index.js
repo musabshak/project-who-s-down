@@ -39,7 +39,7 @@ class MapView extends Component {
           color="#841584"
           accessibilityLabel="Event List view"
         />
-        <Text>This is where the mapview will go</Text>
+        <Text>This is WHERE the mapview will go</Text>
       </View>
     );
   }
