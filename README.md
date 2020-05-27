@@ -6,6 +6,19 @@
 ReactNative application for event creators and event seekers.
 ![](https://i.imgur.com/g5awbh8.png)
 
+## Dev Site Update
+- URL for the front-end React Native app: https://expo.io/@whosdown/project-who-s-down
+- The skeleton of the 'add new event' page is up. The title of a new
+event can be entered. Clicking on the 'create event' button initiates a 
+post request to the api server and the event is saved in a mongodb database.
+The api server returns the newly created event object as a confirmation message.
+The event title is extracted from this return event object and displayed on the
+screen. This demonstrates communication of data between the frontend and the api 
+server.
+- For some reason, the event title is not displayed in the confirmation prompt
+when the app is run on a phone. It displays properly when viewed in the browser.
+Need to debug this.
+
 ## Architecture
 
 Main Components

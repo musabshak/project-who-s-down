@@ -10,6 +10,7 @@
   "dependencies": {
     "@types/markerclustererplus": "^2.1.33",
     "@types/react": "^15.6.28",
+    "axios": "^0.19.2",
     "expo": "^37.0.0",
     "google": "^2.1.0",
     "google-map-react": "^1.1.7",
@@ -29,7 +30,13 @@
   },
   "devDependencies": {
     "@babel/core": "^7.8.6",
-    "babel-preset-expo": "~8.1.0"
+    "babel-eslint": "^10.1.0",
+    "babel-preset-expo": "~8.1.0",
+    "eslint": "^7.1.0",
+    "eslint-config-airbnb": "^18.1.0",
+    "eslint-plugin-import": "^2.20.2",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-react": "^7.20.0"
   },
   "private": true
 }
