@@ -1,10 +1,10 @@
 import React from 'react';
-// import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware, compose } from 'redux';
-import NewEventPage from './src/new_event';
-import reducers from './src/new_event/reducers';
+import MainTabBar from './src/navigation/main_tab_bar';
+import reducers from './src/components/new_event/reducers';
 
 // disable really annoying in app warnings
 console.disableYellowBox = true;
@@ -19,16 +19,16 @@ const store = createStore(reducers, {}, compose(
 export default function App() {
   return (
     <Provider store={store}>
-      <NewEventPage />
+      <MainTabBar />
     </Provider>
   );
 }
 
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     backgroundColor: '#fff',
-//     alignItems: 'center',
-//     justifyContent: 'center',
-//   },
-// });
+const styles = StyleSheet.create({
+   container: {
+     flex: 1,
+     backgroundColor: '#fff',
+     alignItems: 'center',
+     justifyContent: 'center',
+   },
+ });
