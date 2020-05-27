@@ -1,11 +1,11 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import GeographicDisplay from './src/GeographicDisplay'
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware, compose } from 'redux';
-import reducers from './reducers'
 import thunk from 'redux-thunk';
+import reducers from './reducers';
+import GeographicDisplay from './src/GeographicDisplay';
 import NewEventPage from './src/new_event';
 
 // disable really annoying in app warnings
@@ -22,7 +22,7 @@ export default function App() {
   return (
     <Provider store={store}>
       <View style={styles.container}>
-        <Text>Welcome to the Who's Down app!</Text>
+        <Text>Welcome to the Whos Down app!</Text>
         <Text>This is Aarish</Text>
         <Text>This is Anjali!</Text>
         <Text>This is Arjun :DDD</Text>
@@ -41,5 +41,3 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 });
-
-
