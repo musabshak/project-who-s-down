@@ -5,6 +5,8 @@ import { Text, View, Image } from 'react-native';
 import MapView, { Marker, Callout } from 'react-native-maps';
 import * as Permissions from 'expo-permissions';
 import * as Location from 'expo-location';
+import FilterMenu from './FilterMenu';
+
 
 const YOUR_API_KEY = 'YOUR_API_KEY';
 
@@ -123,7 +125,7 @@ class GeographicDisplay extends Component {
         <Text>This should be the map view!</Text>
         <MapView
           style={{
-            flex: 0.7,
+            flex: 0.2,
           }}
           region={this.state.region}
         > 
@@ -143,6 +145,7 @@ class GeographicDisplay extends Component {
         <Text>I think youre at {JSON.stringify(this.state.location)}</Text>
 
         {this.createMap()}
+        <FilterMenu />
       </View>
     );
   }
