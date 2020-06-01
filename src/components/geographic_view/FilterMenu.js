@@ -3,17 +3,17 @@
 import {
   Container, Header, View, Button, Icon, Fab, 
 } from 'native-base';
-
+  
 import React, { Component } from 'react';
 import { Text, Image } from 'react-native';
-
-
+  
+  
 class FilterMenu extends Component {
   constructor(props) {
     super(props);
     this.state = {active: false};
   }
-
+  
   render() {
     const filterImg = require('../../../assets/eyes.png');
     return (
@@ -44,5 +44,5 @@ class FilterMenu extends Component {
     );
   }
 }
-
+  
 export default FilterMenu;
