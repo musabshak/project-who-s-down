@@ -18,17 +18,17 @@ const MainTabBar = () => {
           tabBarIcon: ({ focused }) => {
             let iconName;
                       
-                      // Customize the icon we display based on the tab route
-                  if (route.name === 'My Events') {
-                    iconName = "calendar";
-                  } 
-                      // Adding the search icon
-                      else if (route.name === 'Discovery') {
-                    iconName = "compass";
-                  }
-                  else if (route.name === 'New Events') {
-                    iconName = "plus-circle";
-                  }
+            // Customize the icon we display based on the tab route
+            if (route.name === 'My Events') {
+              iconName = 'calendar';
+            } 
+            // Adding the search icon
+            else if (route.name === 'Discovery') {
+              iconName = 'compass';
+            }
+            else if (route.name === 'New Events') {
+              iconName = 'plus-circle';
+            }
               
             // Return the respective icon
             return <Ionicons name={iconName} size={26} color={focused ? '#58AADA' : 'grey'} />;

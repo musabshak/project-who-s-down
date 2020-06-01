@@ -5,8 +5,8 @@ import { Provider } from 'react-redux';
 import { createStore, applyMiddleware, compose } from 'redux';
 import MainTabBar from './src/navigation/main_tab_bar';
 import reducers from './src/components/new_event/reducers';
-import GeographicDisplay from './src/components/geographic_view/GeographicDisplay';
-// import NewEventPage from './src/components/new_event';
+// import GeographicDisplay from './src/components/geographic_view/GeographicDisplay';
+import NewEventPage from './src/components/new_event';
 
 // disable really annoying in app warnings
 console.disableYellowBox = true;
@@ -22,9 +22,9 @@ export default function App() {
   return (
     <Provider store={store}>
       <View style={styles.container}>
-        <GeographicDisplay />
+        {/* <GeographicDisplay /> */}
         {/* <NewEventPage /> */}
-        {/* <MainTabBar /> */}
+        <MainTabBar />
       </View>
     </Provider>
   );
@@ -34,7 +34,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    borderColor: 'green',
+    borderWidth: 10,
+    // alignItems: 'center',
+    // justifyContent: 'center',
   },
 });
