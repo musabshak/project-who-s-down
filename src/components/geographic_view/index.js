@@ -25,6 +25,7 @@ class GeographicDisplay extends Component {
     super(props);
     this.state = {
       errorMessage: '',
+      isMapReady: false,
       location: {},
       region: { // default just set it to NC b/c my event markers were located here; feel free to change for your testing purposes
         latitude: 35.78825,
@@ -46,6 +47,7 @@ class GeographicDisplay extends Component {
 
 
   componentDidMount() {
+    console.log('component mounted!');
     this._getLocation();
   }
 
@@ -60,6 +62,7 @@ class GeographicDisplay extends Component {
       });
     }
 
+    console.log('about to set location!');
     const location = await Location.getCurrentPositionAsync();
     this.setState({
       location,
@@ -82,6 +85,12 @@ class GeographicDisplay extends Component {
       return (1.5 - (24 - temporalDistanceHours) / 24);
     }
     return 1.5 - (temporalDistanceHours / 24);
+  }
+
+  onMapLayout = () => {
+    console.log('Map has been laid! That makes one of us :P');
+    this.setState({ isMapReady: true });
+    this._getLocation();
   }
 
   // this function creates the events, and is called by createMap (this is b/c markers must be children of MapView)
@@ -135,9 +144,11 @@ class GeographicDisplay extends Component {
         <Text>This should be the map view!</Text>
         <MapView
           style={{
-            flex: 0.2,
+            minHeight: 200,
+            minWidth: 200,
           }}
           region={this.state.region}
+          onLayout={this.onMapLayout}
         > 
           {this.createMarkers()}
         </MapView>
