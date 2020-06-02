@@ -15,12 +15,23 @@ class FilterMenu extends Component {
     console.log('in filter menu!');
   }
 
-  onPress = (event) => {
-    console.log('pressed!2');
+  onTimeFilterPress = (event) => {
+    console.log('time filter pressed!');
+  }
+
+  onCategoryFilterPress = (event) => {
+    console.log('category filter pressed!');
+  }
+
+  onLevelFilterPress = (event) => {
+    console.log('level filter pressed!');
+  }
+
+  onHotFilterPress = (event) => {
+    console.log('hot filter pressed!');
   }
   
   render() {
-    const filterImg = require('../../../assets/eyes.png');
     return (
       <View>
         <View style={{ flex: 1 }}>
@@ -29,20 +40,20 @@ class FilterMenu extends Component {
             direction="up"
             containerStyle={{ }}
             style={{ backgroundColor: '#5067FF' }}
-            position="bottomRight"
+            position="topLeft"
             onPress={() => this.setState({ active: !this.state.active })}
           >
             <FontAwesome name="eye" />
-            <Button style={{ backgroundColor: '#34A34F' }} onPress={this.onPress()}>
+            <Button style={{ backgroundColor: '#34A34F' }} onPress={this.onTimeFilterPress}>
               <Icon name="alarm" />
             </Button>
-            <Button style={{ backgroundColor: '#3B5998' }}>
+            <Button style={{ backgroundColor: '#3B5998' }} onPress={this.onCategoryFilterPress}>
               <Icon name="wine" />
             </Button>
-            <Button disabled style={{ backgroundColor: '#DD5144' }}>
+            <Button disabled style={{ backgroundColor: '#DD5144' }} onPress={this.onHotFilterPress}>
               <Icon name="flame" />
             </Button>
-            <Button style={{ backgroundColor: '#ADFF2F'}}>
+            <Button style={{ backgroundColor: '#ADFF2F'}} onPress={this.onLevelFilterPress}>
               <FontAwesome name="gamepad" />
             </Button>
           </Fab>

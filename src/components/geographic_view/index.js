@@ -16,6 +16,7 @@ import MapView, { Marker, Callout } from 'react-native-maps';
 import * as Permissions from 'expo-permissions';
 import * as Location from 'expo-location';
 import FilterMenu from './FilterMenu';
+import EventPreview from '../event_preview';
 
 
 const YOUR_API_KEY = 'YOUR_API_KEY';
@@ -126,8 +127,7 @@ class GeographicDisplay extends Component {
             }}
           />
           <Callout>
-            <Text>INSERT EVENT PREVIEW COMPONENT HERE</Text>
-
+            <EventPreview />
           </Callout>
 
 
