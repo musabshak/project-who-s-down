@@ -76,6 +76,10 @@ class GeographicDisplay extends Component {
     });
   }
 
+  handleRegionChange = (e) => {
+    this.setState({region: e});
+  }
+
   // this function takes the current time, takes an event time, and returns a value 0 through 1 where bigger numbers are further away
   createTransparencyFromStartTime = (time) => {
     const hours = new Date().getHours(); // To get the Current Hours
@@ -96,8 +100,9 @@ class GeographicDisplay extends Component {
 
   // this function creates the events, and is called by createMap (this is b/c markers must be children of MapView)
   createMarkers = () => {
-    // so at some point the event_list would be coming from props
+    const MIN_ZOOM_FOR_MARKER_CHANGE = 0.02;
 
+    // these maps are used to give meaning to the icons
     const eventCategoryToIcon = new Map([
       ['nightlife', require('../../../assets/nightlife.png')],
       ['culture', require('../../../assets/culture.png')],
@@ -106,33 +111,46 @@ class GeographicDisplay extends Component {
       ['boardgame', require('../../../assets/boardgames.png')],
     ]);
 
-    const eventLevelToIcon = new Map([ // might not use this one
+    const eventLevelToIcon = new Map([ 
       ['pro', '#F44336'],
       ['amateur', '#0000FF'],
       ['casual', '#008000'], 
     ]);
 
     return this.state.eventList.map((obj) => {
-      // so this Image line just takes away the markers entirely. tried changing image location in case it was just an error getting to the image
-      // tried an image prop in Marker itself, and I tried putting Image inside the callout (doesn't show up here either)
-      // also tried with .png and .svg
-
       const eventOpacity = this.createTransparencyFromStartTime(obj.startTime);
 
-      return (
-        <Marker key={obj.latitude} coordinate={{ latitude: obj.latitude, longitude: obj.longitude}}>
-          <Image source={eventCategoryToIcon.get(obj.category)}
-            style={{
-              height: 35, width: 35, borderWidth: 4, borderColor: eventLevelToIcon.get(obj.level), opacity: eventOpacity,
-            }}
-          />
-          <Callout>
-            <EventPreview />
-          </Callout>
+
+      // this first part handles what happens if you zoom super far in on a marker (we decided we want it to show more information)
+      if (this.state.region.longitudeDelta < MIN_ZOOM_FOR_MARKER_CHANGE) { 
+        return (
+          <Marker key={obj.latitude} coordinate={{ latitude: obj.latitude, longitude: obj.longitude}}>
+            <Text> {obj.title} </Text>
+            <Callout>
+              <EventPreview />
+            </Callout>
 
 
-        </Marker>
-      );
+          </Marker>
+        ); 
+      }
+
+      // this second part handles what happens normally, and shows just the event icon etc
+      else {
+        return (
+          <Marker key={obj.latitude} coordinate={{ latitude: obj.latitude, longitude: obj.longitude}}>
+            <Image source={eventCategoryToIcon.get(obj.category)}
+              style={{
+                height: 35, width: 35, borderWidth: 4, borderColor: eventLevelToIcon.get(obj.level), opacity: eventOpacity,
+              }}
+            />
+            <Callout>
+              <EventPreview />
+            </Callout>
+
+
+          </Marker>
+        ); }
     });
   }
 
@@ -149,6 +167,7 @@ class GeographicDisplay extends Component {
           }}
           region={this.state.region}
           onLayout={this.onMapLayout}
+          onRegionChangeComplete={this.handleRegionChange}
         > 
           {this.createMarkers()}
         </MapView>
