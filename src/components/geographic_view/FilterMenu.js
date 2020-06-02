@@ -40,7 +40,7 @@ class FilterMenu extends Component {
             direction="up"
             containerStyle={{ }}
             style={{ backgroundColor: '#5067FF' }}
-            position="topLeft"
+            position="bottomRight"
             onPress={() => this.setState({ active: !this.state.active })}
           >
             <FontAwesome name="eye" />
