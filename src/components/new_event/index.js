@@ -1,9 +1,10 @@
+/* eslint-disable no-return-assign */
 /* eslint-disable no-nested-ternary */
 /* eslint-disable no-extend-native */
 import React, { Component } from 'react';
 import {
   StyleSheet, View, Text, Image,
-  TextInput, Keyboard,
+  TextInput, Keyboard, SafeAreaView, 
 } from 'react-native';
 // import { Input } from 'react-native-elements';
 import { connect } from 'react-redux';
@@ -17,6 +18,9 @@ import { AppLoading } from 'expo';
 import * as Font from 'expo-font';
 // import Icon from 'react-native-vector-icons/Ionicons';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import MapView from 'react-native-maps';
+import Modal from 'react-native-modal';
+import Carousel from 'react-native-snap-carousel';
 import * as actions from './actions';
 import { styles } from './styles';
 
@@ -44,6 +48,37 @@ class NewEventPage extends Component {
       time: new Date(),
       mode: 'date',
       show: false,
+      locationVisible: false,
+      loading: true,
+      region: {
+        latitude: 43.704205,
+        longitude: -72.288465,
+        latitudeDelta: 0.001,
+        longitudeDelta: 0.001,
+      },
+      activeIndex: 0,
+      carouselItems: [
+        {
+          title: 'Item 1',
+          text: 'Text 1',
+        },
+        {
+          title: 'Item 2',
+          text: 'Text 2',
+        },
+        {
+          title: 'Item 3',
+          text: 'Text 3',
+        },
+        {
+          title: 'Item 4',
+          text: 'Text 4',
+        },
+        {
+          title: 'Item 5',
+          text: 'Text 5',
+        },
+      ],
     };
   }
   
@@ -59,12 +94,22 @@ class NewEventPage extends Component {
 
   // Update local state to reflect modified title 
   handleTitleChange = (event) => {
-    this.setState({eventTitle: event.target.value});
+    // console.log('entering handleTitleChange() method');
+    // console.log(event.nativeEvent.text);
+    this.setState({eventTitle: event.nativeEvent.text});
+    // console.log(this.state.eventTitle);
   }
 
   handleCreateBtnPress = () => {
+    // console.log('printing event title');
+    // console.log(this.state.eventTitle);
     const event = {
       eventTitle: this.state.eventTitle,
+      startTime: '2020-06-04T05:00:00.000Z',
+      endTime: '2020-06-04T07:00:00.000Z',
+      latitude: this.state.region.latitude,
+      longitude: this.state.region.longitude,
+      category: 'sport',
     };
     this.props.createEvent(event);
   }
@@ -94,7 +139,8 @@ class NewEventPage extends Component {
 
    onChange = (event, selectedDateOrTime) => {
      if (this.state.mode === 'date') {
-       this.setState({show: Platform.OS === 'ios'});
+       //  this.setState({show: Platform.OS === 'ios'});
+       this.setState({show: false});
        this.setState(
          (prevState) => (
            {date: selectedDateOrTime || prevState.date}
@@ -104,7 +150,8 @@ class NewEventPage extends Component {
        console.log(this.state.mode === 'date');
      }
      else {
-       this.setState({show: Platform.OS === 'ios'});
+       //  this.setState({show: Platform.OS === 'ios'});
+       this.setState({show: false});
        this.setState(
          (prevState) => (
            {time: selectedDateOrTime || prevState.time}
@@ -114,6 +161,28 @@ class NewEventPage extends Component {
        console.log(this.state.mode === 'date');
      }
    };
+
+   handleLocationTouch = () => {
+     this.setState({locationVisible: true});
+   }
+
+   renderItem = ({item, index}) => {
+     return (
+       <View style={{
+         backgroundColor: 'floralwhite',
+         borderRadius: 5,
+         height: 250,
+         padding: 50,
+         marginLeft: 25,
+         marginRight: 25, 
+       }}
+       >
+         <Text style={{fontSize: 30}}>{item.title}</Text>
+         <Text>{item.text}</Text>
+       </View>
+
+     );
+   }
 
    render() {
      if (!this.state.fontLoaded) {
@@ -126,33 +195,39 @@ class NewEventPage extends Component {
            <Text>Row 0: Blank</Text>
          </View>
          <View style={styles.row1}>
-           <Button transparent style={styles.IconBtn}>
+           <Button transparent
+             style={styles.IconBtn}
+             onTouchStart={() => { this.props.navigation.navigate('Discovery'); }}
+           >
              <Icon type="MaterialIcons" name="close" style={styles.closeIcon} />
            </Button>
-           <Button style={styles.createBtn}>
+           <Button style={styles.createBtn} onPress={this.handleCreateBtnPress}>
              <Text style={styles.buttonText}> SAVE! </Text>
            </Button>
          </View>
          <View style={styles.row2}>
            <Item>
-             <Input placeholder="Add Title!" style={styles.titleField} />
+             <Input placeholder="Add Title!"
+               style={styles.titleField} 
+               onChange={this.handleTitleChange} 
+               value={this.state.eventTitle}
+             />
            </Item>
+           {/* <TextInput 
+             style={styles.titleField}
+             onChangeText={(newText) => this.setState({ eventTitle: newText })}
+             value={this.state.eventTitle}
+             placeholder="Add Title"
+           /> */}
          </View>
          <View style={styles.row3}>
            <Icon type="MaterialIcons" name="schedule" style={styles.timeIcon} />
-           <Item rounded style={styles.dateField}>
-             <Input onTouchStart={this.showDatePicker} 
-               placeholder={customFormatDate(this.state.date)}
-               caretHidden
-             />
-           </Item>
-           <Item rounded style={styles.timeField}>
-             <Input onTouchStart={this.showTimePicker} 
-               placeholder={customFormatTime(this.state.time)}
-               caretHidden
-             />
-           </Item>
-           
+           <DateFieldBox onTouchStart={this.showDatePicker}>
+             <Text style={styles.dateFieldText}>{customFormatDate(this.state.date)}</Text>
+           </DateFieldBox>
+           <TimeFieldBox onTouchStart={this.showTimePicker}>
+             <Text style={styles.dateFieldText}>{customFormatTime(this.state.time)}</Text>
+           </TimeFieldBox>
            {this.state.show && (
              <DateTimePicker
                testID="dateTimePicker"
@@ -164,15 +239,76 @@ class NewEventPage extends Component {
              />
            )}
          </View>
-         <View style={styles.row}>
-           <Text>Row 4: Location</Text>
-          
+         <View style={styles.row4}>
+           <Icon type="MaterialIcons" 
+             name="place"
+             style={styles.timeIcon} 
+             onTouchStart={this.handleLocationTouch}
+           />
+           
+           {/* {this.state.locationVisible && (
+             <LocationView style={styles.location}
+               apiKey="AIzaSyCkF0co2lCm52v6lv8Rnv6FcTaNV5VrW0wEY"
+               initialLocation={{
+                 latitude: 37.78825,
+                 longitude: -122.4324,
+               }}
+             />
+           )}
+            */}
+           
+           
+           <Modal style={styles.mapModal}
+             isVisible={this.state.locationVisible}
+             onBackdropPress={() => this.setState({locationVisible: false})}
+             //  onSwipeComplete={() => this.setState({locationVisible: false})}
+             //  swipeDirection="left"
+           >
+             <MapView
+               style={styles.map}
+               //  initialRegion={this.state.region}
+               showsUserLocation
+             >
+               <MapView.Marker
+                 coordinate={{
+                   latitude: this.state.region.latitude,   
+                   longitude: this.state.region.longitude, 
+                 }}
+                 title="Your LocAation"
+                 draggable
+               />
+             </MapView>
+           </Modal>
+           
+           
          </View>
          <View style={styles.row}> 
            <Text>Row 5: Category</Text>
+           <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center' }}>
+             <Carousel
+               layout="default"
+               ref={(ref) => this.carousel = ref}
+               data={this.state.carouselItems}
+               sliderWidth={300}
+               itemWidth={300}
+               renderItem={this.renderItem}
+               onSnapToItem={(index) => this.setState({activeIndex: index})}
+             />
+           </View>
          </View>
          <View style={styles.row}> 
            <Text>Row 6: Skill</Text>
+           <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center' }}>
+             <Carousel
+               layout="default"
+               ref={(ref) => this.carousel = ref}
+               data={this.state.carouselItems}
+               sliderWidth={300}
+               itemWidth={300}
+               renderItem={this.renderItem}
+               onSnapToItem={(index) => this.setState({activeIndex: index})}
+             />
+           </View>
          </View>
          <View style={styles.row}>
            <Text>Row 7: Description</Text>
@@ -182,15 +318,37 @@ class NewEventPage extends Component {
    }
 }
 
+const DateFieldBox = styled.View`
+  height: 45px;
+  width: 90px;
+  background-color: white;
+  border-radius: 16px;
+  border: gray;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 5px;
+`;
 
-const CrtButton = styled.TouchableOpacity`
+const TimeFieldBox = styled.View`
+  height: 45px;
+  width: 70px;
+  background-color: white;
+  border-radius: 16px;
+  border: gray;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const Box = styled.View`
   flex: 1;
   height: 50px;
   width:150px;
   background-color: blue;
   position: absolute;
-  right: 0;
-  top: 5;
+  right: 0px;
+  top: 5px;
 `;
 
 

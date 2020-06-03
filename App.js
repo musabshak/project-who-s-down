@@ -6,7 +6,8 @@ import { createStore, applyMiddleware, compose } from 'redux';
 import MainTabBar from './src/navigation/main_tab_bar';
 import reducers from './src/components/new_event/reducers';
 // import GeographicDisplay from './src/components/geographic_view/GeographicDisplay';
-import NewEventPage from './src/components/new_event';
+// import NewEventPage from './src/components/new_event';
+// import MapTest from './src/components/new_event/maptest';
 
 // disable really annoying in app warnings
 console.disableYellowBox = true;
@@ -25,6 +26,8 @@ export default function App() {
         {/* <GeographicDisplay /> */}
         {/* <NewEventPage /> */}
         <MainTabBar />
+        {/* <Text>Hey</Text> */}
+        {/* <MapTest /> */}
       </View>
     </Provider>
   );

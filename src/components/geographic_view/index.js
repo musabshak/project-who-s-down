@@ -19,7 +19,6 @@ import FilterMenu from './FilterMenu';
 import EventPreview from '../event_preview';
 import {changeFilters, fetchEvents} from './actions';
 
-
 const YOUR_API_KEY = 'YOUR_API_KEY';
 
 class GeographicDisplay extends Component {
@@ -207,6 +206,7 @@ class GeographicDisplay extends Component {
           accessibilityLabel="Event List view"
         />
         <Text>This is WHERE the mapview will go</Text>
+
         <Text>This is the mapview component</Text>
         <Text>I think youre at {JSON.stringify(this.state.location)}</Text>
 
@@ -214,6 +214,7 @@ class GeographicDisplay extends Component {
         <FilterMenu />
         <Button title="hello" onPress={this.debugHelper}> show GeographicDisplay state</Button>
         <Button title="call fetchevents!" onPress={this.handleFetchClick}> call get events</Button>
+
 
       </View>
     );

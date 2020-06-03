@@ -22,9 +22,9 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderColor: 'black',
     borderWidth: 1,
-    justifyContent: 'center',
-    // alignItems: 'center',
-    // flexDirection: 'row',
+    // justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'row',
     // justifyContent: 'center',
   },
   row2: {
@@ -39,6 +39,9 @@ const styles = StyleSheet.create({
     height: 70,
     borderColor: 'black',
     borderWidth: 1,
+  },
+  row4: {
+    height: 70,
   },
   row: {
     flex: 1,
@@ -94,11 +97,29 @@ const styles = StyleSheet.create({
     fontFamily: 'TitilliumWeb-Regular',
     fontSize: 25,
   },
-  dateField: {
-    width: 110,
+  dateFieldText: {
+    fontFamily: 'TitilliumWeb-Regular',
+    fontSize: 15,
   },
   timeField: {
     width: 80,
+  },
+  location: {
+    height: 900,
+    position: 'absolute',
+  },
+  map: {
+    position: 'absolute',
+    top: 20,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    height: 600,
+    margin: 0,
+    padding: 0,
+  },
+  mapModal: {
+    padding: 0,
   },
 
 });
