@@ -4,7 +4,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import Ionicons from 'react-native-vector-icons/FontAwesome';
 import EventList from '../components/event_list';
 import EventDetail from '../components/event_detail';
-import MapView from '../components/geographic_view';
+import GeographicDisplay from '../components/geographic_view';
 
 
 const Stack = createStackNavigator();
@@ -15,7 +15,7 @@ const Discovery = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen name="Search"
-        component={MapView}
+        component={GeographicDisplay}
         options={{
           title: ' Map Events',
           headerStyle: {

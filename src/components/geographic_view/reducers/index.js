@@ -1,9 +1,12 @@
+
+// NOW DEFUNCT
+
 import { combineReducers } from 'redux';
-import UserReducer from './userReducer';
+import eventReducer from './eventReducer';
 
 
 const rootReducer = combineReducers({
-  user: UserReducer,
+  event: eventReducer,
 
 });
 
