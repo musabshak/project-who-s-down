@@ -10,7 +10,7 @@ import {
   FlatList,
   TouchableHighlight,
 } from 'react-native';
-
+// import GeographicDisplay from './GeographicDisplay';
 
 class MapView extends Component {
   constructor(props) {
@@ -40,6 +40,7 @@ class MapView extends Component {
           accessibilityLabel="Event List view"
         />
         <Text>This is WHERE the mapview will go</Text>
+        {/* <GeographicDisplay /> */}
       </View>
     );
   }
