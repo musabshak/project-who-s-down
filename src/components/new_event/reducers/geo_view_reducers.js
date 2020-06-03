@@ -17,8 +17,7 @@ const initialState = {
 };
   
   
-const geoViewReducer = (state = initialState, action, debug = true) => {
-  console.log('hi!');
+const geoViewReducer = (state = initialState, action, debug = false) => {
   if (action.payload) {
     // console.log('action.payload:', action.payload);
     // const newFilterInstance = action.payload.SpecificFilter; 
@@ -30,22 +29,23 @@ const geoViewReducer = (state = initialState, action, debug = true) => {
       console.log('incoming state:', state);
       console.log('action.payload', action.payload);
     }
+    if (state.filteredOut) {
+      if (action.payload.FilterType === 'categories' || action.payload.FilterType === 'skillLevels') {
+        const newFilterInstance = action.payload.SpecificFilter; 
+        const newFiltersToAdd = state.filteredOut[action.payload.FilterType].concat(newFilterInstance); // need to check if already in the list
+        const newState = state.filteredOut;
+        newState[action.payload.FilterType] = newFiltersToAdd;
+        console.log('reducer returning this:', newState);
 
-    if (action.payload.FilterType === 'categories' || action.payload.FilterType === 'skillLevels') {
-      const newFilterInstance = action.payload.SpecificFilter; 
-      const newFiltersToAdd = state.filteredOut[action.payload.FilterType].concat(newFilterInstance); // need to check if already in the list
-      const newState = state.filteredOut;
-      newState[action.payload.FilterType] = newFiltersToAdd;
-      console.log('reducer returning this:', newState);
-
-      //   return {...state, filteredOut: newState};
-      return {filteredOut: newState};
+        //   return {...state, filteredOut: newState};
+        return {filteredOut: newState};
+      }
     }
 
     else {
       return state;
     }
-
+    break;
   case ActionTypes.fetchEvents:
     if (debug) {
       console.log('\n\n\n\n\nin the reducer! getting events like this from the server!', action.payload.data[0]); }
