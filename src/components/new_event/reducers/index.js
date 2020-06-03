@@ -3,9 +3,11 @@
 import { combineReducers } from 'redux';
 
 import eventsReducer from './events_reducer';
+import geoViewReducer from './geo_view_reducers';
 
 const rootReducer = combineReducers({
   events: eventsReducer,
+  geoViewEvents: geoViewReducer,
 });
 
 export default rootReducer;
