@@ -4,14 +4,22 @@ import {
   Container, Header, View, Button, Icon, Fab, 
 } from 'native-base';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import React, { Component } from 'react';
-import { Text, Image } from 'react-native';
-  
+import React, { Component, useState } from 'react';
+import {
+  Alert,
+  Modal,
+  StyleSheet,
+  Text,
+  TouchableHighlight,
+} from 'react-native';
+import { connect } from 'react-redux';
+import changeFilters from './actions';
+
   
 class FilterMenu extends Component {
   constructor(props) {
     super(props);
-    this.state = {active: false};
+    this.state = {main_active: false, level_active: false, cat_active: false};
     console.log('in filter menu!');
   }
 
@@ -23,6 +31,14 @@ class FilterMenu extends Component {
     console.log('category filter pressed!');
   }
 
+  handleCatFabPress = (event) => {
+    console.log('handle cat fab press called!');
+    this.setState({
+      cat_active: !this.state.cat_active,
+      level_active: false,
+    });
+  }
+
   onLevelFilterPress = (event) => {
     console.log('level filter pressed!');
   }
@@ -30,37 +46,118 @@ class FilterMenu extends Component {
   onHotFilterPress = (event) => {
     console.log('hot filter pressed!');
   }
-  
+
+  debugPress = (event) => {
+    console.log('level active:', this.state.level_active);
+    console.log('state:', this.state);
+  }
+
+  handleLevelFabPress = (event) => {
+    console.log('handle level fab press called!');
+    this.setState({
+      level_active: !this.state.level_active,
+      cat_active: false, 
+    });
+  }
+
+  editIndividualFilter = (param) => {
+    console.log(param);
+  }
+
+
   render() {
     return (
       <View>
+
+        <Button style={{ backgroundColor: '#3B5998' }} onPress={this.debugPress}>
+          <Icon name="md-print" />
+        </Button>
+
         <View style={{ flex: 1 }}>
           <Fab
-            active={this.state.active}
-            direction="up"
+            active={this.state.main_active}
+            direction="left"
             containerStyle={{ }}
             style={{ backgroundColor: '#5067FF' }}
             position="bottomRight"
-            onPress={() => this.setState({ active: !this.state.active })}
+            onPress={() => this.setState({ main_active: !this.state.main_active })}
           >
             <FontAwesome name="eye" />
+
+
             <Button style={{ backgroundColor: '#34A34F' }} onPress={this.onTimeFilterPress}>
               <Icon name="alarm" />
             </Button>
-            <Button style={{ backgroundColor: '#3B5998' }} onPress={this.onCategoryFilterPress}>
-              <Icon name="wine" />
-            </Button>
+
+
+            {/* so this chunk below is the category menu */}
+            {this.state.main_active && (
+              <View>
+                <Fab
+                  active={this.state.cat_active}
+                  style={{ backgroundColor: '#5067FF', direction: 'left'}}
+                  onPress={this.handleCatFabPress}
+                >
+                  <Icon name="wine" />
+                  <Button style={{ backgroundColor: '#34A34F' }} onPress={() => this.editIndividualFilter({FilterType: 'category', SpecificFilter: 'nightlife'})}> 
+                    <Text>nightlife </Text>                  
+                  </Button>
+                  <Button style={{ backgroundColor: '#3B5998' }} onPress={() => this.editIndividualFilter({FilterType: 'category', SpecificFilter: 'sport'})}>
+                    <Text>sport</Text>                  
+                  </Button>
+                  <Button style={{ backgroundColor: '#DD5144' }} onPress={() => this.editIndividualFilter({FilterType: 'category', SpecificFilter: 'boardgame'})}>
+                    <Text> boardgame </Text>
+                  </Button>
+
+                </Fab>
+              </View>
+            ) }
+
             <Button disabled style={{ backgroundColor: '#DD5144' }} onPress={this.onHotFilterPress}>
               <Icon name="flame" />
             </Button>
-            <Button style={{ backgroundColor: '#ADFF2F'}} onPress={this.onLevelFilterPress}>
-              <FontAwesome name="gamepad" />
-            </Button>
+            
+
+            {/* so this chunk below is the level menu */}
+            {this.state.main_active 
+            && (
+              <View>
+                <Fab
+                  active={this.state.level_active}
+                  style={{ backgroundColor: '#5067FF', direction: 'left'}}
+                  onPress={this.handleLevelFabPress}
+                >
+                  <FontAwesome name="gamepad" />
+
+                  <Button style={{ backgroundColor: '#34A34F' }} onPress={() => this.editIndividualFilter({FilterType: 'level', SpecificFilter: 'casual'})}>
+                    <Text>casual </Text>                  
+                  </Button>
+                  <Button style={{ backgroundColor: '#3B5998' }} onPress={() => this.editIndividualFilter({FilterType: 'level', SpecificFilter: 'amateur'})}>
+                    <Text>amateur</Text>                  
+                  </Button>
+                  <Button style={{ backgroundColor: '#DD5144' }} onPress={() => this.editIndividualFilter({FilterType: 'level', SpecificFilter: 'pro'})}>
+                    <Icon name="star" />
+                    <Text> pro </Text>
+                  </Button>
+
+                </Fab>
+              </View>
+            )}
+
           </Fab>
         </View>
       </View>
     );
   }
 }
-  
-export default FilterMenu;
+
+const mapStateToProps = (reduxState) => (
+  {filteredOut: reduxState.filteredOut}
+);
+
+const mapDispatchToProps = (reduxState) => (
+  {changeFilters}
+);
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(FilterMenu);

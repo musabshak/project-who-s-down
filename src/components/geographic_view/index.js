@@ -17,6 +17,7 @@ import * as Permissions from 'expo-permissions';
 import * as Location from 'expo-location';
 import FilterMenu from './FilterMenu';
 import EventPreview from '../event_preview';
+import changeFilters from './actions';
 
 
 const YOUR_API_KEY = 'YOUR_API_KEY';
@@ -43,6 +44,12 @@ class GeographicDisplay extends Component {
           title: 'title3!!', level: 'casual', category: 'educational', startTime: '13:20', latitude: 35.773, longitude: -78.894,
         },
       ],
+      filteredOut: {
+        categories: [],
+        skillLevels: [],
+        timesAfter: null, // going to need a better way to handle times
+        timesBefore: null,
+      },
     };
   }
 
@@ -168,6 +175,8 @@ class GeographicDisplay extends Component {
           region={this.state.region}
           onLayout={this.onMapLayout}
           onRegionChangeComplete={this.handleRegionChange}
+          showsUserLocation
+          followsUserLocation
         > 
           {this.createMarkers()}
         </MapView>
@@ -207,13 +216,11 @@ class GeographicDisplay extends Component {
 }
 
 const mapStateToProps = (reduxState) => (
-  {
-
-  }
+  {filteredOut: reduxState.filteredOut}
 );
 
 const mapDispatchToProps = (reduxState) => (
-  {}
+  {changeFilters}
 );
 
 

@@ -1,9 +1,11 @@
 import { combineReducers } from 'redux';
-import UserReducer from './userReducer';
+import mapReducer from './mapReducer';
+import eventReducer from './eventReducer';
 
 
 const rootReducer = combineReducers({
-  user: UserReducer,
+  map: mapReducer,
+  event: eventReducer,
 
 });
 
