@@ -17,7 +17,7 @@ import * as Permissions from 'expo-permissions';
 import * as Location from 'expo-location';
 import FilterMenu from './FilterMenu';
 import EventPreview from '../event_preview';
-import changeFilters from './actions';
+import {changeFilters, fetchEvents} from './actions';
 
 
 const YOUR_API_KEY = 'YOUR_API_KEY';
@@ -44,19 +44,15 @@ class GeographicDisplay extends Component {
           title: 'title3!!', level: 'casual', category: 'educational', startTime: '13:20', latitude: 35.773, longitude: -78.894,
         },
       ],
-      filteredOut: {
-        categories: [],
-        skillLevels: [],
-        timesAfter: null, // going to need a better way to handle times
-        timesBefore: null,
-      },
     };
   }
 
 
   componentDidMount() {
     console.log('component mounted!');
+    this.debugHelper();
     this._getLocation();
+    this.props.fetchEvents();
   }
 
   _getLocation = async () => {
@@ -90,6 +86,11 @@ class GeographicDisplay extends Component {
   debugHelper = () => {
     console.log('\n\n\nstate = ', this.state);
     console.log('props=', this.props);
+  }
+
+  handleFetchClick = () => {
+    console.log('handle fetch click called!');
+    this.props.fetchEvents();
   }
 
   // this function takes the current time, takes an event time, and returns a value 0 through 1 where bigger numbers are further away
@@ -216,18 +217,26 @@ class GeographicDisplay extends Component {
         {this.createMap()}
         <FilterMenu />
         <Button title="hello" onPress={this.debugHelper}> show GeographicDisplay state</Button>
+        <Button title="call fetchevents!" onPress={this.handleFetchClick}> call get events</Button>
+
       </View>
     );
   }
 }
 
 const mapStateToProps = (reduxState) => (
-  {filteredOut: reduxState.filteredOut}
+  {
+    filteredOut: reduxState.filteredOut,
+    eventList: reduxState.eventList,
+  }
 );
 
-const mapDispatchToProps = (reduxState) => (
-  {changeFilters}
-);
+// const mapDispatchToProps = (reduxState) => (
+//   {
+//     changeFilters,
+//     fetchEvents,
+//   }
+// );
 
 
 const styles = StyleSheet.create({
@@ -270,4 +279,4 @@ const styles = StyleSheet.create({
 });
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(GeographicDisplay);
+export default connect(mapStateToProps, {fetchEvents, changeFilters})(GeographicDisplay);

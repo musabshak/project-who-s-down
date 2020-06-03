@@ -12,10 +12,11 @@ const initialState = {
     timesAfter: null, // going to need a better way to handle times
     timesBefore: null,
   },
+
 };
   
   
-const geoViewReducer = (state = initialState, action, debug = true) => {
+const geoViewReducer = (state = initialState, action, debug = false) => {
   console.log('hi!');
   if (action.payload) {
     // console.log('action.payload:', action.payload);
@@ -43,6 +44,12 @@ const geoViewReducer = (state = initialState, action, debug = true) => {
     else {
       return state;
     }
+
+  case ActionTypes.fetchEvents:
+    if (debug) {
+      console.log('\n\n\n\n\nin the reducer! getting this response from the server!', action.payload.data); }
+    return {...state, eventList: action.payload.data};
+
     
   default:
     return state;
