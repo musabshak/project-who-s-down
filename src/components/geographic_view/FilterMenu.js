@@ -59,7 +59,8 @@ class FilterMenu extends Component {
   // these are the lines you need to focus on
 
   debugPress = (event) => {
-    console.log(this.props);
+    console.log('props:', this.props);
+    console.log('state:', this.state);
   }
 
   editIndividualFilter = (param) => {
@@ -141,7 +142,7 @@ class FilterMenu extends Component {
                   </Button>
                   <Button style={{ backgroundColor: '#3B5998' }}
                     onPress={() => this.editIndividualFilter({
-                      FilterType: 'SkillLevels',
+                      FilterType: 'skillLevels',
                       SpecificFilter: 'amateur',
                     })}
                   >
@@ -149,7 +150,7 @@ class FilterMenu extends Component {
                   </Button>
                   <Button style={{ backgroundColor: '#DD5144' }}
                     onPress={() => this.editIndividualFilter({
-                      FilterType: 'SkillLevels',
+                      FilterType: 'skillLevels',
                       SpecificFilter: 'pro',
                     })}
                   >

@@ -1,3 +1,7 @@
+/* eslint-disable no-case-declarations */
+// ^so this linter rule is intended to prevent bugs related to "falling through" where multiple cases get triggered in 
+// a case/switch construct but since I'm using return in my cases I just disabled it
+
 import { ActionTypes } from '../../geographic_view/actions';
 
 
@@ -11,25 +15,39 @@ const initialState = {
 };
   
   
-const geoViewReducer = (state = initialState, action, debug = true) => {
+const geoViewReducer = (state = initialState, action, debug = false) => {
   console.log('hi!');
-  if (action.payload && debug) {
+  if (action.payload) {
+    // console.log('action.payload:', action.payload);
     // const newFilterInstance = action.payload.SpecificFilter; 
-    // const newFilters = state.filteredOut;
-    // console.log('newfilters=', newFilters);
-    // console.log('newFilterInstance=', newFilterInstance);
-    // console.log(newFilters[action.payload.FilterType]);
-    console.log('state provided to reducer', state);
+    // const oldFilters = state.filteredOut;
+    if (debug) {
+    //   console.log('oldfilters=', oldFilters);
+    //   console.log('newFilterInstance=', newFilterInstance);
+    //   console.log('part of oldFilters to be replaced:', oldFilters[action.payload.FilterType]);
+    //   console.log('state provided to reducer', state);
+    //   console.log('\n\n\n');
+    //   // note that if you run this debug block, you'll be adding to the filter list twice
+    //   const newFiltersAdded = oldFilters[action.payload.FilterType].concat(newFilterInstance);
+    //   const newState = state;
+    //   newState.filteredOut[action.payload.FilterType] = newFiltersAdded;
+    //   console.log('\n\n\n We have this as the newState for our reducer', newState); 
+    }
   }
   switch (action.type) {
-  case ActionTypes.changeFilters:
+  case ActionTypes.changeFilters: 
     if (debug) {
-      console.log('Ok, so we\'re in the reducer for the case changeFilters and this is our current state:', state);
+      console.log(newState); 
     }
 
     if (action.payload.FilterType === 'categories' || action.payload.FilterType === 'skillLevels') {
-      console.log('new filter = ', state.filteredOut[action.payload.FilterType].concat(action.payload.SpecificFilter));
-      return { ...state, filteredOut: state.filteredOut[action.payload.FilterType].concat(action.payload.SpecificFilter)};
+      const newFilterInstance = action.payload.SpecificFilter; 
+      const newFiltersToAdd = state.filteredOut[action.payload.FilterType].concat(newFilterInstance); // need to check if already in the list
+      const newState = state;
+      newState.filteredOut[action.payload.FilterType] = newFiltersToAdd;
+      console.log('reducer returning this:', newState);
+
+      return {...state, filteredOut: newState};
     }
 
     else {
