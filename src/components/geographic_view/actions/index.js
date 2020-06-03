@@ -21,12 +21,12 @@ export function changeFilters(newFilters) {
 }
 
 
-export function fetchEvents() {
+export function fetchEvents(debug = false) {
   console.log('We are in the action creator for fetchEvents, producing a fetchEvents action!');
   return (dispatch) => {
     axios.get(`${ROOT_URL}/fetchEvents`)
       .then((response) => {
-        console.log('hi aarish :o', response);
+        if (debug) { console.log('hi aarish :o', response); }
         dispatch({ type: ActionTypes.fetchEvents, payload: response });
       })
       .catch((error) => {

@@ -12,17 +12,17 @@ const initialState = {
     timesAfter: null, // going to need a better way to handle times
     timesBefore: null,
   },
+  eventList: [],
 
 };
   
   
-const geoViewReducer = (state = initialState, action, debug = false) => {
+const geoViewReducer = (state = initialState, action, debug = true) => {
   console.log('hi!');
   if (action.payload) {
     // console.log('action.payload:', action.payload);
     // const newFilterInstance = action.payload.SpecificFilter; 
     // const oldFilters = state.filteredOut;
-
   }
   switch (action.type) {
   case ActionTypes.changeFilters: 
@@ -38,7 +38,8 @@ const geoViewReducer = (state = initialState, action, debug = false) => {
       newState[action.payload.FilterType] = newFiltersToAdd;
       console.log('reducer returning this:', newState);
 
-      return {...state, filteredOut: newState};
+      //   return {...state, filteredOut: newState};
+      return {filteredOut: newState};
     }
 
     else {
@@ -47,8 +48,8 @@ const geoViewReducer = (state = initialState, action, debug = false) => {
 
   case ActionTypes.fetchEvents:
     if (debug) {
-      console.log('\n\n\n\n\nin the reducer! getting this response from the server!', action.payload.data); }
-    return {...state, eventList: action.payload.data};
+      console.log('\n\n\n\n\nin the reducer! getting events like this from the server!', action.payload.data[0]); }
+    return {eventList: action.payload.data};
 
     
   default:

@@ -35,22 +35,12 @@ class GeographicDisplay extends Component {
         latitudeDelta: 0.0922,
         longitudeDelta: 0.0421,
       },
-      eventList: [
-        {
-          title: 'title 1', level: 'pro', category: 'nightlife', startTime: '20:04', latitude: 35.77, longitude: -78.89,
-        }, {
-          title: 'title 2!', level: 'amateur', category: 'sports', startTime: '23:06', latitude: 35.775, longitude: -78.895, 
-        }, {
-          title: 'title3!!', level: 'casual', category: 'educational', startTime: '13:20', latitude: 35.773, longitude: -78.894,
-        },
-      ],
     };
   }
 
 
   componentDidMount() {
     console.log('component mounted!');
-    this.debugHelper();
     this._getLocation();
     this.props.fetchEvents();
   }
@@ -95,14 +85,19 @@ class GeographicDisplay extends Component {
 
   // this function takes the current time, takes an event time, and returns a value 0 through 1 where bigger numbers are further away
   createTransparencyFromStartTime = (time) => {
-    const hours = new Date().getHours(); // To get the Current Hours
-    const min = new Date().getMinutes(); // To get the Current Minutes
-    inputTime = time.split(':');
-    const temporalDistanceHours = (inputTime[0] - hours) + ((inputTime[1] - min) / 60);
-    if (temporalDistanceHours < 0) {
-      return (1.5 - (24 - temporalDistanceHours) / 24);
-    }
-    return 1.5 - (temporalDistanceHours / 24);
+    // const now = new Date();
+    // console.log(time);
+    // console.log(now);
+    // console.log('diffy = ', time.getTime() - now.getTime());
+    // all of this is defunct now that we're using time / date objects
+    // const hours = new Date().getHours(); // To get the Current Hours
+    // const min = new Date().getMinutes(); // To get the Current Minutes
+    // const inputTime = time.split(':');
+    // const temporalDistanceHours = (inputTime[0] - hours) + ((inputTime[1] - min) / 60);
+    // if (temporalDistanceHours < 0) {
+    //   return (1.5 - (24 - temporalDistanceHours) / 24);
+    // }
+    // return 1.5 - (temporalDistanceHours / 24);
   }
 
   onMapLayout = () => {
@@ -120,8 +115,9 @@ class GeographicDisplay extends Component {
       ['nightlife', require('../../../assets/nightlife.png')],
       ['culture', require('../../../assets/culture.png')],
       ['educational', require('../../../assets/educational.png')],
-      ['sports', require('../../../assets/sports.png')],
-      ['boardgame', require('../../../assets/boardgames.png')],
+      ['Sport', require('../../../assets/sports.png')],
+      ['Game', require('../../../assets/boardgames.png')],
+      ['Food', require('../../../assets/food.png')],
     ]);
 
     const eventLevelToIcon = new Map([ 
@@ -130,15 +126,15 @@ class GeographicDisplay extends Component {
       ['casual', '#008000'], 
     ]);
 
-    return this.state.eventList.map((obj) => {
-      const eventOpacity = this.createTransparencyFromStartTime(obj.startTime);
+    return this.props.eventList.map((obj) => {
+      const eventOpacity = 0.9; this.createTransparencyFromStartTime(obj.startTime);
 
 
       // this first part handles what happens if you zoom super far in on a marker (we decided we want it to show more information)
       if (this.state.region.longitudeDelta < MIN_ZOOM_FOR_MARKER_CHANGE) { 
         return (
           <Marker key={obj.latitude} coordinate={{ latitude: obj.latitude, longitude: obj.longitude}}>
-            <Text> {obj.title} </Text>
+            <Text> {obj.eventTitle} </Text>
             <Callout>
               <EventPreview />
             </Callout>
@@ -226,8 +222,8 @@ class GeographicDisplay extends Component {
 
 const mapStateToProps = (reduxState) => (
   {
-    filteredOut: reduxState.filteredOut,
-    eventList: reduxState.eventList,
+    filteredOut: reduxState.geoViewEvents.filteredOut,
+    eventList: reduxState.geoViewEvents.eventList,
   }
 );
 

@@ -170,7 +170,7 @@ class FilterMenu extends Component {
 }
 
 const mapStateToProps = (reduxState) => (
-  {filteredOut: reduxState.filteredOut}
+  {filteredOut: reduxState.geoViewEvents.filteredOut}
 );
 
 const mapDispatchToProps = (
