@@ -89,6 +89,7 @@ class GeographicDisplay extends Component {
 
   debugHelper = () => {
     console.log('\n\n\nstate = ', this.state);
+    console.log('props=', this.props);
   }
 
   // this function takes the current time, takes an event time, and returns a value 0 through 1 where bigger numbers are further away
