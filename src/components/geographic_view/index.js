@@ -87,6 +87,10 @@ class GeographicDisplay extends Component {
     this.setState({region: e});
   }
 
+  debugHelper = () => {
+    console.log('geo view filtered out part of state = ', this.state.filteredOut);
+  }
+
   // this function takes the current time, takes an event time, and returns a value 0 through 1 where bigger numbers are further away
   createTransparencyFromStartTime = (time) => {
     const hours = new Date().getHours(); // To get the Current Hours
@@ -210,6 +214,7 @@ class GeographicDisplay extends Component {
 
         {this.createMap()}
         <FilterMenu />
+        <Button title="hello" onPress={this.debugHelper}> show GeographicDisplay state</Button>
       </View>
     );
   }
@@ -222,9 +227,6 @@ const mapStateToProps = (reduxState) => (
 const mapDispatchToProps = (reduxState) => (
   {changeFilters}
 );
-
-
-export default connect(mapStateToProps, mapDispatchToProps)(GeographicDisplay);
 
 
 const styles = StyleSheet.create({
@@ -265,3 +267,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
 });
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(GeographicDisplay);

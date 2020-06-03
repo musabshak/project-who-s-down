@@ -1,3 +1,6 @@
+
+// NOW DEFUNCT
+
 const initialState = {
   filteredOut: {
     categories: [],

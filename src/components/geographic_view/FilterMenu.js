@@ -13,7 +13,7 @@ import {
   TouchableHighlight,
 } from 'react-native';
 import { connect } from 'react-redux';
-import changeFilters from './actions';
+import { changeFilters } from './actions';
 
   
 class FilterMenu extends Component {
@@ -47,11 +47,6 @@ class FilterMenu extends Component {
     console.log('hot filter pressed!');
   }
 
-  debugPress = (event) => {
-    console.log('level active:', this.state.level_active);
-    console.log('state:', this.state);
-  }
-
   handleLevelFabPress = (event) => {
     console.log('handle level fab press called!');
     this.setState({
@@ -60,8 +55,15 @@ class FilterMenu extends Component {
     });
   }
 
+
+  // these are the lines you need to focus on
+
+  debugPress = (event) => {
+    console.log(this.props);
+  }
+
   editIndividualFilter = (param) => {
-    console.log(param);
+    this.props.changeFilters(param);
   }
 
 
@@ -99,13 +101,13 @@ class FilterMenu extends Component {
                   onPress={this.handleCatFabPress}
                 >
                   <Icon name="wine" />
-                  <Button style={{ backgroundColor: '#34A34F' }} onPress={() => this.editIndividualFilter({FilterType: 'category', SpecificFilter: 'nightlife'})}> 
+                  <Button style={{ backgroundColor: '#34A34F' }} onPress={() => this.editIndividualFilter({FilterType: 'categories', SpecificFilter: 'nightlife'})}> 
                     <Text>nightlife </Text>                  
                   </Button>
-                  <Button style={{ backgroundColor: '#3B5998' }} onPress={() => this.editIndividualFilter({FilterType: 'category', SpecificFilter: 'sport'})}>
+                  <Button style={{ backgroundColor: '#3B5998' }} onPress={() => this.editIndividualFilter({FilterType: 'categories', SpecificFilter: 'sport'})}>
                     <Text>sport</Text>                  
                   </Button>
-                  <Button style={{ backgroundColor: '#DD5144' }} onPress={() => this.editIndividualFilter({FilterType: 'category', SpecificFilter: 'boardgame'})}>
+                  <Button style={{ backgroundColor: '#DD5144' }} onPress={() => this.editIndividualFilter({FilterType: 'categories', SpecificFilter: 'boardgame'})}>
                     <Text> boardgame </Text>
                   </Button>
 
@@ -129,13 +131,28 @@ class FilterMenu extends Component {
                 >
                   <FontAwesome name="gamepad" />
 
-                  <Button style={{ backgroundColor: '#34A34F' }} onPress={() => this.editIndividualFilter({FilterType: 'level', SpecificFilter: 'casual'})}>
+                  <Button style={{ backgroundColor: '#34A34F' }}
+                    onPress={() => this.editIndividualFilter({
+                      FilterType: 'skillLevels',
+                      SpecificFilter: 'casual',
+                    })}
+                  >
                     <Text>casual </Text>                  
                   </Button>
-                  <Button style={{ backgroundColor: '#3B5998' }} onPress={() => this.editIndividualFilter({FilterType: 'level', SpecificFilter: 'amateur'})}>
+                  <Button style={{ backgroundColor: '#3B5998' }}
+                    onPress={() => this.editIndividualFilter({
+                      FilterType: 'SkillLevels',
+                      SpecificFilter: 'amateur',
+                    })}
+                  >
                     <Text>amateur</Text>                  
                   </Button>
-                  <Button style={{ backgroundColor: '#DD5144' }} onPress={() => this.editIndividualFilter({FilterType: 'level', SpecificFilter: 'pro'})}>
+                  <Button style={{ backgroundColor: '#DD5144' }}
+                    onPress={() => this.editIndividualFilter({
+                      FilterType: 'SkillLevels',
+                      SpecificFilter: 'pro',
+                    })}
+                  >
                     <Icon name="star" />
                     <Text> pro </Text>
                   </Button>
@@ -155,7 +172,7 @@ const mapStateToProps = (reduxState) => (
   {filteredOut: reduxState.filteredOut}
 );
 
-const mapDispatchToProps = (reduxState) => (
+const mapDispatchToProps = (
   {changeFilters}
 );
 
