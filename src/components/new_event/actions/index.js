@@ -10,12 +10,13 @@ export const ActionTypes = {
 
 
 const authToken = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI1ZWQ4MDNiNjlkYTdjMDAwMzhjOTc4MmQiLCJpYXQiOjE1OTEyMTUwMzAxNzh9.j2uTsNqJOxrh64BwTfhrylX-5bRUNyqLo4eCmIkfUbg';
-export function createEvent(event) {
+export function createEvent(event, callback) {
   console.log(event);
   return (dispatch) => {
     axios.post(`${ROOT_URL}/newEvent`, event, {headers: {authorization: authToken}})
       .then((response) => {
         dispatch({ type: ActionTypes.CREATE_EVENT, payload: response.data });
+        callback();
       })
       .catch((error) => {
         console.log(error);

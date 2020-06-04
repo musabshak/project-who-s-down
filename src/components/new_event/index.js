@@ -111,7 +111,7 @@ class NewEventPage extends Component {
       longitude: this.state.region.longitude,
       category: 'sport',
     };
-    this.props.createEvent(event);
+    this.props.createEvent(event, this.props.nav_return);
   }
 
   renderConfirmation = () => {
@@ -197,7 +197,7 @@ class NewEventPage extends Component {
          <View style={styles.row1}>
            <Button transparent
              style={styles.IconBtn}
-             onTouchStart={() => { this.props.navigation.navigate('Discovery'); }}
+             onPress={() => this.props.nav_return()}
            >
              <Icon type="MaterialIcons" name="close" style={styles.closeIcon} />
            </Button>

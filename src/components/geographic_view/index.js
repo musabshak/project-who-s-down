@@ -1,8 +1,10 @@
+/* eslint-disable no-unreachable */
 import React, { Component } from 'react';
 import Search from 'react-native-search-box';
 import {
   Button,
   ActivityIndicator,
+  ScrollView,
   StyleSheet,
   View,
   Image,
@@ -18,6 +20,7 @@ import * as Location from 'expo-location';
 import FilterMenu from './FilterMenu';
 import EventPreview from '../event_preview';
 import {changeFilters, fetchEvents} from './actions';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const YOUR_API_KEY = 'YOUR_API_KEY';
 
@@ -126,13 +129,12 @@ class GeographicDisplay extends Component {
     ]);
 
     return this.props.eventList.map((obj) => {
-      const eventOpacity = 0.9; this.createTransparencyFromStartTime(obj.startTime);
-
-
+      const eventOpacity = 0.9; 
+      this.createTransparencyFromStartTime(obj.startTime);
       // this first part handles what happens if you zoom super far in on a marker (we decided we want it to show more information)
       if (this.state.region.longitudeDelta < MIN_ZOOM_FOR_MARKER_CHANGE) { 
         return (
-          <Marker key={obj.latitude} coordinate={{ latitude: obj.latitude, longitude: obj.longitude}}>
+          <Marker key={obj.id} coordinate={{ latitude: obj.latitude, longitude: obj.longitude}}>
             <Text> {obj.eventTitle} </Text>
             <Callout>
               <EventPreview />
@@ -146,7 +148,7 @@ class GeographicDisplay extends Component {
       // this second part handles what happens normally, and shows just the event icon etc
       else {
         return (
-          <Marker key={obj.latitude} coordinate={{ latitude: obj.latitude, longitude: obj.longitude}}>
+          <Marker key={obj.id} coordinate={{ latitude: obj.latitude, longitude: obj.longitude}}>
             <Image source={eventCategoryToIcon.get(obj.category)}
               style={{
                 height: 35, width: 35, borderWidth: 4, borderColor: eventLevelToIcon.get(obj.level), opacity: eventOpacity,
@@ -190,7 +192,8 @@ class GeographicDisplay extends Component {
     // specific instance of this larger issue
 
     return (
-      <View style={{flex: 1}}>
+      // <View style={{flex: 1}}>
+      <ScrollView style={{flex: 1}}>
         <Search
           backgroundColor="#c4302b"
           showsCancelButton={false}
@@ -214,9 +217,11 @@ class GeographicDisplay extends Component {
         <FilterMenu />
         <Button title="hello" onPress={this.debugHelper}> show GeographicDisplay state</Button>
         <Button title="call fetchevents!" onPress={this.handleFetchClick}> call get events</Button>
-
-
-      </View>
+        <TouchableOpacity style={{marginBottom: 100, alignItems: 'center'}} onPress={() => { this.props.navigation.navigate('EventInfo', { }); }}>
+          <Text style={{fontSize: 20, color: '#58AADA'}}>sample Event</Text>
+        </TouchableOpacity>
+      </ScrollView>
+      /* </View> */
     );
   }
 }
