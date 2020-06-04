@@ -1,4 +1,4 @@
-import { ActionTypes } from '../actions';
+import { ActionTypes } from '../components/geographic_view/actions';
 
 const initialState = {
   newEvent: [],

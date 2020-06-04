@@ -2,7 +2,7 @@
 // ^so this linter rule is intended to prevent bugs related to "falling through" where multiple cases get triggered in 
 // a case/switch construct but since I'm using return in my cases I just disabled it
 
-import { ActionTypes } from '../../geographic_view/actions';
+import { ActionTypes } from '../components/geographic_view/actions';
 
 
 const initialState = {
