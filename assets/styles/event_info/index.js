@@ -229,6 +229,7 @@ export const styles = StyleSheet.create({
     fontFamily: 'OpenSans-Regular',
     fontSize: 13,
     marginTop: 5,
+    overflow: 'scroll',
     color: '#fff',
   },
   btnChat: {

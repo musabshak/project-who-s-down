@@ -7,8 +7,11 @@ import {
 import * as Font from 'expo-font';
 import { BlurView } from 'expo-blur';
 import { connect } from 'react-redux';
+
 import { signinUser } from './actions';
 import { styles } from '../../../assets/styles/signin';
+
+// import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 
 class SignIn extends Component {
   static navigationOptions = {
@@ -35,6 +38,8 @@ class SignIn extends Component {
     } catch (error) {
       console.log(error);
     }
+
+    // console.log(new Date(1990, 3, 12, 14, 27, 11));
   }
 
   onPressOut = () => {
@@ -49,7 +54,7 @@ class SignIn extends Component {
     if (this.state.email && this.state.password) {
       this.props.signinUser({
         email: this.state.email, password: this.state.password, 
-      });
+      }, this.props.navigation.navigate);
     } else {
       if (!this.state.email) this.setState({ emailEmpty: true });
       if (!this.state.password) this.setState({ passwordEmpty: true });
@@ -145,6 +150,7 @@ class SignIn extends Component {
             </View>
             {/* signin or signup */}
             <View style={{ width: '100%', alignItems: 'center' }}>
+              {<Text style={{color: '#fff', marginBottom: 10}}>{this.props.msg}</Text>}
               {this.renderEmail()}
               {this.renderPassword()}
               <View style={styles.btnGroup}>
@@ -160,15 +166,17 @@ class SignIn extends Component {
                   <Text style={[styles.txt, { marginBottom: 5, marginTop: 5 }]}>———————— OR ————————</Text>
                 </View>
                 
-                <TouchableOpacity
-                  activeOpacity={0.8}
-                  style={{ width: '100%', alignItems: 'center' }}
-                  onPress={() => this.props.navigation.navigate('SignUp', {})}
-                >
-                  <BlurView intensity={60} style={styles.blurBtnCont}>
-                    <Text style={styles.blurBtn}>SIGN UP WITH EMAIL</Text>
-                  </BlurView>
-                </TouchableOpacity>
+                <View style={{ width: '100%', alignItems: 'center'}}>
+                  <TouchableOpacity
+                    activeOpacity={0.8}
+                    style={{ width: '60%', alignItems: 'center' }}
+                    onPress={() => this.props.navigation.navigate('SignUp', {})}
+                  >
+                    <BlurView intensity={60} style={styles.blurBtnCont}>
+                      <Text style={styles.blurBtn}>SIGN UP WITH EMAIL</Text>
+                    </BlurView>
+                  </TouchableOpacity>
+                </View>
                 
               </View>
             
@@ -179,11 +187,17 @@ class SignIn extends Component {
               </View> */}
 
               <View style={{
-                flexDirection: 'row', justifyContent: 'center', alignItems: 'center',
+                flexDirection: 'column', justifyContent: 'center', alignItems: 'center',
               }}
               >
                 <TouchableOpacity style={{}} onPress={() => this.props.navigation.navigate('Main', {})}>
                   <Text style={[{ width: '100%', textAlign: 'center' }, styles.txt, { fontFamily: 'Montserrat-SemiBold' }]}>SKIP</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={{ marginTop: 15 }} onPress={() => { this.props.navigation.navigate('EventInfo', { }); }}>
+                  <Text style={[{ width: '100%', textAlign: 'center' }, styles.txt, { fontFamily: 'Montserrat-SemiBold' }]}>SAMPLE EVENT</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={{ marginTop: 15 }} onPress={() => { this.props.navigation.navigate('MyEvents', { }); }}>
+                  <Text style={[{ width: '100%', textAlign: 'center' }, styles.txt, { fontFamily: 'Montserrat-SemiBold' }]}>My EVENTS</Text>
                 </TouchableOpacity>
                 {/* <View style={{ width: '100%', alignItems: 'flex-end', justifyContent: 'center' }}>
                   <View style={{ marginBottom: 30 }}>
@@ -222,4 +236,10 @@ class SignIn extends Component {
   }
 }
 
-export default connect(null, { signinUser })(SignIn);
+const mapStateToProps = (state) => {
+  return ({
+    msg: state.auth.signinMsg,
+  });
+};
+
+export default connect(mapStateToProps, { signinUser })(SignIn);

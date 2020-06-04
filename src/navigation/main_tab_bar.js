@@ -5,10 +5,10 @@ import {
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/FontAwesome';
 import Modal from 'react-native-modal';
-import MyEvents from '../components/my_events';
 import Discovery from './discovery';
 import NewEventPage from '../components/new_event';
 import { styles } from '../../assets/styles/signin';
+import EventList from '../components/event_list';
 
 const DEVICE_WIDTH = Dimensions.get('window').width;
 
@@ -91,8 +91,8 @@ const MainTabBar = (props) => {
           let iconName;
                     
           // Customize the icon we display based on the tab route
-          if (route.name === 'My Events') {
-            iconName = 'calendar';
+          if (route.name === 'List') {
+            iconName = 'list';
           } 
           // Adding the search icon
           else if (route.name === 'Discovery') {
@@ -121,8 +121,8 @@ const MainTabBar = (props) => {
         }} 
       />
       <Tab.Screen
-        name="My Events"
-        component={MyEvents} 
+        name="List"
+        component={EventList}
         options={{
           // tabBarButton: () => (<TabBarBtn name="calendar" />),
         }} 

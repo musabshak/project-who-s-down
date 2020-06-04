@@ -111,7 +111,7 @@ export const styles = StyleSheet.create({
     fontFamily: 'Montserrat-SemiBold',
   },
   blurBtnCont: {
-    width: '60%',
+    width: '100%',
     // backgroundColor: '#FF5722',
     padding: 12,
     borderRadius: 25,

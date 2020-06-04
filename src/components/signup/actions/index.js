@@ -13,19 +13,30 @@ export const ActionTypes = {
   AUTH_ERROR: 'AUTH_ERROR',
 };
 
-export function signupUser({ userName, fullName, email, password }) {
+const saveValue = async (key, value) => {
+  try {
+    await AsyncStorage.setItem(key, value);
+  } catch (e) {
+    console.log(`save${key} failed!`);
+  }
+};
+
+export function signupUser({ userName, fullName, email, password }, navigate) {
   return (dispatch) => {
     /* axios post */
     axios.post(`${ROOT_URL}/signup`, { userName, fullName, email, password }).then((response) => {
       console.log('Signup succeeded.');
-      dispatch({ type: ActionTypes.AUTH_USER });
-      console.log(response.data.token);
+      saveValue('token', response.data.token);
+      saveValue('userName', response.data.userName);
+      dispatch({ type: ActionTypes.AUTH_USER, userName: response.data.userName, token: response.data.token });
+      navigate('Main', {});
+      // console.log(response.data.token);
       // localStorage.setItem('token', response.data.token);
     })
       .catch((error) => {
         console.log('Signup failed.');
-        console.log(error.response.data);
-        dispatch({ type: ActionTypes.AUTH_ERROR, payload: `Signup failed: ${error.response.data}` });
+        console.log(error.response.data.error);
+        dispatch({ type: ActionTypes.AUTH_ERROR, signupMsg: error.response.data.error });
       });
   };
 }

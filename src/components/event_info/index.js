@@ -1,3 +1,4 @@
+/* eslint-disable react/no-did-update-set-state */
 /* eslint-disable global-require */
 import React, { Component } from 'react';
 import {
@@ -21,22 +22,13 @@ class EventInfo extends Component {
     super(props);
 
     this.state = { 
-      gestureName: 'none',
       region: { // default just set it to NC b/c my event markers were located here; feel free to change for your testing purposes
         latitude: 35.78825,
         longitude: -78.4324,
         latitudeDelta: 0.0922,
         longitudeDelta: 0.0421,
       },
-      eventList: [
-        {
-          title: 'title 1', level: 'pro', category: 'nightlife', startTime: '20:04', latitude: 35.77, longitude: -78.89,
-        }, {
-          title: 'title 2!', level: 'amateur', category: 'sports', startTime: '23:06', latitude: 35.775, longitude: -78.895, 
-        }, {
-          title: 'title3!!', level: 'casual', category: 'educational', startTime: '13:20', latitude: 35.773, longitude: -78.894,
-        },
-      ],
+      eventList: [],
     };
   }
 
@@ -55,9 +47,34 @@ class EventInfo extends Component {
     } catch (error) {
       console.log(error);
     }
-    this._getLocation();
+    try {
+      await this.props.fetchEvents();
+    } catch (error) {
+      console.log(error);
+    }
+    // this._getLocation();
   }
 
+  componentDidUpdate(prevProps) {
+    if (this.props.events[0] && !this.state.eventLoaded) {
+      const tmpe = this.props.events[0];
+      this.setState({
+        region: { // default just set it to NC b/c my event markers were located here; feel free to change for your testing purposes
+          latitude: tmpe.latitude,
+          longitude: tmpe.longitude,
+          latitudeDelta: 0.0922,
+          longitudeDelta: 0.0421,
+        },
+        title: tmpe.eventTitle,
+        skillLevel: tmpe.skillLevel,
+        startTime: tmpe.startTime,
+        description: tmpe.description,
+        category: tmpe.category,
+        eventLoaded: true,
+      });
+      console.log('event is loaded');  
+    }
+  } 
 
   _getLocation = async () => {
     const { status } = await Permissions.askAsync(Permissions.LOCATION);
@@ -208,7 +225,7 @@ createMarkers = () => {
   // }
 
   render() {
-    if (this.state.fontLoaded) {
+    if (this.state.fontLoaded && this.state.eventLoaded) {
       return (
         <View style={styles.container}>
           <SvgUri
@@ -225,7 +242,7 @@ createMarkers = () => {
           </View>
           <View style={styles.mapCardCont}>
             <View style={styles.mapCardInfo}>
-              <Text style={{ color: '#fff', fontSize: 24, fontFamily: 'TitilliumWeb-SemiBold' }}>Ultimate Lip Sync Battle</Text>
+              <Text style={{ color: '#fff', fontSize: 24, fontFamily: 'TitilliumWeb-SemiBold' }}>{this.state.title}</Text>
             </View>
             {this.createMap()}
             {/* <Image
@@ -270,7 +287,7 @@ createMarkers = () => {
                   source={require('../../../assets/images/icn-stopwatch.svg')}
                   style={styles.btnTimeImg}
                 />
-                <Text style={styles.btnTimeText}>8h 16min</Text>
+                <Text style={styles.btnTimeText}>{this.state.startTime}</Text>
               </View>
               {/* Chat room */}
               <TouchableOpacity style={styles.btnChat}>
@@ -295,13 +312,14 @@ createMarkers = () => {
                 <Text style={styles.btnSubsText}>Subscribed</Text>
               </TouchableOpacity>
             </View>
-            <Text style={styles.desc}>Who’s down for some super exciting adventrure?</Text>
+            <Text style={styles.desc}>{this.state.description}</Text>
           </View>
           
           <View style={styles.tabBarCont}>
             <TouchableOpacity
               activeOpacity={0.8}
               onPress={() => this.props.navigation.pop()}
+              // onPress={() => this.props.navigation.navigate('Main', {})}
               style={{ width: '50%' }}
               // onPressOut={this.onPressOut}
               // onPressIn={this.onPressIn}
@@ -333,7 +351,8 @@ createMarkers = () => {
 
 const mapStateToProps = (state) => {
   return ({
-    events: state.events.all,
+    events: state.eventsSh.all,
   });
 };
 export default connect(mapStateToProps, { fetchEvents })(EventInfo);
+// export default connect(null, { fetchEvents })(EventInfo);

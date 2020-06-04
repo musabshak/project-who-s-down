@@ -5,12 +5,16 @@ import { Provider } from 'react-redux';
 import { createStore, applyMiddleware, compose } from 'redux';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import AsyncStorage from '@react-native-community/async-storage';
+
 import MainTabBar from './src/navigation/main_tab_bar';
+import ActionTypes from './src/components/signin/actions';
 import SignIn from './src/components/signin';
 import SignUp from './src/components/signup';
 import EventInfo from './src/components/event_info';
 import reducers from './src/reducers';
-import NewEventPage from './src/components/new_event';
+import MyEvents from './src/components/my_events';
+
 
 // disable really annoying in app warnings
 console.disableYellowBox = true;
@@ -22,9 +26,24 @@ const store = createStore(reducers, {}, compose(
   window.__REDUX_DEVTOOLS_EXTENSION__ ? window.__REDUX_DEVTOOLS_EXTENSION__() : (f) => f,
 ));
 
+const loadToken = async () => {
+  console.log('loadToken Called');
+  try {
+    const value = await AsyncStorage.getItem('token');
+    if (value !== null) {
+      const userName = await AsyncStorage.getItem('userName');
+      dispatch({ type: ActionTypes.AUTH_USER, userName, token: value });
+    }
+  } catch (e) {
+    // error reading value
+    console.log('loadToken failed!');
+  }
+};
+
 const Stack = createStackNavigator();
 
 export default function App() {
+  loadToken();
   return (
     <Provider store={store}>
       <NavigationContainer>
@@ -57,18 +76,17 @@ export default function App() {
             name="Main"
             component={MainTabBar}
             options={{
-              gestureEnabled: false,
+              // gestureEnabled: false,
             }}
           />
-          {/* <Stack.Screen
-            name="NewEvent"
-            component={NewEventPage} 
+          <Stack.Screen
+            name="MyEvents"
+            component={MyEvents} 
             options={{
-              gestureEnabled: false,
+              // gestureEnabled: false,
               // headerShown: true,
             }}
-          /> */}
-          
+          />
           <Stack.Screen
             name="EventInfo"
             component={EventInfo} 

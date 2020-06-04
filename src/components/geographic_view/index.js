@@ -20,7 +20,6 @@ import * as Location from 'expo-location';
 import FilterMenu from './FilterMenu';
 import EventPreview from '../event_preview';
 import {changeFilters, fetchEvents} from './actions';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const YOUR_API_KEY = 'YOUR_API_KEY';
 
@@ -192,8 +191,7 @@ class GeographicDisplay extends Component {
     // specific instance of this larger issue
 
     return (
-      // <View style={{flex: 1}}>
-      <ScrollView style={{flex: 1}}>
+      <View style={{flex: 1}}>
         <Search
           backgroundColor="#c4302b"
           showsCancelButton={false}
@@ -217,11 +215,7 @@ class GeographicDisplay extends Component {
         <FilterMenu />
         <Button title="hello" onPress={this.debugHelper}> show GeographicDisplay state</Button>
         <Button title="call fetchevents!" onPress={this.handleFetchClick}> call get events</Button>
-        <TouchableOpacity style={{marginBottom: 100, alignItems: 'center'}} onPress={() => { this.props.navigation.navigate('EventInfo', { }); }}>
-          <Text style={{fontSize: 20, color: '#58AADA'}}>sample Event</Text>
-        </TouchableOpacity>
-      </ScrollView>
-      /* </View> */
+      </View>
     );
   }
 }

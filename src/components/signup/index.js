@@ -49,7 +49,7 @@ class SignUp extends Component {
     if (this.state.userName && this.state.fullName && this.state.email && this.state.password) {
       this.props.signupUser({
         userName: this.state.userName, fullName: this.state.fullName, email: this.state.email, password: this.state.password, 
-      });
+      }, this.props.navigation.navigate);
     } else {
       if (!this.state.fullName) this.setState({ fullNameEmpty: true });
       if (!this.state.userName) this.setState({ userNameEmpty: true });
@@ -215,6 +215,7 @@ class SignUp extends Component {
             </View>
             {/* signin or signup */}
             <View style={{ width: '100%', alignItems: 'center' }}>
+              {<Text style={{color: '#fff', marginBottom: 10}}>{this.props.msg}</Text>}
               {this.renderFullName()}
               {this.renderUserName()}
               {this.renderEmail()}
@@ -232,16 +233,17 @@ class SignUp extends Component {
                   <Text style={[styles.txt, { marginBottom: 5, marginTop: 5 }]}>———————— OR ————————</Text>
                 </View>
                 
-                <TouchableOpacity
-                  activeOpacity={0.8}
-                  style={{ width: '100%', alignItems: 'center' }}
-                  onPress={() => this.props.navigation.navigate('SignIn', {})}  
-                >
-                  <BlurView intensity={60} style={styles.blurBtnCont}>
-                    <Text style={styles.blurBtn}>SIGN IN WITH DUO</Text>
-                  </BlurView>
-                </TouchableOpacity>
-                
+                <View style={{ width: '100%', alignItems: 'center'}}>
+                  <TouchableOpacity
+                    activeOpacity={0.8}
+                    style={{ width: '60%', alignItems: 'center' }}
+                    onPress={() => this.props.navigation.navigate('SignIn', {})}  
+                  >
+                    <BlurView intensity={60} style={styles.blurBtnCont}>
+                      <Text style={styles.blurBtn}>SIGN IN WITH DUO</Text>
+                    </BlurView>
+                  </TouchableOpacity>
+                </View>
               </View>
             
               {/* Terms and conditions
@@ -293,4 +295,10 @@ class SignUp extends Component {
   }
 }
 
-export default connect(null, { signupUser })(SignUp);
+const mapStateToProps = (state) => {
+  return ({
+    msg: state.auth.signupMsg,
+  });
+};
+
+export default connect(mapStateToProps, { signupUser })(SignUp);
