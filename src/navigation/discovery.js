@@ -15,8 +15,6 @@ const Stack = createStackNavigator();
 // nest stack navigator to handle two internal views
 // "name" prop is the name of the route
 const Discovery = (props) => {
-  console.log('Checking token!');
-  console.log(props.token);
   return (
     <Stack.Navigator>
       <Stack.Screen name="Search"
