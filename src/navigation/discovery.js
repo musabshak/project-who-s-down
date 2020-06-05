@@ -20,23 +20,53 @@ const Discovery = (props) => {
       <Stack.Screen name="Search"
         component={GeographicDisplay}
         options={{
-          title: ' Map Events',
+          title: 'Who\'s Down?',
           headerStyle: {
-            backgroundColor: '#f4511e',
+            backgroundColor: '#FF5722',
           },
           headerTintColor: '#fff',
           // headerTitle: (props) => <LogoTitle {...props} />,
           headerRight: () => (
             <Button
               onPress={() => (props.token ? props.signoutUser() : props.signoutUser(props.navigation.navigate))}
-              title={props.userName ? props.userName : 'guest'}
+              title={props.userName ? 'Logout' : 'Login'}
               color="#fff"
             />
           ),
         }}
       />
-      <Stack.Screen name="EventList" component={EventList} />
-      <Stack.Screen name="EventDetail" component={EventDetail} />
+      <Stack.Screen name="EventList" component={EventList}
+      options={{
+          title: 'Who\'s Down?',
+          headerStyle: {
+            backgroundColor: '#FF5722',
+          },
+          headerTintColor: '#fff',
+          // headerTitle: (props) => <LogoTitle {...props} />,
+          headerRight: () => (
+            <Button
+              onPress={() => (props.token ? props.signoutUser() : props.signoutUser(props.navigation.navigate))}
+              title={props.userName ? 'Logout' : 'Login'}
+              color="#fff"
+            />
+          ),
+        }}/>
+      <Stack.Screen name="EventDetail" component={EventDetail}
+      options={{
+        title: 'Details',
+        headerStyle: {
+          backgroundColor: '#fffff',
+        },
+        headerTintColor: '#FF5722',
+        // headerTitle: (props) => <LogoTitle {...props} />,
+        headerRight: () => (
+          <Button
+            onPress={() => (props.token ? props.signoutUser() : props.signoutUser(props.navigation.navigate))}
+            title={props.userName ? 'Logout' : 'Login'}
+            color="#fff"
+          />
+        ),
+      }} />
     </Stack.Navigator>
   );
 };

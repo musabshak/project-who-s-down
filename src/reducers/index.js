@@ -7,6 +7,8 @@ import eventReducer from './eventReducer';
 import eventsReducer from './events_reducer';
 import eventsReducerSh from './events_reducer_sh';
 import geoViewReducer from './geo_view_reducers';
+import alleventsReducer from './list_reducer';
+
 
 const rootReducer = combineReducers({
   auth: authReducer,
@@ -14,6 +16,7 @@ const rootReducer = combineReducers({
   events: eventsReducer,
   eventsSh: eventsReducerSh,
   geoViewEvents: geoViewReducer,
+  list: alleventsReducer,
 });
 
 export default rootReducer;
