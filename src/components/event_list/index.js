@@ -5,6 +5,7 @@ import {
   StyleSheet,
   View,
   Text,
+  Button,
 } from 'react-native';
 import { connect } from 'react-redux';
 import { fetchEvents } from './actions/';
@@ -34,7 +35,7 @@ class EventList extends Component {
           })
         );
       } else {
-          return (<View><Text>Waiting for Notes</Text></View>);
+          return (<View><Text>Waiting for events</Text></View>);
       }
   }
   render(){
@@ -47,6 +48,12 @@ class EventList extends Component {
           onChangeText={(query) => {
             this.setState({ query });
           }}
+        />
+        <Button
+          onPress={() => this.props.navigation.navigate('Map View')}
+          title="Map View"
+          color="#841584"
+          accessibilityLabel="Map view"
         />
         <FilterMenu />
         {this.displayEvent()}

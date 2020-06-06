@@ -4,7 +4,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import Ionicons from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
 import EventList from '../components/event_list';
-import EventDetail from '../components/event_detail';
+import EventInfo from '../components/event_info';
 import GeographicDisplay from '../components/geographic_view';
 import { signoutUser } from '../components/signin/actions';
 
@@ -17,7 +17,7 @@ const Stack = createStackNavigator();
 const Discovery = (props) => {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="Search"
+      <Stack.Screen name="Map View"
         component={GeographicDisplay}
         options={{
           title: 'Who\'s Down?',
@@ -51,7 +51,7 @@ const Discovery = (props) => {
             />
           ),
         }}/>
-      <Stack.Screen name="EventDetail" component={EventDetail}
+      <Stack.Screen name="EventInfo" component={EventInfo}
       options={{
         title: 'Details',
         headerStyle: {
