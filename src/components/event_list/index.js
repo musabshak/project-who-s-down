@@ -6,11 +6,13 @@ import {
   View,
   Text,
   Button,
+  ScrollView,
 } from 'react-native';
 import { connect } from 'react-redux';
 import { fetchEvents } from './actions/';
 import FilterMenu from '../geographic_view/FilterMenu';
 import EventCard from './event_card';
+
 
 
 class EventList extends Component {
@@ -41,6 +43,7 @@ class EventList extends Component {
   render(){
       return(
         <View>
+        <ScrollView>
         <Search
           backgroundColor="#c4302b"
           showsCancelButton={false}
@@ -57,6 +60,7 @@ class EventList extends Component {
         />
         <FilterMenu />
         {this.displayEvent()}
+        </ScrollView>
       </View>
       
       );

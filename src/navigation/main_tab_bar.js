@@ -6,7 +6,6 @@ import Ionicons from 'react-native-vector-icons/FontAwesome';
 import MyEvents from '../components/my_events';
 import Discovery from './discovery';
 import AddEvents from '../components/new_event';
-import Header from './header.js'
 const Tab = createBottomTabNavigator();
 
 const MainTabBar = () => {
