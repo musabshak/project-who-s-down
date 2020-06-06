@@ -70,7 +70,9 @@ class FilterMenu extends Component {
 
   render() {
     return (
-      <View>
+      <View style={{
+        padding: 5,
+        flexDirection: 'row',}}>
 
         <Button style={{ backgroundColor: '#3B5998' }} onPress={this.debugPress}>
           <Icon name="md-print" />
@@ -98,7 +100,7 @@ class FilterMenu extends Component {
               <View>
                 <Fab
                   active={this.state.cat_active}
-                  style={{ backgroundColor: '#5067FF', direction: 'left'}}
+                  style={{ backgroundColor: '#5067FF', direction: 'left', flexDirection: 'row'}}
                   onPress={this.handleCatFabPress}
                 >
                   <Icon name="wine" />

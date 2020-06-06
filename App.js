@@ -14,6 +14,7 @@ import SignUp from './src/components/signup';
 import EventInfo from './src/components/event_info';
 import reducers from './src/reducers';
 import MyEvents from './src/components/my_events';
+import Header from './src/navigation/header.js'
 
 
 // disable really annoying in app warnings

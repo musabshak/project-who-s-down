@@ -4,7 +4,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import Ionicons from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
 import EventList from '../components/event_list';
-import EventDetail from '../components/event_detail';
+import EventInfo from '../components/event_info';
 import GeographicDisplay from '../components/geographic_view';
 import { signoutUser } from '../components/signin/actions';
 
@@ -17,26 +17,56 @@ const Stack = createStackNavigator();
 const Discovery = (props) => {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="Search"
+      <Stack.Screen name="Map View"
         component={GeographicDisplay}
         options={{
-          title: ' Map Events',
+          title: 'Who\'s Down?',
           headerStyle: {
-            backgroundColor: '#f4511e',
+            backgroundColor: '#FF5722',
           },
           headerTintColor: '#fff',
           // headerTitle: (props) => <LogoTitle {...props} />,
           headerRight: () => (
             <Button
               onPress={() => (props.token ? props.signoutUser() : props.signoutUser(props.navigation.navigate))}
-              title={props.userName ? props.userName : 'guest'}
+              title={props.userName ? 'Logout' : 'Login'}
               color="#fff"
             />
           ),
         }}
       />
-      <Stack.Screen name="EventList" component={EventList} />
-      <Stack.Screen name="EventDetail" component={EventDetail} />
+      <Stack.Screen name="EventList" component={EventList}
+      options={{
+          title: 'Who\'s Down?',
+          headerStyle: {
+            backgroundColor: '#FF5722',
+          },
+          headerTintColor: '#fff',
+          // headerTitle: (props) => <LogoTitle {...props} />,
+          headerRight: () => (
+            <Button
+              onPress={() => (props.token ? props.signoutUser() : props.signoutUser(props.navigation.navigate))}
+              title={props.userName ? 'Logout' : 'Login'}
+              color="#fff"
+            />
+          ),
+        }}/>
+      <Stack.Screen name="EventInfo" component={EventInfo}
+      options={{
+        title: 'Details',
+        headerStyle: {
+          backgroundColor: '#fffff',
+        },
+        headerTintColor: '#FF5722',
+        // headerTitle: (props) => <LogoTitle {...props} />,
+        headerRight: () => (
+          <Button
+            onPress={() => (props.token ? props.signoutUser() : props.signoutUser(props.navigation.navigate))}
+            title={props.userName ? 'Logout' : 'Login'}
+            color="#fff"
+          />
+        ),
+      }} />
     </Stack.Navigator>
   );
 };
