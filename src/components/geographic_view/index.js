@@ -100,7 +100,7 @@ class GeographicDisplay extends Component {
     // if (temporalDistanceHours < 0) {
     //   return (1.5 - (24 - temporalDistanceHours) / 24);
     // }
-    // return 1.5 - (temporalDistanceHours / 24);
+    // return 1.5 - (temporalDistanceHours / 24); //
   }
 
   onMapLayout = () => {
