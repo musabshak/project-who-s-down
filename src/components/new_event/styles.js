@@ -2,8 +2,8 @@ import { StyleSheet, Dimensions } from 'react-native';
 
 const borderWidth = 0;
 const borderColor = 'black';
-const labelFontSize = 18;
-const marginBottomRow = 10;
+const labelFontSize = 20;
+const marginBottomRow = 30;
 
 export { styles };
 
@@ -20,7 +20,6 @@ const styles = StyleSheet.create({
   },
   
   row1: {
-    paddingTop: 15,
     flex: 0.8,
     // height: 50,
     position: 'relative',
@@ -31,7 +30,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
     // justifyContent: 'center',
-    marginBottom: marginBottomRow,
+    marginBottom: 10,
   },
   row2: {
     flex: 1,
@@ -43,9 +42,9 @@ const styles = StyleSheet.create({
   row3: {
     flex: 1.5,
     // height: 100,
-    flexDirection: 'column',
+    flexDirection: 'row',
     justifyContent: 'flex-start',
-    alignItems: 'flex-start',
+    alignItems: 'center',
     borderColor,
     borderWidth,
     marginBottom: marginBottomRow + 5,
@@ -66,7 +65,7 @@ const styles = StyleSheet.create({
     borderColor,
     borderWidth,
     // position: 'relative',
-    marginBottom: marginBottomRow,
+    marginBottom: 20,
   },
   row6: {
     flex: 2.5,
@@ -75,7 +74,7 @@ const styles = StyleSheet.create({
     borderColor,
     borderWidth,
     // position: 'relative',
-    marginBottom: marginBottomRow,
+    marginBottom: 10,
   },
   row7: {
     flex: 2,
@@ -83,7 +82,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderColor,
     borderWidth,
-    paddingVertical: 15,
+    paddingBottom: 15,
     // position: 'relative',
   },
   title: {
@@ -94,19 +93,27 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 100,
   },
+  createBtnContainer: {
+    position: 'absolute',
+    right: 0,
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 10,
+    flex: 1,
+  },
   createBtn: {
-    height: 40,
+    height: 45,
     width: 120,
-    marginRight: 10,
+    // marginRight: 10,
     borderRadius: 8,
     backgroundColor: '#ff5722',
     flex: 1,
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    position: 'absolute',
-    right: 0,
-    top: '40%',
+    // position: 'absolute',
+    // right: 0,
+    // top: '40%',
   },
   buttonText: {
     color: 'white',
@@ -137,6 +144,7 @@ const styles = StyleSheet.create({
     color: 'black',
     borderBottomWidth: 0,
     marginRight: 5,
+    backgroundColor: 'white',
   },
   dateFieldText: {
     fontFamily: 'TitilliumWeb-Regular',
@@ -224,6 +232,7 @@ const styles = StyleSheet.create({
     borderBottomColor: 'silver',
     borderBottomWidth: 1.2, 
     borderBottomEndRadius: 20,
+    backgroundColor: 'white',
     flex: 1,
     marginRight: 7,
   },
@@ -243,11 +252,21 @@ const styles = StyleSheet.create({
     color: '#2b2b2b',
     textAlign: 'center',
   },
-  description: {
+  
+  textareaContainer: {
+    // height: 0,
     flex: 1,
-    fontFamily: 'TitilliumWeb-Regular',
-    fontSize: 17,
-
+    height: 300,
+    padding: 5,
+    backgroundColor: 'floralwhite',
   },
+  textarea: {
+    fontFamily: 'TitilliumWeb-Regular',
+    fontSize: labelFontSize - 4,
+    textAlignVertical: 'top', // hack android
+    height: 330,
+    color: '#333',
+  },
+
 
 });

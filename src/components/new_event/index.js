@@ -7,13 +7,14 @@ import React, { Component } from 'react';
 import {
   StyleSheet, View, Text, Image,
   TextInput, Keyboard, SafeAreaView, Button as OButton,
-  ActivityIndicator, Dimensions, ScrollView, FlatList,
+  ActivityIndicator, Dimensions, ScrollView, FlatList, StatusBar,
 } from 'react-native';
 import { Input as OInput } from 'react-native-elements';
+import Textarea from 'react-native-textarea';
 import { connect } from 'react-redux';
 import { TouchableOpacity, TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import {
-  Container, Header, Content, Button, Icon, Input, Item, Textarea,
+  Container, Header, Content, Button, Icon, Input, Item,
 } from 'native-base';
 import styled from 'styled-components';
 import { useFonts } from '@use-expo/font';
@@ -25,13 +26,14 @@ import MapView from 'react-native-maps';
 import Modal from 'react-native-modal';
 import Carousel from 'react-native-snap-carousel';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
+import { Redirect } from 'react-router-dom';
 import * as actions from './actions';
 import { styles } from './styles';
 
 const API_KEY = 'AIzaSyAdSZFep0jeNIRNkm8mUfAAoayeTM04INU';
 
 function customFormatDate(date) {
-  return date.toDateString().split(' ').slice(0, -1).join(' ');
+  return date.toDateString().split(' ').slice(1, -1).join(' ');
 }
 
 function customFormatTime(date) {
@@ -156,11 +158,12 @@ class NewEventPage extends Component {
     // console.log(this.state.eventTitle);
     const event = {
       eventTitle: this.state.eventTitle,
-      startTime: '2020-06-04T05:00:00.000Z',
-      endTime: '2020-06-04T07:00:00.000Z',
+      startTime: this.state.startDate,
+      endTime: this.state.endDate,
       latitude: this.state.region.latitude,
       longitude: this.state.region.longitude,
-      category: 'sport',
+      category: this.state.categoryCarouselItems[this.state.categoryActiveIndex].title,
+      skill: this.state.skillCarouselItems[this.state.skillActiveIndex].title,
     };
     this.props.createEvent(event, this.props.nav_return);
   }
@@ -271,9 +274,11 @@ class NewEventPage extends Component {
          >
            <Icon type="MaterialIcons" name="close" style={styles.closeIcon} />
          </Button>
-         <Button style={styles.createBtn} onPress={this.handleCreateBtnPress}>
-           <Text style={styles.buttonText}> SAVE! </Text>
-         </Button>
+         <View style={styles.createBtnContainer}>
+           <Button style={styles.createBtn} onPress={this.handleCreateBtnPress}>
+             <Text style={styles.buttonText}> SAVE! </Text>
+           </Button>
+         </View>
        </View>
      );
    }
@@ -287,6 +292,8 @@ class NewEventPage extends Component {
               onChange={this.handleTitleChange} 
               value={this.state.eventTitle}
               transparent
+              underlineColorAndroid="transparent"
+              autoCorrect={false}
             />
           </Item>
            
@@ -299,23 +306,23 @@ class NewEventPage extends Component {
         <View style={styles.row3}>
           <Icon type="MaterialIcons" name="schedule" style={styles.timeIcon} />
 
-          <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <DateFieldBox onTouchStart={this.showStartDatePicker}>
-              <Text style={styles.dateFieldText}>{customFormatDate(this.state.startDate)}</Text>
-            </DateFieldBox>
-            <TimeFieldBox onTouchStart={this.showStartTimePicker}>
-              <Text style={styles.dateFieldText}>{customFormatTime(this.state.startDate)}</Text>
-            </TimeFieldBox>
+          {/* <View style={{flexDirection: 'row', alignItems: 'center'}}> */}
+          <DateFieldBox onTouchStart={this.showStartDatePicker}>
+            <Text style={styles.dateFieldText}>{customFormatDate(this.state.startDate)}</Text>
+          </DateFieldBox>
+          <TimeFieldBox onTouchStart={this.showStartTimePicker}>
+            <Text style={styles.dateFieldText}>{customFormatTime(this.state.startDate)}</Text>
+          </TimeFieldBox>
           
             
-            <Text>to</Text>
-            <DateFieldBox onTouchStart={this.showEndDatePicker}>
-              <Text style={styles.dateFieldText}>{customFormatDate(this.state.endDate)}</Text>
-            </DateFieldBox>
-            <TimeFieldBox onTouchStart={this.showEndTimePicker}>
-              <Text style={styles.dateFieldText}>{customFormatTime(this.state.endDate)}</Text>
-            </TimeFieldBox>
-          </View>
+          <Text>to</Text>
+          <DateFieldBox onTouchStart={this.showEndDatePicker}>
+            <Text style={styles.dateFieldText}>{customFormatDate(this.state.endDate)}</Text>
+          </DateFieldBox>
+          <TimeFieldBox onTouchStart={this.showEndTimePicker}>
+            <Text style={styles.dateFieldText}>{customFormatTime(this.state.endDate)}</Text>
+          </TimeFieldBox>
+          {/* </View> */}
 
           {this.state.show && (
             <DateTimePickerModal
@@ -433,7 +440,7 @@ class NewEventPage extends Component {
         <View style={{
           backgroundColor: 'floralwhite',
           borderRadius: 15,
-          // height: 140,
+          height: 180,
           // width: 140,
           flex: 1,
           marginBottom: 10,
@@ -470,7 +477,7 @@ class NewEventPage extends Component {
               firstItem={1}
               ref={(ref) => this.carousel = ref}
               data={this.state.categoryCarouselItems}
-              sliderWidth={Dimensions.get('window').width - 60}
+              sliderWidth={Dimensions.get('window').width}
               itemWidth={180}
               renderItem={this.renderCategoryItem}
               onSnapToItem={(index) => this.setState({categoryActiveIndex: index})}
@@ -485,7 +492,7 @@ class NewEventPage extends Component {
         <View style={{
           backgroundColor: 'floralwhite',
           borderRadius: 15,
-          // height: 140,
+          height: 180,
           // width: 140,
           flex: 1,
           marginBottom: 10,
@@ -520,8 +527,8 @@ class NewEventPage extends Component {
               firstItem={1}
               ref={(ref) => this.carousel = ref}
               data={this.state.skillCarouselItems}
-              sliderWidth={Dimensions.get('window').width - 60}
-              itemWidth={200}
+              sliderWidth={Dimensions.get('window').width}
+              itemWidth={180}
               renderItem={this.renderSkillItem}
               onSnapToItem={(index) => this.setState({skillActiveIndex: index})}
             />
@@ -533,10 +540,17 @@ class NewEventPage extends Component {
     renderDescription = () => {
       return (
         <View style={styles.row7}>
-          <View style={{alignItems: 'center'}}>
+          <View style={{alignItems: 'center', justifyContent: 'flex-start'}}>
             <Text style={styles.labelText}>Description</Text>
           </View>
-          <Textarea style={styles.description} rowSpan={10} bordered placeholder="Add a description" />
+          <Textarea
+            containerStyle={styles.textareaContainer}
+            style={styles.textarea}
+            maxLength={500}
+            placeholder="Add a description!"
+            placeholderTextColor="#c7c7c7"
+            autoCorrect={false}
+          />
         </View>
       );
     }
@@ -551,25 +565,27 @@ class NewEventPage extends Component {
       }
 
       return (
-        <ScrollView style={styles.container}>
-         
-          {this.renderExitSave()}
-          {this.renderTitle()}
-          {this.renderDateTime()}
-          {this.renderLocationRow()}
-          {this.renderCategory()}
-          {this.renderSkill()}
-          {this.renderDescription()}
+        <SafeAreaView style={{flex: 1, paddingTop: StatusBar.currentHeight + 7, backgroundColor: 'white' }}>
+          <ScrollView style={styles.container} keyboardShouldPersistTaps="always">
           
-         
-        </ScrollView>
+            {this.renderExitSave()}
+            {this.renderTitle()}
+            {this.renderDateTime()}
+            {this.renderLocationRow()}
+            {this.renderCategory()}
+            {this.renderSkill()}
+            {this.renderDescription()}
+            
+          
+          </ScrollView>
+        </SafeAreaView>
       );
     }
 }
 
 const DateFieldBox = styled.View`
   height: 45px;
-  width: 80px;
+  width: 60px;
   background-color: white;
   border-radius: 16px;
   border: gray;
