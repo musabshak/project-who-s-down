@@ -30,13 +30,13 @@ import { Redirect } from 'react-router-dom';
 import * as actions from './actions';
 import { styles } from './styles';
 
-const API_KEY = 'AIzaSyAdSZFep0jeNIRNkm8mUfAAoayeTM04INU';
+export const API_KEY = 'AIzaSyAdSZFep0jeNIRNkm8mUfAAoayeTM04INU';
 
 function customFormatDate(date) {
   return date.toDateString().split(' ').slice(1, -1).join(' ');
 }
 
-function customFormatTime(date) {
+export function customFormatTime(date) {
   const hours = date.getHours() === 0 ? '12' : date.getHours() > 12 ? date.getHours() - 12 : date.getHours();
   const minutes = (date.getMinutes() < 10 ? '0' : '') + date.getMinutes();
   const ampm = date.getHours() < 12 ? 'AM' : 'PM';

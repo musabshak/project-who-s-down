@@ -12,6 +12,7 @@ import Ionicons from 'react-native-vector-icons/FontAwesome';
 import * as Font from 'expo-font';
 import SvgUri from 'react-native-svg-uri';
 import MapView, { Marker, Callout } from 'react-native-maps';
+// import { customFormatTime } from '../new_event';
 // import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 
 import { styles } from '../../../assets/styles/event_info';
@@ -52,6 +53,8 @@ class EventInfo extends Component {
     } catch (error) {
       console.log(error);
     }
+
+    // console.log(customFormatTime(this.state.startTime));
     // // fetching events for testing
     // try {
     //   await this.props.fetchEvents();
@@ -174,8 +177,8 @@ createMarkers = () => {
           region={this.state.region}
           onLayout={this.onMapLayout}
           onRegionChangeComplete={this.handleRegionChange}
-          showsUserLocation
-          followsUserLocation
+          // showsUserLocation
+          // followsUserLocation
         > 
           {this.createMarkers()}
         </MapView>

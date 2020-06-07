@@ -1,11 +1,8 @@
 import React, { Component } from 'react';
-import Search from 'react-native-search-box';
 import {
-  ActivityIndicator,
   StyleSheet,
   View,
   Text,
-  Button,
   ScrollView,
 } from 'react-native';
 import { connect } from 'react-redux';
