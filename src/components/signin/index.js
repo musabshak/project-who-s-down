@@ -199,9 +199,9 @@ class SignIn extends Component {
                 <TouchableOpacity style={{ marginTop: 15 }} onPress={() => { this.props.navigation.navigate('MyEvents', { }); }}>
                   <Text style={[{ width: '100%', textAlign: 'center' }, styles.txt, { fontFamily: 'Montserrat-SemiBold' }]}>My EVENTS</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={{ marginTop: 15 }} onPress={() => { this.props.navigation.navigate('newEvent', { }); }}>
-                  <Text style={[{ width: '100%', textAlign: 'center' }, styles.txt, { fontFamily: 'Montserrat-SemiBold' }]}>NEW EVENT</Text>
-                </TouchableOpacity>
+                {/* <TouchableOpacity style={{ marginTop: 15 }} onPress={() => { this.props.navigation.navigate('newEvent', { }); }}>
+                  <Text style={[{ width: '100%', textAlign: 'center' }, styles.txt, { fontFamily: 'Montserrat-SemiBold' }]}>NEW EVENT</Text> */}
+                {/* </TouchableOpacity> */}
                 {/* <View style={{ width: '100%', alignItems: 'flex-end', justifyContent: 'center' }}>
                   <View style={{ marginBottom: 30 }}>
                     

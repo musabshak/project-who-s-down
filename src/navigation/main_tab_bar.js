@@ -1,34 +1,38 @@
 import React from 'react';
-import { Text, View } from 'react-native';
+import { Text, View, Button } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import Ionicons from 'react-native-vector-icons/FontAwesome';
-import MyEvents from '../components/my_events';
-import Discovery from './discovery';
+import EventList from '../components/event_list';
+import GeographicView from '../components/geographic_view';
 import AddEvents from '../components/new_event';
+
 
 const Tab = createBottomTabNavigator();
 
-const NewEventStack = createStackNavigator();
+const NullComponent = () => null;
 
-const NewEventStackScreen = () => {
-  return (
-    <NewEventStack.Navigator>
-      <NewEventStack.Screen name="newEventPage"
-        component={AddEvents}
-        options={{
-          gestureEnabled: false,
-        }}
-      />
-    </NewEventStack.Navigator>
-  );
-};
+// const NewEventStack = createStackNavigator();
+
+// const NewEventStackScreen = () => {
+//   return (
+//     <NewEventStack.Navigator>
+//       <NewEventStack.Screen name="newEventPage"
+//         component={AddEvents}
+//         options={{
+//           gestureEnabled: false,
+//         }}
+//       />
+//     </NewEventStack.Navigator>
+//   );
+// };
 
 const MainTabBar = (props) => {
   return (
     <Tab.Navigator
-      initialRouteName="Discovery"
+      initialRouteName="GeographicView"
+      // shifting
       tabBarOptions={{
         showLabel: false,
         activeTintColor: '#e91e63',
@@ -40,11 +44,10 @@ const MainTabBar = (props) => {
       }}
     >
       <Tab.Screen
-        name="Discovery"
-        component={Discovery}
+        name="GeographicView"
+        component={GeographicView}
         options={{
-              
-          tabBarLabel: 'Discovery',
+          tabBarLabel: 'Map',
           tabBarIcon: ({ focused }) => (
             <View
               style={{
@@ -68,14 +71,14 @@ const MainTabBar = (props) => {
       <Tab.Screen
         name="New Event"
         // component={(AddEvents)}
-        component={() => null}
+        component={NullComponent}
         listeners={({ navigation, route }) => ({
           tabPress: (e) => {
             // Prevent default action
             e.preventDefault();
       
             // Do something with the `navigation` object
-            navigation.navigate('newEvent');
+            navigation.navigate('NewEvent');
           },
         })}
         options={{
@@ -103,8 +106,8 @@ const MainTabBar = (props) => {
         }}
       />
       <Tab.Screen
-        name="My Events"
-        component={(MyEvents)}
+        name="EventList"
+        component={(EventList)}
         options={{
           tabBarLabel: 'My Events',
           tabBarIcon: ({ focused }) => (

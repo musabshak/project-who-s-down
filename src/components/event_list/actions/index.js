@@ -13,7 +13,7 @@ export function fetchEvents() {
     axios.get(`${ROOT_URL}/fetchevents`)
       .then((response) => {
         dispatch({ type: ActionTypes.FETCH_EVENTS, payload: {events: response.data }});
-        console.log('calling fetchevents')
+        console.log('calling fetchevents');
       })
       .catch((error) => {
         console.log('Error with fetchEvents');
