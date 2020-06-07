@@ -18,7 +18,7 @@ const initialState = {
 };
   
   
-const geoViewReducer = (state = initialState, action, debug = true, debug2 = false) => {
+const geoViewReducer = (state = initialState, action, debug = false, debug2 = false) => {
   console.log('in geo view reducer!');
   if (action.payload) {
     // console.log('action.payload:', action.payload);
@@ -69,16 +69,33 @@ const geoViewReducer = (state = initialState, action, debug = true, debug2 = fal
       }
     }
 
-    else {
-      console.log('this filter is not currentlty supported, returning the state as it was');
-      return state;
+    if (action.payload.FilterType === 'timesBefore') {
+      console.log('in the reducer for before');
+      const newState = state.filteredOut;
+      newState.timesBefore = action.payload.SpecificFilter;
+      console.log('setting this as our new filteredOut!', newState);
+
+      return {...state, filteredOut: newState};
     }
 
-    break;
+    if (action.payload.FilterType === 'timesAfter') {
+      console.log('in the reducer for after');
+      const newState = state.filteredOut;
+      newState.timesAfter = action.payload.SpecificFilter;
+      console.log('setting this as our new filteredOut!', newState);
+      return {...state, filteredOut: newState};
+    }
+
+
+    else {
+      console.log('this filter is not currently supported, returning the state as it was');
+      return state;
+    }
 
   case ActionTypes.initializeFilters:
     console.log('in the reducer for initialize filters');
     return {...state, filteredOut: initialState.filteredOut};
+
 
   case ActionTypes.fetchEvents: // so filtering is handled here
     if (debug2) {
@@ -94,7 +111,6 @@ const geoViewReducer = (state = initialState, action, debug = true, debug2 = fal
       console.log('we are in fetch events!');
       console.log('state.filteredOut:', state.filteredOut);
 
-      // eslint-disable-next-line no-plusplus
       for (let i = 0; i < eventList.length; i++) {
         console.log('these are all our events', eventList[i].category, eventList[i].skillLevel);
         if (!state.filteredOut.categories.includes(eventList[i].category) && !state.filteredOut.skillLevels.includes(eventList[i].skillLevel)) {
@@ -105,6 +121,30 @@ const geoViewReducer = (state = initialState, action, debug = true, debug2 = fal
           // console.log('we just filtered this one out!', eventList[i]);
         }
       }
+
+      if (state.filteredOut.timesAfter) {
+        console.log('filtering out times after!');
+        for (let i = 0; i < filteredEventList.length; i++) {
+          if (Date.parse(filteredEventList[i].startTime) > state.filteredOut.timesAfter.getTime()) {
+            filteredEventList.splice(i, 1); // so if the event start time is after the time you're filtering for, remove it
+            const deletedEvents = filteredEventList.splice(i, 1);
+            console.log('deleted this event!', deletedEvents);
+            // filter for times after
+          }
+        }
+      }
+
+      if (state.filteredOut.timesBefore) {
+        console.log('filtering out times before!');
+        for (let i = 0; i < filteredEventList.length; i++) {
+          if (Date.parse(filteredEventList[i].startTime) < state.filteredOut.timesBefore.getTime()) {
+            const deletedEvents = filteredEventList.splice(i, 1); // so if the event start time is before the time you're filtering for, remove it
+            // filter for times before
+            console.log('deleted this event!', deletedEvents);
+          }
+        }
+      }
+
 
       return {...state, eventList: filteredEventList}; 
     }

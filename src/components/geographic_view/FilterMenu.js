@@ -13,6 +13,7 @@ import {
   TouchableHighlight,
 } from 'react-native';
 import { connect } from 'react-redux';
+import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import { changeFilters } from './actions';
 
   
@@ -20,14 +21,23 @@ class FilterMenu extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      main_active: false, level_active: false, cat_active: false, 
+      main_active: false, level_active: false, cat_active: false, setTimePickerVisibilityBefore: false, setTimePickerVisibility: false, 
     };
     console.log('in filter menu!');
   }
 
 
+  hideDatePicker = () => {
+    this.setState({setTimePickerVisibility: false});
+  };
+
+  hideDatePickerBefore = () => {
+    this.setState({setTimePickerVisibilityBefore: false});
+  };
+
   onTimeFilterPress = (event) => {
     console.log('time filter pressed!');
+    this.setState({setTimePickerVisibility: !this.state.setTimePickerVisibility});
   }
 
   onCategoryFilterPress = (event) => {
@@ -70,6 +80,25 @@ class FilterMenu extends Component {
     this.props.changeFilters(param);
   }
 
+  onTimeFilterLongPress = () => {
+    this.setState({setTimePickerVisibilityBefore: !this.state.setTimePickerVisibilityBefore});
+  }
+
+
+  handleConfirm = (date) => {
+    console.log('Make a filter that filters out everything after: ', date);
+    this.hideDatePicker();
+    const param = {FilterType: 'timesAfter', SpecificFilter: date};
+    this.editIndividualFilter(param);
+  };
+
+  handleConfirmBefore = (date) => {
+    console.log('Make a filter that filters out everything before: ', date);
+    this.hideDatePickerBefore();
+    const param = {FilterType: 'timesBefore', SpecificFilter: date};
+    this.editIndividualFilter(param);
+  };
+
   render() {
     return (
       <View>
@@ -89,8 +118,34 @@ class FilterMenu extends Component {
             <FontAwesome name="eye" />
 
 
-            <Button style={{ backgroundColor: '#34A34F' }} onPress={this.onTimeFilterPress}>
+            <Button style={{ backgroundColor: '#34A34F' }} onPress={this.onTimeFilterPress} onLongPress={this.onTimeFilterLongPress}>
               <Icon name="alarm" />
+              <View>
+                {this.state.setTimePickerVisibility && (
+                  <DateTimePickerModal
+                    isVisible={this.state.setTimePickerVisibility}
+                    mode="time"
+                    onConfirm={this.handleConfirm}
+                    onCancel={this.hideDatePicker}
+                    // is24Hour
+                    // locale="en_GB" 
+                    headerTextIOS="Filter out events starting after:"
+                  />
+                )}
+              </View>
+              <View>
+                {this.state.setTimePickerVisibilityBefore && (
+                  <DateTimePickerModal
+                    isVisible={this.state.setTimePickerVisibilityBefore}
+                    mode="time"
+                    onConfirm={this.handleConfirmBefore}
+                    onCancel={this.hideDatePickerBefore}
+                    // is24Hour
+                    // locale="en_GB" 
+                    headerTextIOS="Filter out events starting before:"
+                  />
+                )}
+              </View>
             </Button>
 
 
