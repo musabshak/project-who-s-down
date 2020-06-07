@@ -14,6 +14,7 @@ import SignUp from './src/components/signup';
 import EventInfo from './src/components/event_info';
 import reducers from './src/reducers';
 import MyEvents from './src/components/my_events';
+import NewEventPage from './src/components/new_event';
 
 
 // disable really annoying in app warnings
@@ -85,6 +86,13 @@ export default function App() {
             options={{
               // gestureEnabled: false,
               // headerShown: true,
+            }}
+          />
+          <Stack.Screen
+            name="newEvent"
+            component={NewEventPage} 
+            options={{
+              gestureEnabled: false,
             }}
           />
           <Stack.Screen
