@@ -169,7 +169,7 @@ class NewEventPage extends Component {
       startTime: this.state.startDate,
       endTime: this.state.endDate,
     };
-    this.props.createEvent(event, this.props.nav_return);
+    this.props.createEvent(event, this.props.navigation.pop);
   }
 
   /**
