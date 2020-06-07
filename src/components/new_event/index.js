@@ -5,7 +5,7 @@
 /* eslint-disable no-extend-native */
 import React, { Component } from 'react';
 import {
-  StyleSheet, View, Text, Image,
+  StyleSheet, View, Text, Image, Platform,
   TextInput, Keyboard, SafeAreaView, Button as OButton,
   ActivityIndicator, Dimensions, ScrollView, FlatList, StatusBar,
 } from 'react-native';
@@ -266,26 +266,27 @@ class NewEventPage extends Component {
   /** ************************************************************ */
    
    
-   /**
+    /**
     * Render functions
     */
-   renderExitSave = () => {
-     return (
-       <View style={styles.row1}>
-         <Button transparent
-           style={styles.iconBtn}
-           onPress={() => this.props.navigation.navigate('Main')}
-         >
-           <Icon type="MaterialIcons" name="close" style={styles.closeIcon} />
-         </Button>
-         <View style={styles.createBtnContainer}>
-           <Button style={styles.createBtn} onPress={this.handleCreateBtnPress}>
-             <Text style={styles.buttonText}> SAVE! </Text>
-           </Button>
-         </View>
-       </View>
-     );
-   }
+    renderExitSave = () => {
+      return (
+        <View style={styles.row1}>
+          <Button transparent
+            style={styles.iconBtn}
+            //  onPress={() => this.props.navigation.navigate('Main')}
+            onPress={() => this.props.navigation.pop()}
+          >
+            <Icon type="MaterialIcons" name="close" style={styles.closeIcon} />
+          </Button>
+          <View style={styles.createBtnContainer}>
+            <Button style={styles.createBtn} onPress={this.handleCreateBtnPress}>
+              <Text style={styles.buttonText}> SAVE! </Text>
+            </Button>
+          </View>
+        </View>
+      );
+    }
 
     renderTitle = () => {
       return (
@@ -569,7 +570,7 @@ class NewEventPage extends Component {
       }
 
       return (
-        <SafeAreaView style={{flex: 1, paddingTop: StatusBar.currentHeight + 7, backgroundColor: 'white' }}>
+        <SafeAreaView style={{flex: 1, paddingTop: Platform.OS === 'ios' ? 27 : StatusBar.currentHeight + 7, backgroundColor: 'white' }}>
           <ScrollView style={styles.container} keyboardShouldPersistTaps="always">
           
             {this.renderExitSave()}

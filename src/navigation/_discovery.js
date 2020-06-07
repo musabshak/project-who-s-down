@@ -35,8 +35,9 @@ const Discovery = (props) => {
           ),
         }}
       />
-      <Stack.Screen name="EventList" component={EventList}
-      options={{
+      <Stack.Screen name="EventList"
+        component={EventList}
+        options={{
           title: 'Who\'s Down?',
           headerStyle: {
             backgroundColor: '#FF5722',
@@ -50,23 +51,26 @@ const Discovery = (props) => {
               color="#fff"
             />
           ),
-        }}/>
-      <Stack.Screen name="EventInfo" component={EventInfo}
-      options={{
-        title: 'Details',
-        headerStyle: {
-          backgroundColor: '#fffff',
-        },
-        headerTintColor: '#FF5722',
-        // headerTitle: (props) => <LogoTitle {...props} />,
-        headerRight: () => (
-          <Button
-            onPress={() => (props.token ? props.signoutUser() : props.signoutUser(props.navigation.navigate))}
-            title={props.userName ? 'Logout' : 'Login'}
-            color="#fff"
-          />
-        ),
-      }} />
+        }}
+      />
+      <Stack.Screen name="EventInfo"
+        component={EventInfo}
+        options={{
+          title: 'Details',
+          headerStyle: {
+            backgroundColor: '#fffff',
+          },
+          headerTintColor: '#FF5722',
+          // headerTitle: (props) => <LogoTitle {...props} />,
+          headerRight: () => (
+            <Button
+              onPress={() => (props.token ? props.signoutUser() : props.signoutUser(props.navigation.navigate))}
+              title={props.userName ? 'Logout' : 'Login'}
+              color="#fff"
+            />
+          ),
+        }}
+      />
     </Stack.Navigator>
   );
 };

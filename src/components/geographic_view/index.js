@@ -11,6 +11,7 @@ import {
   Text,
   FlatList,
   TouchableHighlight,
+  Platform,
 } from 'react-native';
 /* eslint-disable global-require */
 import { connect } from 'react-redux';
