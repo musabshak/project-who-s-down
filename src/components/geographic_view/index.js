@@ -20,7 +20,7 @@ import * as Permissions from 'expo-permissions';
 import * as Location from 'expo-location';
 import FilterMenu from './FilterMenu';
 import EventPreview from '../event_preview';
-import {changeFilters, fetchEvents} from './actions';
+import { fetchEvents, initializeFilters } from './actions';
 
 const YOUR_API_KEY = 'YOUR_API_KEY';
 
@@ -38,6 +38,8 @@ class GeographicDisplay extends Component {
         longitudeDelta: 0.0421,
       },
     };
+    console.log('about to initialize filtrs!');
+    this.props.initializeFilters();
   }
 
 
@@ -99,7 +101,7 @@ class GeographicDisplay extends Component {
     // if (temporalDistanceHours < 0) {
     //   return (1.5 - (24 - temporalDistanceHours) / 24);
     // }
-    // return 1.5 - (temporalDistanceHours / 24);
+    // return 1.5 - (temporalDistanceHours / 24); //
   }
 
   onMapLayout = () => {
@@ -128,42 +130,54 @@ class GeographicDisplay extends Component {
       ['casual', '#008000'], 
     ]);
 
-    return this.props.eventList.map((obj) => {
-      const eventOpacity = 0.9; 
-      this.createTransparencyFromStartTime(obj.startTime);
-      // this first part handles what happens if you zoom super far in on a marker (we decided we want it to show more information)
-      if (this.state.region.longitudeDelta < MIN_ZOOM_FOR_MARKER_CHANGE) { 
-        return (
-          <Marker key={obj.id} coordinate={{ latitude: obj.latitude, longitude: obj.longitude}}>
-            <Text> {obj.eventTitle} </Text>
-            <Callout>
-              <EventPreview />
-            </Callout>
+    if (this.props.eventList) {
+      return this.props.eventList.map((obj) => {
+        const eventOpacity = 0.9; 
+        this.createTransparencyFromStartTime(obj.startTime);
+        // this first part handles what happens if you zoom super far in on a marker (we decided we want it to show more information)
+        if (this.state.region.longitudeDelta < MIN_ZOOM_FOR_MARKER_CHANGE) { 
+          return (
+            <Marker key={obj.id} coordinate={{ latitude: obj.latitude, longitude: obj.longitude}}>
+              <Text> {obj.eventTitle} </Text>
+              <Callout>
+                <EventPreview />
+              </Callout>
 
 
-          </Marker>
-        ); 
-      }
+            </Marker>
+          ); 
+        }
 
-      // this second part handles what happens normally, and shows just the event icon etc
-      else {
-        return (
-          <Marker key={obj.id} coordinate={{ latitude: obj.latitude, longitude: obj.longitude}}>
-            <Image source={eventCategoryToIcon.get(obj.category)}
-              style={{
-                height: 35, width: 35, borderWidth: 4, borderColor: eventLevelToIcon.get(obj.level), opacity: eventOpacity,
-              }}
-            />
-            <Callout>
-              <EventPreview />
-            </Callout>
+        // this second part handles what happens normally, and shows just the event icon etc
+        else {
+          return (
+            <Marker key={obj.id} coordinate={{ latitude: obj.latitude, longitude: obj.longitude}}>
+              <Image source={eventCategoryToIcon.get(obj.category)}
+                style={{
+                  height: 35, width: 35, borderWidth: 4, borderColor: eventLevelToIcon.get(obj.level), opacity: eventOpacity,
+                }}
+              />
+              <Callout>
+                <EventPreview />
+              </Callout>
 
 
-          </Marker>
-        ); }
-    });
+            </Marker>
+          ); }
+      });
+    }
+
+    else {
+      console.log('this.props.eventlist does not exist; this is this.props:', this.props);
+      console.log('about to call fetchevents!');
+      this.props.fetchEvents();
+    }
   }
 
+  callInitializeFilters = () => {
+    console.log('in geo views initialize filters method!');
+    this.props.initializeFilters();
+  }
 
   // this function creates the map, and is to be called by render
   createMap = () => {
@@ -190,7 +204,7 @@ class GeographicDisplay extends Component {
   render() {
     // so even this image here is not rendering on Arjun's android, making him wonder if the map marker image issue is just a
     // specific instance of this larger issue
-
+    console.log('just rerendered!');
     return (
       <View style={{flex: 1}}>
         <Search
@@ -214,8 +228,10 @@ class GeographicDisplay extends Component {
 
         {this.createMap()}
         <FilterMenu />
-        <Button title="hello" onPress={this.debugHelper}> show GeographicDisplay state</Button>
+        <Button title="show geographic display state" onPress={this.debugHelper}> show GeographicDisplay state</Button>
         <Button title="call fetchevents!" onPress={this.handleFetchClick}> call get events</Button>
+        <Button title="call initialize filters" onPress={this.callInitializeFilters}> call get events</Button>
+
       </View>
     );
   }
@@ -227,13 +243,6 @@ const mapStateToProps = (reduxState) => (
     eventList: reduxState.geoViewEvents.eventList,
   }
 );
-
-// const mapDispatchToProps = (reduxState) => (
-//   {
-//     changeFilters,
-//     fetchEvents,
-//   }
-// );
 
 
 const styles = StyleSheet.create({
@@ -276,4 +285,4 @@ const styles = StyleSheet.create({
 });
 
 
-export default connect(mapStateToProps, {fetchEvents, changeFilters})(GeographicDisplay);
+export default connect(mapStateToProps, {fetchEvents, initializeFilters})(GeographicDisplay);

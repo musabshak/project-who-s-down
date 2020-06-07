@@ -7,6 +7,7 @@ const ROOT_URL = 'https://project-who-s-down-api.herokuapp.com/api/';
 export const ActionTypes = {
   changeFilters: 'changeFilters',
   fetchEvents: 'fetchEvents',
+  initializeFilters: 'initializeFilters',
 };
 
 
@@ -14,9 +15,18 @@ export const ActionTypes = {
 
 // changeFilters
 export function changeFilters(newFilters) {
-  console.log('We are in the action creator for changeFilters, producing a changeFilters action!');
+  console.log('We are in the action creator for changeFilters, producing a changeFilters action! passing this as payload', newFilters);
   return (dispatch) => {
+    console.log('dispatching an action!');
     dispatch({ type: ActionTypes.changeFilters, payload: newFilters }); 
+  };
+}
+
+export function initializeFilters() {
+  console.log('in action creator for initialize filters!');
+  return (dispatch) => {
+    console.log('dispatching an action!');
+    dispatch({ type: ActionTypes.initializeFilters, payload: null });
   };
 }
 
