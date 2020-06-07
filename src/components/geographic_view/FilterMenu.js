@@ -19,9 +19,12 @@ import { changeFilters } from './actions';
 class FilterMenu extends Component {
   constructor(props) {
     super(props);
-    this.state = {main_active: false, level_active: false, cat_active: false};
+    this.state = {
+      main_active: false, level_active: false, cat_active: false, 
+    };
     console.log('in filter menu!');
   }
+
 
   onTimeFilterPress = (event) => {
     console.log('time filter pressed!');
@@ -67,7 +70,6 @@ class FilterMenu extends Component {
     this.props.changeFilters(param);
   }
 
-
   render() {
     return (
       <View>
@@ -75,7 +77,6 @@ class FilterMenu extends Component {
         <Button style={{ backgroundColor: '#3B5998' }} onPress={this.debugPress}>
           <Icon name="md-print" />
         </Button>
-
         <View style={{ flex: 1 }}>
           <Fab
             active={this.state.main_active}
@@ -173,9 +174,5 @@ const mapStateToProps = (reduxState) => (
   {filteredOut: reduxState.geoViewEvents.filteredOut}
 );
 
-const mapDispatchToProps = (
-  {changeFilters}
-);
 
-
-export default connect(mapStateToProps, mapDispatchToProps)(FilterMenu);
+export default connect(mapStateToProps, {changeFilters})(FilterMenu);
