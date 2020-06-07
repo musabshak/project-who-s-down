@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderColor,
     borderWidth,
-    // justifyContent: 'center',
+    justifyContent: 'flex-start',
     alignItems: 'center',
     flexDirection: 'row',
     // justifyContent: 'center',
@@ -121,18 +121,16 @@ const styles = StyleSheet.create({
     fontSize: 17,
   },
   iconBtn: {
-    backgroundColor: 'blue',
-    borderColor,
-    borderWidth,
+    backgroundColor: 'transparent',
+    // borderColor,
+    // borderWidth,
     height: 50,
     width: 59,
   },
   closeIcon: {
     fontSize: 35,
     color: 'black',
-    // position: 'absolute',
-    // left: 0,
-    // top: 5,
+   
   },
   timeIcon: {
     fontSize: 40,

@@ -91,6 +91,7 @@ class NewEventPage extends Component {
           iconName: 'wine-glass-alt',
         },
       ],
+      /* Skill Related State */
       skillActiveIndex: 0,
       skillCarouselItems: [
         {
@@ -106,6 +107,8 @@ class NewEventPage extends Component {
           title: 'LOTS of Experience',
         },
       ],
+      /* Description Related State */
+      description: '',
     };
   }
   
@@ -158,12 +161,13 @@ class NewEventPage extends Component {
     // console.log(this.state.eventTitle);
     const event = {
       eventTitle: this.state.eventTitle,
-      startTime: this.state.startDate,
-      endTime: this.state.endDate,
+      description: this.state.description,
       latitude: this.state.region.latitude,
       longitude: this.state.region.longitude,
       category: this.state.categoryCarouselItems[this.state.categoryActiveIndex].title,
-      skill: this.state.skillCarouselItems[this.state.skillActiveIndex].title,
+      skillLevel: this.state.skillCarouselItems[this.state.skillActiveIndex].title,
+      startTime: this.state.startDate,
+      endTime: this.state.endDate,
     };
     this.props.createEvent(event, this.props.nav_return);
   }
@@ -199,7 +203,7 @@ class NewEventPage extends Component {
     if (this.state.startOrEnd === 'start') {
       this.setState({show: false});
       this.setState({startDate: selectedDate});
-    } else {
+    } else if (this.state.startOrEnd === 'end') {
       this.setState({show: false});
       this.setState({endDate: selectedDate});
     }
@@ -210,7 +214,7 @@ class NewEventPage extends Component {
   };
  
   handleCancel = () => {
-    this.setState({show: false});
+    // this.setState({show: false});
   }
   /** ************************************************************ */
 
@@ -269,8 +273,8 @@ class NewEventPage extends Component {
      return (
        <View style={styles.row1}>
          <Button transparent
-           style={styles.IconBtn}
-           onPress={() => this.props.nav_return()}
+           style={styles.iconBtn}
+           onPress={() => this.props.navigation.navigate('Main')}
          >
            <Icon type="MaterialIcons" name="close" style={styles.closeIcon} />
          </Button>
@@ -324,15 +328,15 @@ class NewEventPage extends Component {
           </TimeFieldBox>
           {/* </View> */}
 
-          {this.state.show && (
-            <DateTimePickerModal
-              date={(this.state.startOrEnd === 'start') ? this.state.startDate : this.state.endDate}
-              mode={this.state.mode}
-              isVisible
-              onConfirm={this.handleConfirm}
-              onCancel={this.handleCancel}
-            />
-          )}
+          {/* {this.state.show && ( */}
+          <DateTimePickerModal
+            date={(this.state.startOrEnd === 'start') ? this.state.startDate : this.state.endDate}
+            mode={this.state.mode}
+            isVisible={this.state.show}
+            onConfirm={this.handleConfirm}
+            onCancel={this.handleCancel}
+          />
+          {/* )} */}
 
         </View>
       );

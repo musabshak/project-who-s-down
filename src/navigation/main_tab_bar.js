@@ -1,7 +1,8 @@
 import React from 'react';
 import { Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import { createStackNavigator } from '@react-navigation/stack';
 import Ionicons from 'react-native-vector-icons/FontAwesome';
 import MyEvents from '../components/my_events';
 import Discovery from './discovery';
@@ -9,7 +10,22 @@ import AddEvents from '../components/new_event';
 
 const Tab = createBottomTabNavigator();
 
-const MainTabBar = () => {
+const NewEventStack = createStackNavigator();
+
+const NewEventStackScreen = () => {
+  return (
+    <NewEventStack.Navigator>
+      <NewEventStack.Screen name="newEventPage"
+        component={AddEvents}
+        options={{
+          gestureEnabled: false,
+        }}
+      />
+    </NewEventStack.Navigator>
+  );
+};
+
+const MainTabBar = (props) => {
   return (
     <Tab.Navigator
       initialRouteName="Discovery"
@@ -20,8 +36,6 @@ const MainTabBar = () => {
         style: {
           backgroundColor: '#ffff1',
           height: 60,
-
-
         },
       }}
     >
@@ -53,7 +67,17 @@ const MainTabBar = () => {
       />
       <Tab.Screen
         name="New Event"
-        component={AddEvents}
+        // component={(AddEvents)}
+        component={() => null}
+        listeners={({ navigation, route }) => ({
+          tabPress: (e) => {
+            // Prevent default action
+            e.preventDefault();
+      
+            // Do something with the `navigation` object
+            navigation.navigate('newEvent');
+          },
+        })}
         options={{
           tabBarIcon: ({focused}) => (
             <View
@@ -75,11 +99,12 @@ const MainTabBar = () => {
               <Ionicons name="plus-circle" size={65} color="#FF5722" />
             </View>
           ),
+          tabBarVisible: false,
         }}
       />
       <Tab.Screen
         name="My Events"
-        component={MyEvents}
+        component={(MyEvents)}
         options={{
           tabBarLabel: 'My Events',
           tabBarIcon: ({ focused }) => (
