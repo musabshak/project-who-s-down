@@ -1,11 +1,8 @@
 import React, { Component } from 'react';
-import Search from 'react-native-search-box';
 import {
-  ActivityIndicator,
   StyleSheet,
   View,
   Text,
-  Button,
   ScrollView,
 } from 'react-native';
 import { connect } from 'react-redux';
@@ -41,20 +38,6 @@ class EventList extends Component {
     return (
       <View>
         <ScrollView>
-          <Search
-            backgroundColor="#c4302b"
-            showsCancelButton={false}
-            textFieldBackgroundColor="#c4302b"
-            onChangeText={(query) => {
-              this.setState({ query });
-            }}
-          />
-          <Button
-            onPress={() => this.props.navigation.navigate('Map View')}
-            title="Map View"
-            color="#841584"
-            accessibilityLabel="Map view"
-          />
           <FilterMenu />
           {this.displayEvent()}
         </ScrollView>

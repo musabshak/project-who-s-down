@@ -42,7 +42,6 @@ function Main(props) {
     
     <NavigationContainer ref={navigationRef}>
       <Stack.Navigator
-        ref={React.useRef(null)}
         screenOptions={{
           // headerShown: false,
           // gestureEnabled: false,
