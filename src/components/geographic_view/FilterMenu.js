@@ -106,8 +106,8 @@ class FilterMenu extends Component {
                   <Button style={{ backgroundColor: '#34A34F' }} onPress={() => this.editIndividualFilter({FilterType: 'categories', SpecificFilter: 'nightlife'})}> 
                     <Text>nightlife </Text>                  
                   </Button>
-                  <Button style={{ backgroundColor: '#3B5998' }} onPress={() => this.editIndividualFilter({FilterType: 'categories', SpecificFilter: 'sport'})}>
-                    <Text>sport</Text>                  
+                  <Button style={{ backgroundColor: '#3B5998' }} onPress={() => this.editIndividualFilter({FilterType: 'categories', SpecificFilter: 'sports'})}>
+                    <Text>sports</Text>                  
                   </Button>
                   <Button style={{ backgroundColor: '#DD5144' }} onPress={() => this.editIndividualFilter({FilterType: 'categories', SpecificFilter: 'boardgame'})}>
                     <Text> boardgame </Text>
