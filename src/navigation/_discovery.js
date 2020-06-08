@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button } from 'react-native';
+import { Button, Text } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import Ionicons from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
@@ -73,6 +73,11 @@ const Discovery = (props) => {
       />
     </Stack.Navigator>
   );
+};
+
+const headerLeftHelper = () => {
+  console.log('header left called!');
+  return 'hi';
 };
 
 const mapStateToProps = (state) => {

@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-expressions */
 import React, { Component } from 'react';
-import { StyleSheet, Button } from 'react-native';
+import { StyleSheet, Button, Text } from 'react-native';
 import { connect } from 'react-redux';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -13,6 +13,7 @@ import SignUp from '../components/signup';
 import EventInfo from '../components/event_info';
 import MyEvents from '../components/my_events';
 import NewEventPage from '../components/new_event';
+import Settings from '../components/settings';
 
 const NullComponent = () => null;
 export const navigationRef = React.createRef();
@@ -81,7 +82,13 @@ function Main(props) {
             },
             headerTintColor: '#fff',
             // headerTitle: (props) => <LogoTitle {...props} />,
-            headerLeft: NullComponent,
+            headerLeft: () => (
+              <Button
+                onPress={() => (settingsHelper(props))}
+                title={props.userName ? 'Settings' : ''}
+                color="#fff"
+              />
+            ),
             headerRight: () => (
               <Button
                 // onPress={() => (props.token ? props.signoutUser() : props.signoutUser(props.navigation.navigate))}
@@ -117,10 +124,19 @@ function Main(props) {
             headerShown: false,
           }}
         />
+        <Stack.Screen
+          name="Settings"
+          component={Settings}
+          options={{}}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
 }
+
+const settingsHelper = (props) => {
+  navigate('Settings');
+};
 
 const mapStateToProps = (state) => {
   return ({
