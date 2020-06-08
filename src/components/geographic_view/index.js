@@ -11,6 +11,7 @@ import {
   Text,
   FlatList,
   TouchableHighlight,
+  Platform,
 } from 'react-native';
 import { Fab, Icon } from 'native-base';
 /* eslint-disable global-require */
@@ -54,7 +55,7 @@ class GeographicDisplay extends Component {
 
   _getLocation = async () => {
     const { status } = await Permissions.askAsync(Permissions.LOCATION);
-  
+
 
     if (status !== 'granted') {
       console.log('location permission not granted');
@@ -77,7 +78,7 @@ class GeographicDisplay extends Component {
   }
 
   handleRegionChange = (e) => {
-    this.setState({region: e});
+    this.setState({ region: e });
   }
 
   debugHelper = () => { // button for this has been removed
@@ -87,7 +88,8 @@ class GeographicDisplay extends Component {
 
   handleFetchClick = () => {
     if (this.masterDebug) {
-      console.log('handle fetch click called!'); }
+      console.log('handle fetch click called!');
+    }
     this.props.fetchEvents();
   }
 
@@ -116,7 +118,8 @@ class GeographicDisplay extends Component {
 
   onMapLayout = () => {
     if (this.masterDebug) {
-      console.log('Map has been laid! That makes one of us :P'); }
+      console.log('Map has been laid! That makes one of us :P');
+    }
     this.setState({ isMapReady: true });
     this._getLocation();
   }
@@ -135,10 +138,10 @@ class GeographicDisplay extends Component {
       ['food', require('../../../assets/food.png')],
     ]);
 
-    const eventLevelToIcon = new Map([ 
+    const eventLevelToIcon = new Map([
       ['pro', '#F44336'],
       ['amateur', '#0000FF'],
-      ['casual', '#008000'], 
+      ['casual', '#008000'],
     ]);
 
     if (this.props.eventList) {
@@ -146,9 +149,9 @@ class GeographicDisplay extends Component {
         const eventOpacity = this.createTransparencyFromStartTime(obj.startTime);
         // if we're zoomed in a lot
         // waiting on April to merge pull request to 
-        if (this.state.region.longitudeDelta < MIN_ZOOM_FOR_MARKER_CHANGE) { 
+        if (this.state.region.longitudeDelta < MIN_ZOOM_FOR_MARKER_CHANGE) {
           return (
-            <Marker key={obj.id} coordinate={{ latitude: obj.latitude, longitude: obj.longitude}}>
+            <Marker key={obj.id} coordinate={{ latitude: obj.latitude, longitude: obj.longitude }}>
               <Text> {obj.eventTitle} </Text>
               {/* <Callout>
                 <EventPreview />
@@ -156,13 +159,13 @@ class GeographicDisplay extends Component {
 
 
             </Marker>
-          ); 
+          );
         }
 
         // show event Icon 
         else {
           return (
-            <Marker key={obj.id} coordinate={{ latitude: obj.latitude, longitude: obj.longitude}}>
+            <Marker key={obj.id} coordinate={{ latitude: obj.latitude, longitude: obj.longitude }}>
               <Image source={eventCategoryToIcon.get(obj.category)}
                 style={{
                   height: 35, width: 35, borderWidth: 4, borderColor: eventLevelToIcon.get(obj.level), opacity: eventOpacity,
@@ -174,7 +177,8 @@ class GeographicDisplay extends Component {
 
 
             </Marker>
-          ); }
+          );
+        }
       });
     }
 
@@ -188,7 +192,8 @@ class GeographicDisplay extends Component {
 
   callInitializeFilters = () => {
     if (this.masterDebug) {
-      console.log('in geo views initialize filters method!'); }
+      console.log('in geo views initialize filters method!');
+    }
     this.props.initializeFilters();
   }
 
@@ -206,7 +211,7 @@ class GeographicDisplay extends Component {
           onRegionChangeComplete={this.handleRegionChange}
           showsUserLocation
           followsUserLocation
-        > 
+        >
           {this.createMarkers()}
         </MapView>
       </View>
@@ -216,7 +221,7 @@ class GeographicDisplay extends Component {
   render() {
     if (this.masterDebug) { console.log('just rerendered!'); }
     return (
-      <View style={{flex: 1}}>
+      <View style={{ flex: 1 }}>
         {/* <Search
           backgroundColor="#c4302b"
           showsCancelButton={false}
@@ -302,4 +307,4 @@ const styles = StyleSheet.create({
 });
 
 
-export default connect(mapStateToProps, {fetchEvents, initializeFilters})(GeographicDisplay);
+export default connect(mapStateToProps, { fetchEvents, initializeFilters })(GeographicDisplay);

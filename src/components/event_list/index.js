@@ -1,44 +1,60 @@
 import React, { Component } from 'react';
-import Search from 'react-native-search-box';
 import {
-  ActivityIndicator,
   StyleSheet,
   View,
-  Image,
   Text,
-  FlatList,
-  TouchableHighlight,
+  ScrollView,
 } from 'react-native';
+import { connect } from 'react-redux';
+import { fetchEvents } from './actions';
+import FilterMenu from '../geographic_view/FilterMenu';
+import EventCard from './event_card';
 
 
 class EventList extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      query: 'anjali chikkula',
-      isLoading: true,
-      dataSource: [],
-    };
+  }
+
+  componentDidMount = () => {
+    this.props.fetchEvents();
+  } 
+
+  displayEvent =() => {
+    if (this.props.events.all !== undefined) {
+      return (
+        this.props.events.all.map((item, key) => {
+          return (
+            <EventCard event={item} key={item.id} navigate={this.props.navigation.navigate} />
+          );
+        })
+      );
+    } else {
+      return (<View><Text>Waiting for events</Text></View>);
+    }
   }
 
   render() {
     return (
       <View>
-        <Search
-          backgroundColor="#c4302b"
-          showsCancelButton={false}
-          textFieldBackgroundColor="#c4302b"
-          onChangeText={(query) => {
-            this.setState({ query });
-          }}
-        />
-        <Text>This is where the event list will go</Text>
+        <ScrollView>
+          <FilterMenu />
+          {this.displayEvent()}
+        </ScrollView>
       </View>
+      
     );
   }
 }
 
-export default EventList;
+function mapStateToProps(reduxState) {
+  return { 
+    events: reduxState.list,
+  };
+}
+
+export default connect(mapStateToProps, { fetchEvents })(EventList);
+
 
 const styles = StyleSheet.create({
   container: {

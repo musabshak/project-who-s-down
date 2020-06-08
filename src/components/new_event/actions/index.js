@@ -1,26 +1,50 @@
 import axios from 'axios';
+import AsyncStorage from '@react-native-community/async-storage';
 
 // const ROOT_URL = 'http://localhost:9090/api';
 const ROOT_URL = 'https://project-who-s-down-api.herokuapp.com/api/';
 
 export const ActionTypes = {
-  CREATE_EVENT: 'CREATE_EVENT',
-  ERROR_SET: 'ERROR_SET',
+  NEW_EVENT_SUCCESS: 'NEW_EVENT_SUCCESS',
+  NEW_EVENT_ERROR: 'NEW_EVENT_ERROR',
+  RESET_BACKEND_STATUS: 'RESET_BACKEND_STATUS',
 };
 
+async function getToken() {
+  try {
+    const token = await AsyncStorage.getItem('token');
+    if (token !== null) {
+      // console.log(token);
+      return token;
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
 
-const authToken = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI1ZWQ4MDNiNjlkYTdjMDAwMzhjOTc4MmQiLCJpYXQiOjE1OTEyMTUwMzAxNzh9.j2uTsNqJOxrh64BwTfhrylX-5bRUNyqLo4eCmIkfUbg';
-export function createEvent(event, callback) {
+// let authToken;
+// getToken().then((token) => { authToken = token; });
+// console.log(authToken);
+
+export function createEvent(event) {
   console.log(event);
+  // console.log(authToken);
   return (dispatch) => {
-    axios.post(`${ROOT_URL}/newEvent`, event, {headers: {authorization: authToken}})
-      .then((response) => {
-        dispatch({ type: ActionTypes.CREATE_EVENT, payload: response.data });
-        callback();
-      })
-      .catch((error) => {
-        console.log(error);
-        dispatch({ type: ActionTypes.ERROR_SET, error});
-      });
+    getToken().then((token) => {
+      axios.post(`${ROOT_URL}/newEvent`, event, {headers: {authorization: token}})
+        .then((response) => {
+          console.log('successful post request');
+          console.log(response.data);
+          dispatch({ type: ActionTypes.NEW_EVENT_SUCCESS, payload: response.data.eventTitle });
+        })
+        .catch((error) => {
+          console.log(error);
+          console.log('UNsuccessful post request');
+          dispatch({ type: ActionTypes.NEW_EVENT_ERROR});
+        }); });
   };
+}
+
+export function resetBackEndErrorState() {
+  return {type: ActionTypes.RESET_BACKEND_STATUS };
 }

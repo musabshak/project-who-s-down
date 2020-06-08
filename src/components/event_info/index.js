@@ -12,6 +12,7 @@ import Ionicons from 'react-native-vector-icons/FontAwesome';
 import * as Font from 'expo-font';
 import SvgUri from 'react-native-svg-uri';
 import MapView, { Marker, Callout } from 'react-native-maps';
+// import { customFormatTime } from '../new_event';
 // import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 
 import { styles } from '../../../assets/styles/event_info';
@@ -23,11 +24,16 @@ class EventInfo extends Component {
 
     this.state = { 
       region: { // default just set it to NC b/c my event markers were located here; feel free to change for your testing purposes
-        latitude: 35.78825,
-        longitude: -78.4324,
+        latitude: this.props.route.params.event.latitude,
+        longitude: this.props.route.params.event.longitude,
         latitudeDelta: 0.0922,
         longitudeDelta: 0.0421,
       },
+      title: this.props.route.params.event.eventTitle,
+      skillLevel: this.props.route.params.event.skillLevel,
+      startTime: this.props.route.params.event.startTime,
+      description: this.props.route.params.event.description,
+      category: this.props.route.params.event.category,
       eventList: [],
     };
   }
@@ -47,33 +53,37 @@ class EventInfo extends Component {
     } catch (error) {
       console.log(error);
     }
-    try {
-      await this.props.fetchEvents();
-    } catch (error) {
-      console.log(error);
-    }
+
+    // console.log(customFormatTime(this.state.startTime));
+    // // fetching events for testing
+    // try {
+    //   await this.props.fetchEvents();
+    // } catch (error) {
+    //   console.log(error);
+    // }
     // this._getLocation();
   }
 
   componentDidUpdate(prevProps) {
-    if (this.props.events[0] && !this.state.eventLoaded) {
-      const tmpe = this.props.events[0];
-      this.setState({
-        region: { // default just set it to NC b/c my event markers were located here; feel free to change for your testing purposes
-          latitude: tmpe.latitude,
-          longitude: tmpe.longitude,
-          latitudeDelta: 0.0922,
-          longitudeDelta: 0.0421,
-        },
-        title: tmpe.eventTitle,
-        skillLevel: tmpe.skillLevel,
-        startTime: tmpe.startTime,
-        description: tmpe.description,
-        category: tmpe.category,
-        eventLoaded: true,
-      });
-      console.log('event is loaded');  
-    }
+    // if (this.props.events[0] && !this.state.eventLoaded) {
+    //   const tmpe = this.props.events[0];
+    //   this.setState({
+    //     region: { // default just set it to NC b/c my event markers were located here; feel free to change for your testing purposes
+    //       latitude: tmpe.latitude,
+    //       longitude: tmpe.longitude,
+    //       latitudeDelta: 0.0922,
+    //       longitudeDelta: 0.0421,
+    //     },
+    //     title: tmpe.eventTitle,
+    //     skillLevel: tmpe.skillLevel,
+    //     startTime: tmpe.startTime,
+    //     description: tmpe.description,
+    //     category: tmpe.category,
+    //     eventLoaded: true,
+    //   });
+    //   // console.log('event is loaded');  
+    // }
+    // console.log('event is loaded');  
   } 
 
   _getLocation = async () => {
@@ -167,8 +177,8 @@ createMarkers = () => {
           region={this.state.region}
           onLayout={this.onMapLayout}
           onRegionChangeComplete={this.handleRegionChange}
-          showsUserLocation
-          followsUserLocation
+          // showsUserLocation
+          // followsUserLocation
         > 
           {this.createMarkers()}
         </MapView>
@@ -194,7 +204,6 @@ createMarkers = () => {
 
   onPressOut = () => {
     this.setState({ pressed: false });
-    console.log('called!');
   }
 
   onPressIn = () => {
@@ -225,7 +234,7 @@ createMarkers = () => {
   // }
 
   render() {
-    if (this.state.fontLoaded && this.state.eventLoaded) {
+    if (this.state.fontLoaded) {
       return (
         <View style={styles.container}>
           <SvgUri

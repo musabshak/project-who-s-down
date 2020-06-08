@@ -1,4 +1,4 @@
-import { ActionTypes } from '../components/event_info/actions';
+import { ActionTypes } from '../components/event_list/actions';
 
 const initialState = {
   all: [],
