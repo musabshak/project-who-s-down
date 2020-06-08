@@ -23,6 +23,20 @@ const removeValue = async (key) => {
   }
 };
 
+export function loadToken(navigation) {
+  console.log('loadToken Called');
+  return (dispatch) => {
+    return AsyncStorage.getItem('token').then((token) => {
+      if (token) {
+        console.log('Got token!');
+        AsyncStorage.getItem('userName').then((userName) => {
+          dispatch({ type: ActionTypes.AUTH_USER, userName, token });
+        });
+      } else console.log('loadToken failed!');
+    });
+  }
+}
+
 // keys for actiontypes
 export const ActionTypes = {
   AUTH_USER: 'AUTH_USER',
@@ -30,7 +44,7 @@ export const ActionTypes = {
   AUTH_ERROR: 'AUTH_ERROR',
 };
 
-export function signinUser({ email, password }, navigate) {
+export function signinUser({ email, password }, navigation, ret) {
   console.log('Signing in!');
   return (dispatch) => {
     /* axios post */
@@ -39,7 +53,9 @@ export function signinUser({ email, password }, navigate) {
       saveValue('token', response.data.token);
       saveValue('userName', response.data.userName);
       dispatch({ type: ActionTypes.AUTH_USER, userName: response.data.userName, token: response.data.token });
-      navigate('Main', {}); 
+      console.log('ret', ret);
+      if (!ret) navigation.navigate('Main', {}); 
+      else navigation.pop();
       // localStorage.setItem('token', response.data.token);
     })
       .catch((error) => {

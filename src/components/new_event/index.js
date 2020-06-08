@@ -178,8 +178,8 @@ class NewEventPage extends Component {
 
     const token = await AsyncStorage.getItem('token');
 
-    console.log('Printing token');
-    console.log(token);
+    // console.log('Printing token');
+    // console.log(token);
 
     navigator.geolocation.getCurrentPosition(
       (position) => {

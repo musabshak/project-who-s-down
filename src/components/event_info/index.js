@@ -19,7 +19,7 @@ import { API_KEY, customFormatTime } from '../new_event';
 // import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 
 import { styles } from '../../../assets/styles/event_info';
-import { fetchEvents } from './actions';
+import { fetchEvents, fetchSubscribedEvents, subscribeEvent, unsubscribeEvent } from './actions';
 
 class EventInfo extends Component {
   constructor(props) {
@@ -71,8 +71,16 @@ class EventInfo extends Component {
         const addr = responseJson.results[0].formatted_address;
         this.setState({ addr });
       });
+    
     this._getLocation();
-    // console.log(this.props.token);
+    if (this.props.token) 
+      this.props.fetchSubscribedEvents(this.props.token).then((res) => {
+        for (let i = 0; i < res.length; i++)
+          if (res[i].id === this.props.route.params.event.id) {
+            this.setState({ subscribed: 1 });
+            break;
+          }
+      });
   }
 
   // componentDidUpdate(prevProps) {
@@ -295,9 +303,60 @@ createMarkers = () => {
   //     break;
   //   }
   // }
+  onSubscribe = () => {
+    console.log('OnSubscribe', this.state.subscribed);
+    if (this.state.subscribed) {
+      this.props.unsubscribeEvent(this.props.token, this.props.route.params.event.id)
+        .then(() => {
+          this.setState({ subscribed: 0 });
+        });
+    } else {
+      if (!this.props.token) {
+        // popup - go login
+        this.props.navigation.push('SignIn', { return: 1 });
+      }
+      else {
+        this.props.subscribeEvent(this.props.token, this.props.route.params.event.id)
+        .then(() => {
+          this.setState({ subscribed: 1 });
+        });
+      };
+    }
+  }
+
+  renderSubscribeBtn = () => {
+    if (this.state.subscribed) return (
+      <TouchableOpacity style={styles.btnSubs} onPress={this.onSubscribe}>
+        {/* <SvgUri
+          width="50"
+          height="50"
+          fill="#FF5722"
+          source={require('../../../assets/images/icn-bell-filled.svg')}
+          style={styles.btnSubsImg}
+        /> */}
+        <Icon type="MaterialCommunityIcons" name="bell-ring" style={styles.btnSubsImg} />
+        {/* <Icon type="MaterialCommunityIcons" name="bell-outline" style={styles.btnSubsImg} /> */}
+        <Text style={styles.btnSubsText}>Subscribed</Text>
+      </TouchableOpacity>
+    );
+    else return (
+      <TouchableOpacity style={styles.btnSubs} onPress={this.onSubscribe}>
+        {/* <SvgUri
+          width="50"
+          height="50"
+          fill="#FF5722"
+          source={require('../../../assets/images/icn-bell-filled.svg')}
+          style={styles.btnSubsImg}
+        /> */}
+        {/* <Icon type="MaterialCommunityIcons" name="bell-ring" style={styles.btnSubsImg} /> */}
+        <Icon type="MaterialCommunityIcons" name="bell-outline" style={styles.btnSubsImg} />
+        <Text style={styles.btnSubsText}>Subscribe</Text>
+      </TouchableOpacity>
+    );
+  }
 
   render() {
-    if (this.state.fontLoaded) {
+    if (this.state.fontLoaded && this.state.addr) {
       return (
         <View style={styles.container}>
           {/* <SvgUri
@@ -376,18 +435,7 @@ createMarkers = () => {
                 <Text style={styles.btnChatText}>Chat Board</Text>
               </TouchableOpacity>
               {/* Subscribe */}
-              <TouchableOpacity style={styles.btnSubs}>
-                {/* <SvgUri
-                  width="50"
-                  height="50"
-                  fill="#FF5722"
-                  source={require('../../../assets/images/icn-bell-filled.svg')}
-                  style={styles.btnSubsImg}
-                /> */}
-                {/* <Icon type="MaterialCommunityIcons" name="bell-ring" style={styles.btnSubsImg} /> */}
-                <Icon type="MaterialCommunityIcons" name="bell-outline" style={styles.btnSubsImg} />
-                <Text style={styles.btnSubsText}>Subscribed</Text>
-              </TouchableOpacity>
+              {this.renderSubscribeBtn()}
             </View>
             <Text style={styles.desc}>{this.state.description}</Text>
           </View>
@@ -432,8 +480,10 @@ createMarkers = () => {
 const mapStateToProps = (state) => {
   return ({
     events: state.eventsSh.all,
+    subscribeError: state.eventsSh.subscribeError,
+    subscribedEvents: state.eventsSh.subscribedEvents,
     token: state.auth.token,
   });
 };
-export default connect(mapStateToProps, { fetchEvents })(EventInfo);
+export default connect(mapStateToProps, { fetchEvents, fetchSubscribedEvents, subscribeEvent, unsubscribeEvent })(EventInfo);
 // export default connect(null, { fetchEvents })(EventInfo);

@@ -92,14 +92,14 @@ const geoViewReducer = (state = initialState, action, debug = true, debug2 = fal
     }
     else {
       console.log('we are in fetch events!');
-      console.log('state.filteredOut:', state.filteredOut);
+      // console.log('state.filteredOut:', state.filteredOut);
 
       // eslint-disable-next-line no-plusplus
       for (let i = 0; i < eventList.length; i++) {
         console.log('these are all our events', eventList[i].category, eventList[i].skillLevel);
         if (!state.filteredOut.categories.includes(eventList[i].category) && !state.filteredOut.skillLevels.includes(eventList[i].skillLevel)) {
           filteredEventList.push(eventList[i]);
-          console.log('just added ', eventList[i], 'to filtered event list!');
+          // console.log('just added ', eventList[i], 'to filtered event list!');
         }
         else {
           // console.log('we just filtered this one out!', eventList[i]);

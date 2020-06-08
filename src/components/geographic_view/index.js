@@ -133,6 +133,7 @@ class GeographicDisplay extends Component {
     if (this.props.eventList) {
       return this.props.eventList.map((obj) => {
         const eventOpacity = 0.9; 
+        console.log(obj._id);
         this.createTransparencyFromStartTime(obj.startTime);
         // this first part handles what happens if you zoom super far in on a marker (we decided we want it to show more information)
         if (this.state.region.longitudeDelta < MIN_ZOOM_FOR_MARKER_CHANGE) { 
@@ -142,8 +143,6 @@ class GeographicDisplay extends Component {
               <Callout>
                 <EventPreview />
               </Callout>
-
-
             </Marker>
           ); 
         }

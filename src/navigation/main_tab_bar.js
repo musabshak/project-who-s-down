@@ -97,6 +97,7 @@ const MainTabBar = (props) => {
             // Allow access to new event page only if user is logged in
             AsyncStorage.getItem('token').then(
               (token) => {
+                console.log('token:',token);
                 if (token !== null) {
                   navigation.navigate('NewEvent');
                 } else {

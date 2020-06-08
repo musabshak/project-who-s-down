@@ -7,7 +7,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import AsyncStorage from '@react-native-community/async-storage';
 
 import MainTabBar from './main_tab_bar';
-import ActionTypes, { signoutUser } from '../components/signin/actions';
+import { signoutUser, loadToken } from '../components/signin/actions';
 import SignIn from '../components/signin';
 import SignUp from '../components/signup';
 import EventInfo from '../components/event_info';
@@ -20,26 +20,12 @@ export function navigate(name, params) {
   navigationRef.current && navigationRef.current.navigate(name, params);
 }
 
-const loadToken = async () => {
-  console.log('loadToken Called');
-  try {
-    const value = await AsyncStorage.getItem('token');
-    if (value !== null) {
-      const userName = await AsyncStorage.getItem('userName');
-      dispatch({ type: ActionTypes.AUTH_USER, userName, token: value });
-    }
-  } catch (e) {
-    // error reading value
-    console.log('loadToken failed!');
-  }
-};
-
 const Stack = createStackNavigator();
 
 function Main(props) {
-  loadToken();
+  props.loadToken();
   return (
-    
+        
     <NavigationContainer ref={navigationRef}>
       <Stack.Navigator
         screenOptions={{
@@ -47,29 +33,6 @@ function Main(props) {
           // gestureEnabled: false,
         }}
       >
-        <Stack.Screen
-          name="SignIn"
-          component={SignIn}
-            
-          options={{
-            headerShown: false,
-            // title: 'Youtube Search',
-            // headerStyle: {
-            //   backgroundColor: '#f4511e',
-            //   // backgroundColor: tabColor,
-            // },
-            // headerTintColor: '#fff',
-          }}
-        />
-        <Stack.Screen
-          name="SignUp"
-          component={SignUp} 
-          options={{
-            // header: NullComponent,
-            headerShown: false,
-            gestureEnabled: false,
-          }}
-        />
         <Stack.Screen
           name="Main"
           component={MainTabBar}
@@ -92,6 +55,29 @@ function Main(props) {
               />
             ),
             // gestureEnabled: false,
+          }}
+        />
+        <Stack.Screen
+          name="SignIn"
+          component={SignIn}
+            
+          options={{
+            headerShown: false,
+            // title: 'Youtube Search',
+            // headerStyle: {
+            //   backgroundColor: '#f4511e',
+            //   // backgroundColor: tabColor,
+            // },
+            // headerTintColor: '#fff',
+          }}
+        />
+        <Stack.Screen
+          name="SignUp"
+          component={SignUp} 
+          options={{
+            // header: NullComponent,
+            headerShown: false,
+            gestureEnabled: false,
           }}
         />
         <Stack.Screen
@@ -129,7 +115,7 @@ const mapStateToProps = (state) => {
   });
 };
 
-export default connect(mapStateToProps, { signoutUser })(Main);
+export default connect(mapStateToProps, { loadToken, signoutUser })(Main);
 
 const styles = StyleSheet.create({
   container: {
