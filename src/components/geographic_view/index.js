@@ -245,7 +245,7 @@ class GeographicDisplay extends Component {
 
         {this.createMap()}
         <FilterMenu />
-        <Button title="show geographic display state" onPress={this.debugHelper}> show GeographicDisplay state</Button>
+        {this.masterDebug && (<Button title="show geographic display state" onPress={this.debugHelper}> show GeographicDisplay state</Button>)}
 
         {/* <Button title="call initialize filters" onPress={this.callInitializeFilters}> call get events</Button> */}
 

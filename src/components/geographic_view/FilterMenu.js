@@ -189,7 +189,8 @@ class FilterMenu extends Component {
                     <Icon name="md-american-football" />
                   </Button>
                   <Button style={{ backgroundColor: '#DD5144' }} onPress={() => this.editIndividualFilter({FilterType: 'categories', SpecificFilter: 'game'})}>
-                    <FontAwesome name="md-chess-queen" />
+                    {/* <FontAwesome name="md-chess-queen" /> */}
+                    <Text>Someone put something here please</Text>
                     {/* I couldn't find a great boardgame icon, if you can find like a chess queen that'd be great */}                  
                   </Button>
                   <Button style={{ backgroundColor: '#DD5144' }} onPress={() => this.editIndividualFilter({FilterType: 'categories', SpecificFilter: 'culture'})}>
