@@ -172,7 +172,7 @@ class GeographicDisplay extends Component {
                 }}
               />
               <Callout>
-                <EventPreview />
+                <EventPreview title={obj.eventTitle} skillLevel={obj.skillLevel} startTime={obj.startTime} description={obj.description} id={obj.id} />
               </Callout>
 
 
