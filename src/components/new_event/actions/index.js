@@ -24,6 +24,7 @@ async function getToken() {
 
 let authToken;
 getToken().then((token) => { authToken = token; });
+console.log(authToken);
 
 export function createEvent(event) {
   // console.log(event);

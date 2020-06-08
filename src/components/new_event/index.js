@@ -38,9 +38,6 @@ function customFormatDate(date) {
   return date.toDateString().split(' ').slice(1, -1).join(' ');
 }
 
-<<<<<<< HEAD
-export function customFormatTime(date) {
-=======
 // https://stackoverflow.com/questions/1197928/how-to-add-30-minutes-to-a-javascript-date-object
 function addMinutes(date, minutes) {
   return new Date(date.getTime() + minutes * 60000);
@@ -58,7 +55,6 @@ function roundTimeQuarterHour(time) {
 
 // Coped from Stack Overflow
 function customFormatTime(date) {
->>>>>>> mergedmusab
   const hours = date.getHours() === 0 ? '12' : date.getHours() > 12 ? date.getHours() - 12 : date.getHours();
   const minutes = (date.getMinutes() < 10 ? '0' : '') + date.getMinutes();
   const ampm = date.getHours() < 12 ? 'AM' : 'PM';
@@ -284,9 +280,6 @@ class NewEventPage extends Component {
       startTime: this.state.startDate,
       endTime: this.state.endDate,
     };
-<<<<<<< HEAD
-    this.props.createEvent(event, this.props.navigation.pop);
-=======
 
     const eventValidated = this.validateEvent(event);
     // const eventValidated = true;
@@ -296,7 +289,6 @@ class NewEventPage extends Component {
     } else {
       this.props.createEvent(event);
     }
->>>>>>> mergedmusab
   }
 
   /**
@@ -850,24 +842,6 @@ class NewEventPage extends Component {
     );
   }
 
-<<<<<<< HEAD
-      return (
-        <SafeAreaView style={{flex: 1, paddingTop: Platform.OS === 'ios' ? 27 : StatusBar.currentHeight + 7, backgroundColor: 'white' }}>
-          <ScrollView style={styles.container} keyboardShouldPersistTaps="always">
-          
-            {this.renderExitSave()}
-            {this.renderTitle()}
-            {this.renderDateTime()}
-            {this.renderLocationRow()}
-            {this.renderCategory()}
-            {this.renderSkill()}
-            {this.renderDescription()}
-            
-          
-          </ScrollView>
-        </SafeAreaView>
-      );
-=======
 
   /** ************************************************************ */
 
@@ -875,11 +849,10 @@ class NewEventPage extends Component {
   render() {
     if (!this.state.fontLoaded) {
       return (<AppLoading />);
->>>>>>> mergedmusab
     }
 
     return (
-      <SafeAreaView style={{ flex: 1, paddingTop: StatusBar.currentHeight + 7, backgroundColor: 'white' }}>
+      <SafeAreaView style={{flex: 1, paddingTop: Platform.OS === 'ios' ? 27 : StatusBar.currentHeight + 7, backgroundColor: 'white' }}>
         <ScrollView style={styles.container} keyboardShouldPersistTaps="always">
           {this.renderBackendSuccessModal()}
           {this.renderBackendErrorModal()}

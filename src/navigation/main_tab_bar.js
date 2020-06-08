@@ -1,25 +1,18 @@
-<<<<<<< HEAD
-import React from 'react';
-=======
 /* eslint-disable react/no-string-refs */
 /* eslint-disable no-alert */
 import React, { useState } from 'react';
->>>>>>> mergedmusab
 import { Text, View, Button } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import Ionicons from 'react-native-vector-icons/FontAwesome';
-<<<<<<< HEAD
-import EventList from '../components/event_list';
-import GeographicView from '../components/geographic_view';
-=======
 import AsyncStorage from '@react-native-community/async-storage';
 import Modal from 'react-native-modal';
 import {Icon} from 'native-base';
+import GeographicView from '../components/geographic_view';
+import EventList from '../components/event_list';
 import MyEvents from '../components/my_events';
-import Discovery from './discovery';
->>>>>>> mergedmusab
+// import Discovery from './discovery';
 import AddEvents from '../components/new_event';
 
 
@@ -27,8 +20,15 @@ const Tab = createBottomTabNavigator();
 
 const NullComponent = () => null;
 
-<<<<<<< HEAD
-// const NewEventStack = createStackNavigator();
+// const getToken = async (key) => {
+//   try {
+//     const token = await AsyncStorage.getItem(key);
+//     console.log(token);
+//     console.log(token !== null);
+//   } catch (e) {
+//     console.log('could not get token');
+//   }
+// };
 
 // const NewEventStackScreen = () => {
 //   return (
@@ -42,30 +42,6 @@ const NullComponent = () => null;
 //     </NewEventStack.Navigator>
 //   );
 // };
-=======
-// const getToken = async (key) => {
-//   try {
-//     const token = await AsyncStorage.getItem(key);
-//     console.log(token);
-//     console.log(token !== null);
-//   } catch (e) {
-//     console.log('could not get token');
-//   }
-// };
-
-const NewEventStackScreen = () => {
-  return (
-    <NewEventStack.Navigator>
-      <NewEventStack.Screen name="newEventPage"
-        component={AddEvents}
-        options={{
-          gestureEnabled: false,
-        }}
-      />
-    </NewEventStack.Navigator>
-  );
-};
->>>>>>> mergedmusab
 
 const MainTabBar = (props) => {
   const [modalVisible, setModalVisible] = useState(false);
@@ -121,7 +97,7 @@ const MainTabBar = (props) => {
             AsyncStorage.getItem('token').then(
               (token) => {
                 if (token !== null) {
-                  navigation.navigate('newEvent');
+                  navigation.navigate('NewEvent');
                 } else {
                   // alert('You need to be logged in to create a new event!');
                   setModalVisible(true);
