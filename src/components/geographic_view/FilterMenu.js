@@ -13,45 +13,47 @@ import {
   TouchableHighlight,
 } from 'react-native';
 import { connect } from 'react-redux';
-import { changeFilters } from './actions';
+import DateTimePickerModal from 'react-native-modal-datetime-picker';
+import { changeFilters, fetchEvents, initializeFilters } from './actions';
 
   
 class FilterMenu extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      main_active: false, level_active: false, cat_active: false, 
+      main_active: false, level_active: false, cat_active: false, setTimePickerVisibilityBefore: false, setTimePickerVisibility: false, 
     };
-    console.log('in filter menu!');
+    this.filterMasterDebug = false;
+    if (this.filterMasterDebug) { console.log('in filter menu!'); }
   }
 
 
-  onTimeFilterPress = (event) => {
-    console.log('time filter pressed!');
-  }
+  // -------------- CATEGORY AND LEVEL FILTER BELOW ---------------------
+
 
   onCategoryFilterPress = (event) => {
-    console.log('category filter pressed!');
+    if (this.filterMasterDebug) { console.log('category filter pressed!'); }
+    // don't worry, the FAB has another on open method, this function just exists for debugging purposes
   }
 
   handleCatFabPress = (event) => {
-    console.log('handle cat fab press called!');
+    if (this.filterMasterDebug) { console.log('handle cat fab press called!'); }
     this.setState({
       cat_active: !this.state.cat_active,
       level_active: false,
     });
   }
 
-  onLevelFilterPress = (event) => {
-    console.log('level filter pressed!');
+  onLevelFilterPress = (event) => { // same thing as onCategoryFilterPress
+    if (this.filterMasterDebug) { console.log('level filter pressed!'); }
   }
 
-  onHotFilterPress = (event) => {
-    console.log('hot filter pressed!');
+  onHotFilterPress = (event) => { // to be implemented in a future release
+    if (this.filterMasterDebug) { console.log('hot filter pressed!'); }
   }
 
   handleLevelFabPress = (event) => {
-    console.log('handle level fab press called!');
+    if (this.filterMasterDebug) { console.log('handle level fab press called!'); }
     this.setState({
       level_active: !this.state.level_active,
       cat_active: false, 
@@ -59,9 +61,49 @@ class FilterMenu extends Component {
   }
 
 
-  // these are the lines you need to focus on
+  // -------------- TIME FILTER BELOW --------------------
 
-  debugPress = (event) => {
+
+  onTimeFilterLongPress = () => {
+    this.setState({setTimePickerVisibilityBefore: !this.state.setTimePickerVisibilityBefore});
+  }
+
+  // it's very possible the next two functions could be collapsed into one
+  handleConfirm = (date) => {
+    if (this.filterMasterDebug) { console.log('Make a filter that filters out everything after: ', date); }
+    this.hideDatePicker();
+    const param = {FilterType: 'timesAfter', SpecificFilter: date};
+    this.editIndividualFilter(param);
+    this.props.fetchEvents();
+  };
+
+  handleConfirmBefore = (date) => {
+    if (this.filterMasterDebug) {
+      console.log('Make a filter that filters out everything before: ', date); }
+    this.hideDatePickerBefore();
+    const param = {FilterType: 'timesBefore', SpecificFilter: date};
+    this.editIndividualFilter(param);
+    this.props.fetchEvents();
+  };
+
+
+  hideDatePicker = () => {
+    this.setState({setTimePickerVisibility: false});
+  };
+
+  hideDatePickerBefore = () => {
+    this.setState({setTimePickerVisibilityBefore: false});
+  };
+
+  onTimeFilterPress = (event) => {
+    if (this.filterMasterDebug) { console.log('time filter pressed!'); }
+    this.setState({setTimePickerVisibility: !this.state.setTimePickerVisibility});
+  }
+
+
+  // ----------- GENERAL METHODS BELOW ------------
+
+  debugPress = (event) => { // button is removed
     console.log('props:', this.props);
     console.log('state:', this.state);
   }
@@ -70,15 +112,20 @@ class FilterMenu extends Component {
     this.props.changeFilters(param);
   }
 
+  clearAllFilters = () => {
+    console.log('clear all filters called!');
+    this.props.initializeFilters();
+  }
+
+
   render() {
     return (
-      <View style={{
-        padding: 5,
-        flexDirection: 'row',}}>
-
-        <Button style={{ backgroundColor: '#3B5998' }} onPress={this.debugPress}>
-          <Icon name="md-print" />
-        </Button>
+      <View>
+        {this.state.filterMasterDebug && (
+          <Button style={{ backgroundColor: '#3B5998' }} onPress={this.debugPress}>
+            <Icon name="md-print" />
+          </Button>
+        )}
         <View style={{ flex: 1 }}>
           <Fab
             active={this.state.main_active}
@@ -90,83 +137,125 @@ class FilterMenu extends Component {
           >
             <FontAwesome name="eye" />
 
+            <Button style={{backgroundColor: '#DD5144', left: 20}} onPress={() => this.clearAllFilters()}>
+              <Icon name="close" />
+            </Button>
 
-            <Button style={{ backgroundColor: '#34A34F' }} onPress={this.onTimeFilterPress}>
+            <Button style={{ backgroundColor: '#34A34F' }} onPress={this.onTimeFilterPress} onLongPress={this.onTimeFilterLongPress}>
               <Icon name="alarm" />
+              <View>
+                {this.state.setTimePickerVisibility && (
+                  <DateTimePickerModal
+                    isVisible={this.state.setTimePickerVisibility}
+                    mode="time"
+                    onConfirm={this.handleConfirm}
+                    onCancel={this.hideDatePicker}
+                    // is24Hour
+                    // locale="en_GB" // these would force 24 hour time on the user
+                    headerTextIOS="Filter out events starting after:"
+                  />
+                )}
+              </View>
+              <View>
+                {this.state.setTimePickerVisibilityBefore && (
+                  <DateTimePickerModal
+                    isVisible={this.state.setTimePickerVisibilityBefore}
+                    mode="time"
+                    onConfirm={this.handleConfirmBefore}
+                    onCancel={this.hideDatePickerBefore}
+                    // is24Hour
+                    // locale="en_GB" 
+                    headerTextIOS="Filter out events starting before:"
+                  />
+                )}
+              </View>
             </Button>
 
 
             {/* so this chunk below is the category menu */}
             {this.state.main_active && (
-              <View>
+              <View style={{width: 0, paddingTop: 70}}>
                 <Fab
                   active={this.state.cat_active}
-                  style={{ backgroundColor: '#5067FF', direction: 'left', flexDirection: 'row'}}
+                  style={{ backgroundColor: '#5067FF' }}
                   onPress={this.handleCatFabPress}
                 >
                   <Icon name="wine" />
                   <Button style={{ backgroundColor: '#34A34F' }} onPress={() => this.editIndividualFilter({FilterType: 'categories', SpecificFilter: 'nightlife'})}> 
-                    <Text>nightlife </Text>                  
+                    <Icon name="md-wine" />                  
                   </Button>
-                  <Button style={{ backgroundColor: '#3B5998' }} onPress={() => this.editIndividualFilter({FilterType: 'categories', SpecificFilter: 'sports'})}>
-                    <Text>sports</Text>                  
+                  <Button style={{ backgroundColor: '#3B5998' }} onPress={() => this.editIndividualFilter({FilterType: 'categories', SpecificFilter: 'sport'})}>
+                    <Icon name="md-american-football" />
                   </Button>
-                  <Button style={{ backgroundColor: '#DD5144' }} onPress={() => this.editIndividualFilter({FilterType: 'categories', SpecificFilter: 'boardgame'})}>
-                    <Text> boardgame </Text>
+                  <Button style={{ backgroundColor: '#DD5144' }} onPress={() => this.editIndividualFilter({FilterType: 'categories', SpecificFilter: 'game'})}>
+                    {/* <FontAwesome name="md-chess-queen" /> */}
+                    <Text>Someone put something here please</Text>
+                    {/* I couldn't find a great boardgame icon, if you can find like a chess queen that'd be great */}                  
+                  </Button>
+                  <Button style={{ backgroundColor: '#DD5144' }} onPress={() => this.editIndividualFilter({FilterType: 'categories', SpecificFilter: 'culture'})}>
+                    <Icon name="md-color-palette" />                  
+                  </Button>
+                  <Button style={{ backgroundColor: '#DD5144' }} onPress={() => this.editIndividualFilter({FilterType: 'categories', SpecificFilter: 'educational'})}>
+                    <Icon name="planet" />                  
+                  </Button>
+                  <Button style={{ backgroundColor: '#DD5144' }} onPress={() => this.editIndividualFilter({FilterType: 'categories', SpecificFilter: 'food'})}>
+                    <Icon name="md-pizza" />                  
                   </Button>
 
                 </Fab>
               </View>
             ) }
 
-            <Button disabled style={{ backgroundColor: '#DD5144' }} onPress={this.onHotFilterPress}>
-              <Icon name="flame" />
-            </Button>
-            
+            {/* <Button disabled style={{ backgroundColor: '#DD5144' }} onPress={this.onHotFilterPress}>
+              <Icon name="flame" /> <-- this would be filter by "hot" events
+              </Button>
+              */}
 
-            {/* so this chunk below is the level menu */}
+            {/* so this chunk below is the level menu, wasn't too sure how to convey skill levels */}
             {this.state.main_active 
-            && (
-              <View>
-                <Fab
-                  active={this.state.level_active}
-                  style={{ backgroundColor: '#5067FF', direction: 'left'}}
-                  onPress={this.handleLevelFabPress}
-                >
-                  <FontAwesome name="gamepad" />
+              && (
+                <View style={{width: 0, paddingTop: 70}}>
+                  <Fab
+                    active={this.state.level_active}
+                    style={{ backgroundColor: '#5067FF', left: 17}}
+                    onPress={this.handleLevelFabPress}
+                    position="bottomLeft"
+                  >
+                    <FontAwesome name="gamepad" />
+                    
+                    <Button style={{ backgroundColor: '#34A34F' }}
+                      onPress={() => this.editIndividualFilter({
+                        FilterType: 'skillLevels',
+                        SpecificFilter: 'casual',
+                      })}
+                    >
+                      <Icon name="radio-button-off" />                  
+                    </Button>
 
-                  <Button style={{ backgroundColor: '#34A34F' }}
-                    onPress={() => this.editIndividualFilter({
-                      FilterType: 'skillLevels',
-                      SpecificFilter: 'casual',
-                    })}
-                  >
-                    <Text>casual </Text>                  
-                  </Button>
-                  <Button style={{ backgroundColor: '#3B5998' }}
-                    onPress={() => this.editIndividualFilter({
-                      FilterType: 'skillLevels',
-                      SpecificFilter: 'amateur',
-                    })}
-                  >
-                    <Text>amateur</Text>                  
-                  </Button>
-                  <Button style={{ backgroundColor: '#DD5144' }}
-                    onPress={() => this.editIndividualFilter({
-                      FilterType: 'skillLevels',
-                      SpecificFilter: 'pro',
-                    })}
-                  >
-                    <Icon name="star" />
-                    <Text> pro </Text>
-                  </Button>
+                    <Button style={{ backgroundColor: '#3B5998' }}
+                      onPress={() => this.editIndividualFilter({
+                        FilterType: 'skillLevels',
+                        SpecificFilter: 'amateur',
+                      })}
+                    >
+                      <Icon name="ios-contrast" />                  
+                    </Button>
+                    <Button style={{ backgroundColor: '#DD5144' }}
+                      onPress={() => this.editIndividualFilter({
+                        FilterType: 'skillLevels',
+                        SpecificFilter: 'pro',
+                      })}
+                    >
+                      <Icon name="ios-radio-button-on" />
+                    </Button>
 
-                </Fab>
-              </View>
-            )}
+                  </Fab>
+                </View>
+              )}
 
           </Fab>
         </View>
+
       </View>
     );
   }
@@ -177,4 +266,4 @@ const mapStateToProps = (reduxState) => (
 );
 
 
-export default connect(mapStateToProps, {changeFilters})(FilterMenu);
+export default connect(mapStateToProps, {changeFilters, fetchEvents, initializeFilters})(FilterMenu);
