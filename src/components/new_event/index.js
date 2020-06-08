@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 /* eslint-disable no-alert */
 /* eslint-disable no-useless-concat */
 /* eslint-disable no-return-assign */
@@ -63,6 +64,7 @@ function customFormatTime(date) {
 
 const initialState = {
   errorModalVisible: false,
+  backendErrorModalVisible: false,
   validationErrors: [],
   fontLoaded: false,
   eventTitle: '',
@@ -116,7 +118,7 @@ const initialState = {
     },
     {
       title: 'Culture',
-      iconName: 'baseball-ball',
+      iconName: null,
       label: 'culture',
     },
     // {
@@ -278,13 +280,14 @@ class NewEventPage extends Component {
       startTime: this.state.startDate,
       endTime: this.state.endDate,
     };
-   
+
     const eventValidated = this.validateEvent(event);
+    // const eventValidated = true;
 
     if (!eventValidated) {
-      this.setState({errorModalVisible: true});
+      this.setState({ errorModalVisible: true });
     } else {
-      this.props.createEvent(event, this.props.navigation.navigate);
+      this.props.createEvent(event);
     }
   }
 
@@ -330,7 +333,7 @@ class NewEventPage extends Component {
   };
 
   handleCancel = () => {
-    this.setState({show: false});
+    this.setState({ show: false });
   }
   /** ************************************************************ */
 
@@ -386,11 +389,105 @@ class NewEventPage extends Component {
    * Render functions
    */
 
+  renderBackendSuccessModal = () => {
+    return (
+      <Modal
+        isVisible={this.props.backendSuccess}
+        backdropOpacity={0.8}
+        onBackdropPress={() => {
+          this.props.resetBackEndErrorState();
+          // this.props.navigation.navigate('Main');
+          this.props.navigation.pop();
+        }}
+      >
+        <View style={{
+          flex: 1,
+          // borderColor: 'white',
+          // borderWidth: 2, 
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+        >
+          <View style={{
+            // borderColor: 'white',
+            // borderWidth: 2, 
+            display: 'flex',
+            width: Dimensions.get('window').width,
+            justifyContent: 'center',
+            alignItems: 'center',
+            backgroundColor: 'floralwhite',
+            borderRadius: 10,
+            minHeight: 150,
+            padding: 15,
+          }}
+          >
+
+            <Text style={{
+              color: 'black',
+              fontSize: 20,
+              borderColor: 'black',
+              borderWidth: 0,
+              // paddingTop: 15,
+              textAlign: 'center',
+            }}
+            > The following event has been successfully created: "{this.props.createdEventTitle}"
+            </Text>
+
+          </View>
+        </View>
+      </Modal>
+    );
+  }
+
+  renderBackendErrorModal = () => {
+    return (
+      <Modal
+        isVisible={this.props.backendError}
+        backdropOpacity={0.3}
+        onBackdropPress={() => this.props.resetBackEndErrorState()}
+      >
+        <View style={{
+          flex: 1,
+          // borderColor: 'white',
+          // borderWidth: 2, 
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+        >
+          <View style={{
+            // borderColor: 'white',
+            // borderWidth: 2, 
+            width: Dimensions.get('window').width,
+            justifyContent: 'space-evenly',
+            alignItems: 'center',
+            minHeight: 150,
+            backgroundColor: 'floralwhite',
+            borderRadius: 10,
+            padding: 15,
+          }}
+          >
+
+            <Text style={{
+              color: 'red',
+              fontSize: 20,
+              borderColor: 'black',
+              borderWidth: 0,
+              textAlign: 'center',
+            }}
+            > Something went wrong at the back-end while creating this event; sorry!
+            </Text>
+
+          </View>
+        </View>
+      </Modal>
+    );
+  }
+
   renderErrorModal = () => {
-    const errors = this.state.validationErrors.map((errorMessage) => { 
+    const errors = this.state.validationErrors.map((errorMessage) => {
       return (
         <Text style={{
-          color: 'red', 
+          color: 'red',
           fontSize: 17,
           borderColor: 'black',
           borderWidth: 0,
@@ -399,16 +496,16 @@ class NewEventPage extends Component {
         }}
         >{'\u2B24'} {errorMessage}
         </Text>
-      ); 
+      );
     });
-      
+
 
     return (
-      
+
       <Modal
         isVisible={this.state.errorModalVisible}
         backdropOpacity={0.3}
-        onBackdropPress={() => this.setState({errorModalVisible: false, validationErrors: []})}
+        onBackdropPress={() => this.setState({ errorModalVisible: false, validationErrors: [] })}
       >
         <View style={{
           flex: 1,
@@ -431,10 +528,10 @@ class NewEventPage extends Component {
           }}
           >
             <Text>
-              <Icon type="FontAwesome5" name="exclamation-triangle" style={{color: 'red', fontSize: 40 }} />
+              <Icon type="FontAwesome5" name="exclamation-triangle" style={{ color: 'red', fontSize: 40 }} />
             </Text>
             <Text style={{
-              color: 'red', 
+              color: 'red',
               fontSize: 20,
               borderColor: 'black',
               borderWidth: 0,
@@ -445,7 +542,7 @@ class NewEventPage extends Component {
             >Please fix the following:
             </Text>
             {errors}
-            
+
           </View>
         </View>
       </Modal>
@@ -644,7 +741,7 @@ class NewEventPage extends Component {
       >
         <Text style={styles.categoryTitle}>{item.title}</Text>
         <Text>
-          <Icon type="FontAwesome5" name={item.iconName} style={styles.categoryIcon} />
+          {item.iconName && (<Icon type="FontAwesome5" name={item.iconName} style={styles.categoryIcon} />)}
         </Text>
       </View>
 
@@ -663,7 +760,7 @@ class NewEventPage extends Component {
             // enableMomentum
             swipeThreshold={10}
             lockScrollWhileSnapping
-            firstItem={1}
+            firstItem={2}
             ref={(ref) => this.carousel = ref}
             data={this.state.categoryCarouselItems}
             sliderWidth={Dimensions.get('window').width}
@@ -757,6 +854,8 @@ class NewEventPage extends Component {
     return (
       <SafeAreaView style={{ flex: 1, paddingTop: StatusBar.currentHeight + 7, backgroundColor: 'white' }}>
         <ScrollView style={styles.container} keyboardShouldPersistTaps="always">
+          {this.renderBackendSuccessModal()}
+          {this.renderBackendErrorModal()}
           {this.renderErrorModal()}
           {this.renderExitSave()}
           {this.renderTitle()}
@@ -809,8 +908,13 @@ const Box = styled.View`
 
 
 const mapStateToProps = (state) => ({
-  newEvent: state.events.newEvent,
+  createdEventTitle: state.newEventStatus.createdEventTitle,
+  backendError: state.newEventStatus.error,
+  backendSuccess: state.newEventStatus.success,
 });
 
 export default connect(mapStateToProps,
-  { createEvent: actions.createEvent })(NewEventPage);
+  {
+    createEvent: actions.createEvent,
+    resetBackEndErrorState: actions.resetBackEndErrorState,
+  })(NewEventPage);
