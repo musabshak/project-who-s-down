@@ -14,7 +14,7 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
-import { changeFilters, fetchEvents } from './actions';
+import { changeFilters, fetchEvents, initializeFilters } from './actions';
 
   
 class FilterMenu extends Component {
@@ -112,6 +112,11 @@ class FilterMenu extends Component {
     this.props.changeFilters(param);
   }
 
+  clearAllFilters = () => {
+    console.log('clear all filters called!');
+    this.props.initializeFilters();
+  }
+
 
   render() {
     return (
@@ -132,6 +137,10 @@ class FilterMenu extends Component {
             onPress={() => this.setState({ main_active: !this.state.main_active })}
           >
             <FontAwesome name="eye" />
+
+            <Button style={{backgroundColor: '#DD5144', left: 20}} onPress={() => this.clearAllFilters()}>
+              <Icon name="close" />
+            </Button>
 
             <Button style={{ backgroundColor: '#34A34F' }} onPress={this.onTimeFilterPress} onLongPress={this.onTimeFilterLongPress}>
               <Icon name="alarm" />
@@ -257,4 +266,4 @@ const mapStateToProps = (reduxState) => (
 );
 
 
-export default connect(mapStateToProps, {changeFilters, fetchEvents})(FilterMenu);
+export default connect(mapStateToProps, {changeFilters, fetchEvents, initializeFilters})(FilterMenu);

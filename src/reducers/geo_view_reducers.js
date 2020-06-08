@@ -17,6 +17,17 @@ const initialState = {
   eventList: [],
 
 };
+
+const initialState2 = {
+  filteredOut: {
+    categories: [],
+    skillLevels: [],
+    timesAfter: null,
+    timesBefore: null,
+  },
+  eventList: [],
+
+};
   
   
 const geoViewReducer = (state = initialState, action, debug = false, debug2 = false) => {
@@ -95,10 +106,19 @@ const geoViewReducer = (state = initialState, action, debug = false, debug2 = fa
       return state;
     }
 
-    // this case should never occur either, this function was used to help debug
+    // this case was repurposed to clear all filters
   case ActionTypes.initializeFilters:
-    if (masterDebug) { console.log('in the reducer for initialize filters'); }
-    return {...state, filteredOut: initialState.filteredOut};
+    if (masterDebug) { 
+      console.log('in the reducer for initialize filters'); 
+    }
+    return { // this is rly bad, but apparently the initialState constant is changed by some filter, so to be safe I just return this
+      filteredOut: {
+        categories: [],
+        skillLevels: [],
+        timesAfter: null,
+        timesBefore: null,
+      },
+    };
 
 
   case ActionTypes.fetchEvents: // so filtering is handled here
@@ -140,12 +160,12 @@ const geoViewReducer = (state = initialState, action, debug = false, debug2 = fa
       }
 
       if (state.filteredOut.timesBefore) {
-        console.log('filtering out times before!');
+        if (masterDebug) { console.log('filtering out times before!'); }
         for (let i = 0; i < filteredEventList.length; i++) {
           if (Date.parse(filteredEventList[i].startTime) < state.filteredOut.timesBefore.getTime()) {
             const deletedEvents = filteredEventList.splice(i, 1); // so if the event start time is before the time you're filtering for, remove it
             // filter for times before
-            console.log('deleted this event!', deletedEvents);
+            if (masterDebug) { console.log('deleted this event!', deletedEvents); }
           }
         }
       }
