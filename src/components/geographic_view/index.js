@@ -140,7 +140,7 @@ class GeographicDisplay extends Component {
             <Marker key={obj.id} coordinate={{ latitude: obj.latitude, longitude: obj.longitude}}>
               <Text> {obj.eventTitle} </Text>
               <Callout>
-                <EventPreview />
+                <EventPreview title={{title: 'crickets' }} />
               </Callout>
 
 

@@ -74,7 +74,9 @@ class FilterMenu extends Component {
     return (
       <View style={{
         padding: 5,
-        flexDirection: 'row',}}>
+        flexDirection: 'row', 
+      }}
+      >
 
         <Button style={{ backgroundColor: '#3B5998' }} onPress={this.debugPress}>
           <Icon name="md-print" />

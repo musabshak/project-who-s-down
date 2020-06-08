@@ -13,6 +13,7 @@ import SignUp from '../components/signup';
 import EventInfo from '../components/event_info';
 import MyEvents from '../components/my_events';
 import NewEventPage from '../components/new_event';
+import Chat from '../components/chat';
 
 const NullComponent = () => null;
 export const navigationRef = React.createRef();
@@ -42,6 +43,7 @@ function Main(props) {
     
     <NavigationContainer ref={navigationRef}>
       <Stack.Navigator
+        ref={React.useRef(null)}
         screenOptions={{
           // headerShown: false,
           // gestureEnabled: false,
@@ -115,6 +117,14 @@ function Main(props) {
           component={EventInfo} 
           options={{
             headerShown: false,
+          }}
+        />
+      
+        <Stack.Screen
+          name="Chat"
+          component={Chat} 
+          options={{
+            // headerShown: true,
           }}
         />
       </Stack.Navigator>

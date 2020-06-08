@@ -299,7 +299,7 @@ createMarkers = () => {
                 <Text style={styles.btnTimeText}>{this.state.startTime}</Text>
               </View>
               {/* Chat room */}
-              <TouchableOpacity style={styles.btnChat}>
+              <TouchableOpacity style={styles.btnChat} onPress={this.props.navigation.navigate('Chat')}>
                 <SvgUri
                   width="50"
                   height="50"
