@@ -6,6 +6,8 @@ import axios from 'axios';
 import {
   Container, Header, Content, Card, CardItem, Body, Button,
 } from 'native-base';
+import { connect } from 'react-redux';
+import { updateNotifNumber } from './actions';
 
 
 const ROOT_URL = 'https://project-who-s-down-api.herokuapp.com/api/';
@@ -35,12 +37,12 @@ class tabFour extends Component {
 
   componentDidMount() {
     this.fetchNotifsFromServer();
-    this.timer = setInterval(() => this.fetchNotifsFromServer(), 2000);
+    this.timer = setInterval(() => this.fetchNotifsFromServer(), 30000);
   }
 
   fetchNotifsFromServer = () => {
     // so from the backend you want a list of json objects
-    // each json object should have notif type ("New Chat Message", "Event Starting soon!"), source (event title), and ID (event ID)
+    // each json object should have notif type ("New Chat Message", "Event Starting soon!", "Event Cancelled"), source (event title), and ID (event ID)
     const base = {
       type: 'New Chat Message',
       source: 'Sample Event Title',
@@ -63,6 +65,7 @@ class tabFour extends Component {
     }
 
     this.setState({notifs: notifList});
+    this.props.updateNotifNumber(notifList.length);
   }
 
   renderAllNotifs = () => {
@@ -109,16 +112,23 @@ class tabFour extends Component {
   }
 
   render() {
-    console.log('rerendering!');
+    // console.log('rerendering!');
     return (
       <View>
         {this.renderAllNotifs()}
-        {/* <Button onPress={() => { console.log(this.state); }}><Text>log state</Text></Button>
-        <Button onPress={() => { this.fetchNotifsFromServer(); }}><Text>fetch notifs</Text></Button> */}
+        <Button onPress={() => { console.log(this.props); }}><Text>log props</Text></Button>
+        <Button onPress={() => { console.log(this.state); }}><Text>log state</Text></Button>
 
       </View>
     );
   }
 }
 
-export default tabFour;
+const mapStateToProps = (reduxState) => (
+  {
+    notifNumber: reduxState.notifNumber,
+  }
+);
+  
+
+export default connect(mapStateToProps, {updateNotifNumber})(tabFour);

@@ -12,8 +12,8 @@ export default class Settings extends Component { // maybe rename user panel
     return (
 
       <Tabs>
-        <Tab heading="About">
-          <Tab1 />
+        <Tab heading="Alerts">
+          <Tab4 />
         </Tab>
         <Tab heading="Created Events">
           <Tab2 />
@@ -21,11 +21,10 @@ export default class Settings extends Component { // maybe rename user panel
         <Tab heading="Currently Down For">
           <Tab3 />
         </Tab>
-        <Tab heading="Alerts">
-          <Tab4 />
+        <Tab heading="Legal">
+          <Tab1 />
         </Tab>
       </Tabs>
-      // </Container>
     );
   }
 }
