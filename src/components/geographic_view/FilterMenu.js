@@ -14,7 +14,7 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
-import { changeFilters } from './actions';
+import { changeFilters, fetchEvents } from './actions';
 
   
 class FilterMenu extends Component {
@@ -90,6 +90,7 @@ class FilterMenu extends Component {
     this.hideDatePicker();
     const param = {FilterType: 'timesAfter', SpecificFilter: date};
     this.editIndividualFilter(param);
+    this.props.fetchEvents();
   };
 
   handleConfirmBefore = (date) => {
@@ -97,15 +98,16 @@ class FilterMenu extends Component {
     this.hideDatePickerBefore();
     const param = {FilterType: 'timesBefore', SpecificFilter: date};
     this.editIndividualFilter(param);
+    this.props.fetchEvents();
   };
 
   render() {
     return (
       <View>
 
-        <Button style={{ backgroundColor: '#3B5998' }} onPress={this.debugPress}>
+        {/* <Button style={{ backgroundColor: '#3B5998' }} onPress={this.debugPress}>
           <Icon name="md-print" />
-        </Button>
+        </Button> */}
         <View style={{ flex: 1 }}>
           <Fab
             active={this.state.main_active}
@@ -230,4 +232,4 @@ const mapStateToProps = (reduxState) => (
 );
 
 
-export default connect(mapStateToProps, {changeFilters})(FilterMenu);
+export default connect(mapStateToProps, {changeFilters, fetchEvents})(FilterMenu);

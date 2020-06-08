@@ -182,7 +182,7 @@ class GeographicDisplay extends Component {
   createMap = () => {
     return (
       <View>
-        <Text>This should be the map view!</Text>
+        {/* <Text>This should be the map view!</Text> */}
         <MapView
           style={{
             minHeight: 200,
@@ -214,22 +214,22 @@ class GeographicDisplay extends Component {
             this.setState({ query });
           }}
         />
-        <Button
+        {/* <Button
           onPress={() => this.props.navigation.navigate('EventList')}
           title="Event List View"
           color="#841584"
           accessibilityLabel="Event List view"
-        />
-        <Text>This is WHERE the mapview will go</Text>
+        /> */}
+        {/* <Text>This is WHERE the mapview will go</Text>
 
         <Text>This is the mapview component</Text>
-        <Text>I think youre at {JSON.stringify(this.state.location)}</Text>
+        <Text>I think youre at {JSON.stringify(this.state.location)}</Text> */}
 
         {this.createMap()}
         <FilterMenu />
-        <Button title="show geographic display state" onPress={this.debugHelper}> show GeographicDisplay state</Button>
-        <Button title="call fetchevents!" onPress={this.handleFetchClick}> call get events</Button>
-        <Button title="call initialize filters" onPress={this.callInitializeFilters}> call get events</Button>
+        {/* <Button title="show geographic display state" onPress={this.debugHelper}> show GeographicDisplay state</Button> */}
+        <Button title="Refresh map" onPress={this.handleFetchClick}> call get events</Button>
+        {/* <Button title="call initialize filters" onPress={this.callInitializeFilters}> call get events</Button> */}
 
       </View>
     );
