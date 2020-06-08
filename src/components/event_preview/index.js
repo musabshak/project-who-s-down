@@ -17,11 +17,16 @@ class EventPreview extends Component {
     this.state = {
       EventPreviewVisible: true,
       success: false,
+      // title: eventTitle
+      //  skillLevel={obj.skillLevel} 
+      //  startTime={obj.startTime} 
+      //  description={obj.description} 
+      //  id={obj.id}
      
-
     };
+    console.log('eventPreview got this!', props);
   }
-
+ 
 
 openPreview = () => {
   this.setState({
@@ -72,11 +77,11 @@ render() {
             <View style={styles.exclude} />
             <View style={styles.title}>
               <Text style={styles.titleFont}>cricket{this.props.title} </Text>
-              <Text style={styles.timeFont}>14:30{this.state.startTime} </Text>
+              <Text style={styles.timeFont}>14:30{this.props.startTime} </Text>
             </View>
             <View style={styles.people}>
               <View style={styles.host}>
-                <Text style={styles.hostFont}>Aarish Iyer{this.state.host} </Text>
+                <Text style={styles.hostFont}>Aarish Iyer{this.props.id} </Text>
               </View>
               <View style={styles.participants}>
                 <FontAwesome name="heart" color="#FF5722" size={20} />
@@ -90,7 +95,7 @@ render() {
                 </Text>
               </View>
               <View style={styles.skillLevel2}>
-                <Text style={styles.hostFont}>professional{this.state.skillLevel} </Text>
+                <Text style={styles.hostFont}>professional{this.props.skillLevel} </Text>
               </View>
             </View>
 
@@ -112,8 +117,8 @@ render() {
               
               <ScrollView style={styles.bio}>
                 {/* <View style={styles.bio}> */}
-                <Text style={styles.bioFont2}>I'm finally willing to go out and breathe some fresh air ayyyyy! Oh this has been killing me can you see my soul is slowly coming out of my body reeeeeeeeeeeeeeeeeeeeeeeeeee
-                  {this.state.description}
+                <Text style={styles.bioFont2}>reeeeeeeeeeeeeeeeeeeeeeeeeee
+                  {this.props.description}
                 </Text>
               </ScrollView>
              

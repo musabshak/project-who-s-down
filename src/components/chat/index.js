@@ -6,6 +6,7 @@ import {
 // import { App } from 'react-native-firebase';
 import { IconButton } from 'react-native-paper';
 import { View, StyleSheet } from 'react-native';
+import uuid4 from 'uuidv4';
 // import { connect } from 'react-redux';
 // import { fetchEvents } from './actions';
 
@@ -62,9 +63,19 @@ class Chat extends Component {
       messages:
         [
           {
-            _id: 1,
-            text: 'Welcome ',
+            _id: 0,
+            text: 'Welcome to this Event!',
             createdAt: new Date().getTime(),
+            system: true,
+          },
+          {
+            _id: 2,
+            text: 'no.2',
+            createdAt: new Date().getTime(),
+            user: {
+              _id: 3,
+              name: 'April Zhang',
+            },
           },
         ],
       user: 'userId',
@@ -80,19 +91,14 @@ class Chat extends Component {
   // } 
 
 
-    // helper method that is sends a message
-    handleSend = (newMessage = []) => {
-      const [message, setMessages] = useState([
-        {
-          _id: 1,
-          text: 'Hello developer',
-          createdAt: new Date(),
-          user: { _id: 2, name: 'Name' },
-        },
-      ]);
-      setMessages(GiftedChat.append(message, newMessage));
-      this.setState({messages: message});
-    };
+  // helper method that is sends a message
+  handleSend=(messages = []) => {
+    this.setState((previousState) => {
+      return {
+        messages: GiftedChat.append(previousState.messages, messages),
+      };
+    });
+  }
 
     // setInterval(functionaname, 1000)
     scrollToBottomComponent = () => {
@@ -111,6 +117,10 @@ class Chat extends Component {
             right: {
               // Here is the color change
               backgroundColor: '#FF5722',
+            },
+            left: {
+              // Here is the color change
+              backgroundColor: 'white',
             },
           }}
           textStyle={{
@@ -164,14 +174,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
 });
-// const [messages, setMessages] = useState([
-//   {
-//     _id: 0,
-//     text: 'Welcome to' {this.state.eventTitle},
-//     createdAt: new Date().getTime(),
-//     system: true,
-//   },
-// ]);
+
 
 // const mapStateToProps = (state) => {
 //   return ({
