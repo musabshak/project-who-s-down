@@ -36,7 +36,7 @@ function customFormatDate(date) {
   return date.toDateString().split(' ').slice(1, -1).join(' ');
 }
 
-export function customFormatTime(date) {
+function customFormatTime(date) {
   const hours = date.getHours() === 0 ? '12' : date.getHours() > 12 ? date.getHours() - 12 : date.getHours();
   const minutes = (date.getMinutes() < 10 ? '0' : '') + date.getMinutes();
   const ampm = date.getHours() < 12 ? 'AM' : 'PM';

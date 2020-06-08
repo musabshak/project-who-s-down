@@ -2,16 +2,19 @@
 /* eslint-disable global-require */
 import React, { Component } from 'react';
 import {
-  View, Text, Image, ActivityIndicator, TouchableOpacity,
+  Icon,
+} from 'native-base';
+import {
+  View, Text, ActivityIndicator, TouchableOpacity,
 } from 'react-native';
 import { connect } from 'react-redux';
 import * as Permissions from 'expo-permissions';
 import * as Location from 'expo-location';
-// TD: replace the icons w/ static images
-import Ionicons from 'react-native-vector-icons/FontAwesome';
 import * as Font from 'expo-font';
-import SvgUri from 'react-native-svg-uri';
+// import SvgUri from 'react-native-svg-uri';
 import MapView, { Marker, Callout } from 'react-native-maps';
+import { getDistance } from 'geolib';
+import { API_KEY, customFormatTime } from '../new_event';
 // import { customFormatTime } from '../new_event';
 // import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 
@@ -26,15 +29,17 @@ class EventInfo extends Component {
       region: { // default just set it to NC b/c my event markers were located here; feel free to change for your testing purposes
         latitude: this.props.route.params.event.latitude,
         longitude: this.props.route.params.event.longitude,
-        latitudeDelta: 0.0922,
-        longitudeDelta: 0.0421,
+        latitudeDelta: 0.0004,
+        longitudeDelta: 0.008,
       },
+      id: this.props.route.params.event.id,
       title: this.props.route.params.event.eventTitle,
       skillLevel: this.props.route.params.event.skillLevel,
       startTime: this.props.route.params.event.startTime,
       description: this.props.route.params.event.description,
       category: this.props.route.params.event.category,
       eventList: [],
+      currentTime: new Date(),
     };
   }
 
@@ -53,7 +58,6 @@ class EventInfo extends Component {
     } catch (error) {
       console.log(error);
     }
-
     // console.log(customFormatTime(this.state.startTime));
     // // fetching events for testing
     // try {
@@ -61,31 +65,64 @@ class EventInfo extends Component {
     // } catch (error) {
     //   console.log(error);
     // }
-    // this._getLocation();
+    fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${this.props.route.params.event.latitude},${this.props.route.params.event.longitude}&key=${API_KEY}`)
+      .then((response) => response.json())
+      .then((responseJson) => {
+        const addr = responseJson.results[0].formatted_address;
+        this.setState({ addr });
+      });
+    this._getLocation();
+    // console.log(this.props.token);
   }
 
-  componentDidUpdate(prevProps) {
-    // if (this.props.events[0] && !this.state.eventLoaded) {
-    //   const tmpe = this.props.events[0];
-    //   this.setState({
-    //     region: { // default just set it to NC b/c my event markers were located here; feel free to change for your testing purposes
-    //       latitude: tmpe.latitude,
-    //       longitude: tmpe.longitude,
-    //       latitudeDelta: 0.0922,
-    //       longitudeDelta: 0.0421,
-    //     },
-    //     title: tmpe.eventTitle,
-    //     skillLevel: tmpe.skillLevel,
-    //     startTime: tmpe.startTime,
-    //     description: tmpe.description,
-    //     category: tmpe.category,
-    //     eventLoaded: true,
-    //   });
-    //   // console.log('event is loaded');  
-    // }
-    // console.log('event is loaded');  
-  } 
+  // componentDidUpdate(prevProps) {
+  // if (this.props.events[0] && !this.state.eventLoaded) {
+  //   const tmpe = this.props.events[0];
+  //   this.setState({
+  //     region: { // default just set it to NC b/c my event markers were located here; feel free to change for your testing purposes
+  //       latitude: tmpe.latitude,
+  //       longitude: tmpe.longitude,
+  //       latitudeDelta: 0.0922,
+  //       longitudeDelta: 0.0421,
+  //     },
+  //     title: tmpe.eventTitle,
+  //     skillLevel: tmpe.skillLevel,
+  //     startTime: tmpe.startTime,
+  //     description: tmpe.description,
+  //     category: tmpe.category,
+  //     eventLoaded: true,
+  //   });
+  //   // console.log('event is loaded');  
+  // }
+  // console.log('event is loaded');  
+  // } 
 
+  customFormatTime = (dateString) => {
+    const date = new Date(dateString);
+    const tks = date.toDateString().split(' ');
+    const hours = date.getHours() === 0 ? '12' : date.getHours() > 12 ? date.getHours() - 12 : date.getHours();
+    const minutes = (date.getMinutes() < 10 ? '0' : '') + date.getMinutes();
+    const ampm = date.getHours() < 12 ? 'AM' : 'PM';
+    const formattedTime = `${hours}:${minutes} ${ampm}`;
+    return `${tks[1]} ${tks[2]}, ${tks[3]}   ${formattedTime}`;
+  }
+
+  hourDiff = () => {
+    const curr = new Date();
+    const sTime = new Date(this.state.startTime);
+    if (!this.state.startTime || sTime.getDate() - curr.getDate() < 0 || (sTime.getDate() - curr.getDate() == 0 && sTime.getHours() - curr.getHours() < 0)) return -1;
+    let sHour = sTime.getHours();
+    sHour += 24 * (sTime.getDate() - curr.getDate());
+    return sHour - curr.getHours();
+  }
+  estimatedTime = (estimatedDist) => {
+    if (estimatedDist/80.4 < 5) return {res: '<5min', name: 'walk'};
+    else if (estimatedDist/80.4 <= 20) return {res: `${(estimatedDist/80.4).toFixed()}min`, name: 'walk'};
+    else if (estimatedDist/1072.88 <= 60) return {res: `${(estimatedDist/1072.88).toFixed()}min`, name: 'car'};
+    else if (estimatedDist/1072.88 <= 120) return {res: `1h${(estimatedDist/1072.88).toFixed() - 60}min`, name: 'car'};
+    // else if (this.state.estimatedDist/1072.88 > 120) return {res: '>2h', name: 'car'};
+    else return {res: '>2h', name: 'car'};
+  }
   _getLocation = async () => {
     const { status } = await Permissions.askAsync(Permissions.LOCATION);
   
@@ -98,16 +135,14 @@ class EventInfo extends Component {
     }
 
     const location = await Location.getCurrentPositionAsync();
+    const estimatedDist = getDistance({ latitude: this.props.route.params.event.latitude, longitude: this.props.route.params.event.longitude }, { latitude: location.coords.latitude, longitude: location.coords.longitude });
     this.setState({
       location,
-      region: {
-        longitude: location.coords.longitude,
-        latitude: location.coords.latitude,
-        latitudeDelta: 0.0922,
-        longitudeDelta: 0.0421,
-      },
+      estimatedDist,
+      estimatedTime: this.estimatedTime(estimatedDist),
     }, () => {
       console.log('location set.');
+      // console.log()
     });
   }
 
@@ -117,11 +152,12 @@ createMarkers = () => {
 
   // these maps are used to give meaning to the icons
   const eventCategoryToIcon = new Map([
-    ['nightlife', require('../../../assets/nightlife.png')],
-    ['culture', require('../../../assets/culture.png')],
-    ['educational', require('../../../assets/educational.png')],
-    ['sports', require('../../../assets/sports.png')],
-    ['boardgame', require('../../../assets/boardgames.png')],
+    ['nightlife', require('../../../assets/images/nightlife.png')],
+    ['culture', require('../../../assets/images/culture.png')],
+    ['educational', require('../../../assets/images/educational.png')],
+    ['sport', require('../../../assets/images/sport.png')],
+    ['game', require('../../../assets/images/game.png')],
+    ['food', require('../../../assets/images/food.png')],
   ]);
 
   const eventLevelToIcon = new Map([ 
@@ -129,44 +165,62 @@ createMarkers = () => {
     ['amateur', '#0000FF'],
     ['casual', '#008000'], 
   ]);
-
-  return this.state.eventList.map((obj) => {
-    const eventOpacity = this.createTransparencyFromStartTime(obj.startTime);
-
-
-    // this first part handles what happens if you zoom super far in on a marker (we decided we want it to show more information)
-    if (this.state.region.longitudeDelta < MIN_ZOOM_FOR_MARKER_CHANGE) { 
-      return (
-        <Marker key={obj.latitude} coordinate={{ latitude: obj.latitude, longitude: obj.longitude}}>
-          <Text> {obj.title} </Text>
-          <Callout>
-            {/* <EventPreview /> */}
-            <Text>Yo</Text>
-          </Callout>
-
-
-        </Marker>
-      ); 
-    }
-
-    // this second part handles what happens normally, and shows just the event icon etc
-    else {
-      return (
-        <Marker key={obj.latitude} coordinate={{ latitude: obj.latitude, longitude: obj.longitude}}>
-          <Image source={eventCategoryToIcon.get(obj.category)}
-            style={{
-              height: 35, width: 35, borderWidth: 4, borderColor: eventLevelToIcon.get(obj.level), opacity: eventOpacity,
-            }}
-          />
-          <Callout>
-            {/* <EventPreview /> */}
-            <Text>Yo</Text>
-          </Callout>
+  if (this.state.location) return (
+    <>
+    <Marker key={this.state.id} coordinate={{ latitude: this.props.route.params.event.latitude, longitude: this.props.route.params.event.longitude}}>
+      <Icon type="MaterialCommunityIcons" name="map-marker" style={styles.eventInfoMarker} />
+      {/* <Callout>
+        <Text style={{width: '100%'}}>It&#39;s you</Text>
+      </Callout> */}
+    </Marker>
+    
+    <Marker key='user_location' coordinate={{ latitude: this.state.location.coords.latitude, longitude: this.state.location.coords.longitude}}>
+      <Icon type="MaterialCommunityIcons" name="human-handsup" style={styles.eventInfoUserMarker} />
+      <Callout>
+        <Text style={{width: 100, fontFamily: 'OpenSans-Regular'}}>feeling cute might delete later</Text>
+      </Callout>
+  </Marker>
+  </>
+  );
+  else return null;
+  
+  // return this.state.eventList.map((obj) => {
+  //   const eventOpacity = this.createTransparencyFromStartTime(obj.startTime);
 
 
-        </Marker>
-      ); }
-  });
+  //   // this first part handles what happens if you zoom super far in on a marker (we decided we want it to show more information)
+  //   if (this.state.region.longitudeDelta < MIN_ZOOM_FOR_MARKER_CHANGE) { 
+  //     return (
+  //       <Marker key={obj.latitude} coordinate={{ latitude: obj.latitude, longitude: obj.longitude}}>
+  //         <Text> {obj.title} </Text>
+  //         <Callout>
+  //           {/* <EventPreview /> */}
+  //           <Text>Yo</Text>
+  //         </Callout>
+
+
+  //       </Marker>
+  //     ); 
+  //   }
+
+  //   // this second part handles what happens normally, and shows just the event icon etc
+  //   else {
+  //     return (
+  //       <Marker key={obj.latitude} coordinate={{ latitude: obj.latitude, longitude: obj.longitude}}>
+  //         <Image source={eventCategoryToIcon.get(obj.category)}
+  //           style={{
+  //             height: 35, width: 35, borderWidth: 4, borderColor: eventLevelToIcon.get(obj.level), opacity: eventOpacity,
+  //           }}
+  //         />
+  //         <Callout>
+  //           {/* <EventPreview /> */}
+  //           <Text>Yo</Text>
+  //         </Callout>
+
+
+  //       </Marker>
+  //     ); }
+  // });
 }
 
   createMap = () => {
@@ -175,16 +229,25 @@ createMarkers = () => {
         <MapView
           style={styles.mapCard}
           region={this.state.region}
-          onLayout={this.onMapLayout}
+          // onLayout={this.onMapLayout}
           onRegionChangeComplete={this.handleRegionChange}
           // showsUserLocation
           // followsUserLocation
         > 
           {this.createMarkers()}
+          {/* {this.state.location ? <MapViewDirections
+            origin={{ latitude: this.state.location.latitude, longitude: this.state.location.longitude }}
+            destination={{ latitude: this.props.route.params.event.latitude, longitude: this.props.route.params.event.longitude }}
+            apikey={DIRECTIONS_API_KEY}
+            strokeWidth={3}
+            strokeColor="#FF5722"
+          /> : null } */}
         </MapView>
       </View>
     );
   }
+
+  
 
   handleRegionChange = (e) => {
     this.setState({region: e});
@@ -237,17 +300,17 @@ createMarkers = () => {
     if (this.state.fontLoaded) {
       return (
         <View style={styles.container}>
-          <SvgUri
+          {/* <SvgUri
             width="1000"
             height="1000"
             // source={{uri:'http://thenewcode.com/assets/images/thumbnails/homer-simpson.svg'}}
             source={require('../../../assets/images/bg-shapes-0.svg')}
             style={{ position: 'absolute', top: 0, zIndex: -1 }}
-          />
+          /> */}
           <View style={styles.headerCont}>
             <View style={styles.headerIcon} name="" size={45} color="#FF5722" />
             <Text style={styles.header}>Details</Text>
-            <Ionicons style={styles.headerIcon} name="user-circle" size={45} color="#FF5722" />
+            {/* <Ionicons style={styles.headerIcon} name="user-circle" size={45} color="#FF5722" /> */}
           </View>
           <View style={styles.mapCardCont}>
             <View style={styles.mapCardInfo}>
@@ -260,64 +323,69 @@ createMarkers = () => {
             /> */}
           </View>
           <View style={styles.contentCont}>
-            <Text style={styles.addrCat}>On-campus</Text>
             <View style={styles.catTagCont}>
               <View style={styles.catTag}>
-                <SvgUri
+                {/* <SvgUri
                   width="20"
                   height="20"
                   fill="#fff"
                   source={require('../../../assets/images/icn-smile.svg')}
                   style={styles.catTagImg}
-                />
+                /> */}
+                <Icon type="MaterialCommunityIcons" name="bell-outline" style={styles.catTagImg} />
                 <Text style={styles.catTagText}>Casual Game</Text>
               </View>
             </View>
-            <Text style={styles.addr}>20 E Wheelock St, Apt B</Text>
-            <Text style={styles.timeLabel}>5:40PM EST</Text>
+            <Text style={styles.addr}>{this.state.addr}</Text>
+            <Text style={styles.timeLabel}>{this.customFormatTime(this.state.startTime)}</Text>
             <View style={styles.btnGroup}>
               {/* Distance Estimate */}
               <View style={styles.btnDist}>
-                <SvgUri
+                {/* <SvgUri
                   width="50"
                   height="50"
                   fill="#fff"
                   source={require('../../../assets/images/icn-car.svg')}
                   style={styles.btnDistImg}
-                />
-                <Text style={styles.btnDistText}>15 min</Text>
+                /> */}
+                <Icon type="MaterialCommunityIcons" name={this.state.estimatedTime?.name} style={styles.btnDistImg} />
+                <Text style={styles.btnDistText}>{this.state.estimatedTime?.res}</Text>
               </View>
               {/* Time Left */}
               <View style={styles.btnTime}>
-                <SvgUri
+                {/* <SvgUri
                   width="50"
                   height="50"
                   fill="#fff"
                   source={require('../../../assets/images/icn-stopwatch.svg')}
                   style={styles.btnTimeImg}
-                />
-                <Text style={styles.btnTimeText}>{this.state.startTime}</Text>
+                /> */}
+                <Icon type="MaterialIcons" name="schedule" style={styles.btnTimeImg} />
+                <Text style={styles.btnTimeText}>{ this.hourDiff() < 0 ? 'Ended' : (this.hourDiff() ? `${this.hourDiff()}h left` : '<1h left') }</Text>
               </View>
               {/* Chat room */}
               <TouchableOpacity style={styles.btnChat}>
-                <SvgUri
+                {/* <SvgUri
                   width="50"
                   height="50"
                   fill="#FF5722"
                   source={require('../../../assets/images/icn-chat.svg')}
                   style={styles.btnChatImg}
-                />
+                /> */}
+                <Icon type="MaterialCommunityIcons" name="forum" style={styles.btnChatImg} />
                 <Text style={styles.btnChatText}>Chat Board</Text>
               </TouchableOpacity>
               {/* Subscribe */}
               <TouchableOpacity style={styles.btnSubs}>
-                <SvgUri
+                {/* <SvgUri
                   width="50"
                   height="50"
                   fill="#FF5722"
                   source={require('../../../assets/images/icn-bell-filled.svg')}
                   style={styles.btnSubsImg}
-                />
+                /> */}
+                {/* <Icon type="MaterialCommunityIcons" name="bell-ring" style={styles.btnSubsImg} /> */}
+                <Icon type="MaterialCommunityIcons" name="bell-outline" style={styles.btnSubsImg} />
                 <Text style={styles.btnSubsText}>Subscribed</Text>
               </TouchableOpacity>
             </View>
@@ -334,7 +402,8 @@ createMarkers = () => {
               // onPressIn={this.onPressIn}
             >
               <View style={styles.btnCont}>
-                <Ionicons name="undo" size={45} color="#FF5722" />
+                {/* <Ionicons name="undo" size={45} color="#FF5722" /> */}
+                <Icon type="MaterialCommunityIcons" name="arrow-left" style={{ fontSize: 45, color: '#FF5722' }} />
               </View>
             </TouchableOpacity>
             <TouchableOpacity
@@ -342,7 +411,9 @@ createMarkers = () => {
               activeOpacity={0.8}
               onPress={() => this.props.navigation.pop()}
             >
-              <Ionicons name="thumbs-up" size={45} color="#FFF" />
+              {/* <Ionicons name="thumbs-up" size={45} color="#FFF" /> */}
+              <Icon type="MaterialCommunityIcons" name="hand-right" style={{ fontSize: 45, color: '#fff' }} />
+              <Text style={styles.tabBarLabel}>I&#39;m down!</Text>
             </TouchableOpacity>
           </View>
           
@@ -361,6 +432,7 @@ createMarkers = () => {
 const mapStateToProps = (state) => {
   return ({
     events: state.eventsSh.all,
+    token: state.auth.token,
   });
 };
 export default connect(mapStateToProps, { fetchEvents })(EventInfo);

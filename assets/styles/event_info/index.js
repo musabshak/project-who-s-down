@@ -83,9 +83,9 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     // flexDirection: 'column',
     // backgroundColor: '#FF5722',
-    overflow: 'hidden',
-    borderBottomLeftRadius: 20,
-    borderBottomRightRadius: 20,
+    // overflow: 'hidden',
+    borderBottomLeftRadius: 5,
+    borderBottomRightRadius: 5,
     shadowOffset: { width: 2, height: 2 },
     shadowColor: 'black',
     shadowOpacity: 0.2,
@@ -103,12 +103,13 @@ export const styles = StyleSheet.create({
     width: '100%',
     paddingTop: 5,
     paddingBottom: 5,
-    shadowOffset: { width: 0, height: 10 },
+    shadowOffset: { width: 0, height: 5 },
     shadowColor: 'black',
-    shadowOpacity: 0.8,
-    shadowRadius: 1,
-    borderTopLeftRadius: 10,
-    borderTopRightRadius: 10,
+    shadowOpacity: 0.2,
+    shadowRadius: 5,
+    borderTopLeftRadius: 5,
+    borderTopRightRadius: 5,
+    zIndex: 1,
   },
   mapCard: {
     // flex: 0.8,
@@ -116,16 +117,16 @@ export const styles = StyleSheet.create({
     height: '80%',
     // width: 200,
     // height: 200,
-    borderBottomLeftRadius: 10,
-    borderBottomRightRadius: 10,
-    // overflow: 'hidden',
-    // minHeight: 200,
+    // zIndex: -1,
+    borderBottomLeftRadius: 5,
+    borderBottomRightRadius: 5,
+    minHeight: 200,
     // minWidth: 200,
   }, 
   mapCardImage: {
     flex: 0.8,
-    borderBottomLeftRadius: 20,
-    borderBottomRightRadius: 20,
+    borderBottomLeftRadius: 5,
+    borderBottomRightRadius: 5,
   },
   contentCont: {
     flex: 1,
@@ -140,7 +141,7 @@ export const styles = StyleSheet.create({
   },
   catTagCont: {
     width: '45%',
-    marginTop: 28, 
+    // marginTop: 28, 
     paddingRight: 20,
     height: 60,
     // alignItems: 'center',
@@ -158,6 +159,8 @@ export const styles = StyleSheet.create({
   },
   catTagImg: {
     marginRight: 8,
+    fontSize: 25,
+    color: '#fff',
   },
   catTagText: {
     fontFamily: 'TitilliumWeb-SemiBold',
@@ -203,6 +206,8 @@ export const styles = StyleSheet.create({
     shadowRadius: 10,
   },
   btnDistImg: {
+    fontSize: 50,
+    color: '#fff',
   },
   btnDistText: {
     fontFamily: 'OpenSans-Regular',
@@ -224,6 +229,8 @@ export const styles = StyleSheet.create({
     shadowRadius: 10,
   },
   btnTimeImg: {
+    fontSize: 45,
+    color: '#fff',
   },
   btnTimeText: {
     fontFamily: 'OpenSans-Regular',
@@ -246,7 +253,8 @@ export const styles = StyleSheet.create({
     shadowRadius: 10,
   },
   btnChatImg: {
-
+    fontSize: 45,
+    color: '#FF5722',
   },
   btnChatText: {
     fontFamily: 'OpenSans-Regular',
@@ -269,7 +277,8 @@ export const styles = StyleSheet.create({
     shadowRadius: 10,
   },
   btnSubsImg: {
-
+    fontSize: 45,
+    color: '#FF5722',
   },
   btnSubsText: {
     fontFamily: 'OpenSans-Regular',
@@ -285,5 +294,27 @@ export const styles = StyleSheet.create({
     color: '#757575',
     width: '100%',
     marginTop: 5,
+  },
+  eventInfoMarker: {
+    fontSize: 35,
+    color: '#FF5722',
+    shadowOffset: { width: 1, height: 1 },
+    shadowColor: 'black',
+    shadowOpacity: 0.5,
+    shadowRadius: 2,
+  },
+  eventInfoUserMarker: {
+    fontSize: 35,
+    color: '#fff',
+    shadowOffset: { width: 0, height: 0 },
+    shadowColor: '#FF5722',
+    shadowOpacity: 0.8,
+    shadowRadius: 3,
+  },
+  tabBarLabel: {
+    fontSize: 16,
+    textAlign: 'center',
+    fontFamily: 'TitilliumWeb-SemiBold',
+    color: '#fff',
   },
 });
