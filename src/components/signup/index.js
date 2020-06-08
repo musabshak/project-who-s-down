@@ -31,7 +31,7 @@ class SignUp extends Component {
         'Montserrat-SemiBold': require('../../../assets/fonts/Montserrat-SemiBold.ttf'),
       });
       this.setState({ fontLoaded: true });
-      console.log('fonts are loaded');
+      // console.log('fonts are loaded');
     } catch (error) {
       console.log(error);
     }

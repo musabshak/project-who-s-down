@@ -245,7 +245,7 @@ const styles = StyleSheet.create({
   },
   categoryTitle: {
     fontFamily: 'TitilliumWeb-Regular',
-    fontSize: 30,
+    fontSize: 26,
     // color: '#ff5722',
     color: '#2b2b2b',
     textAlign: 'center',
