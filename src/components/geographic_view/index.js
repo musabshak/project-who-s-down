@@ -171,7 +171,7 @@ class GeographicDisplay extends Component {
         <Text>This should be the map view!</Text>
         <MapView
           style={{
-            minHeight: 200,
+            minHeight: 500,
             minWidth: 200,
           }}
           region={this.state.region}
@@ -206,10 +206,10 @@ class GeographicDisplay extends Component {
           color="#841584"
           accessibilityLabel="Event List view"
         />
-        <Text>This is WHERE the mapview will go</Text>
+        {/* <Text>This is WHERE the mapview will go</Text>
 
         <Text>This is the mapview component</Text>
-        <Text>I think youre at {JSON.stringify(this.state.location)}</Text>
+        <Text>I think youre at {JSON.stringify(this.state.location)}</Text> */}
 
         {this.createMap()}
         <FilterMenu />
