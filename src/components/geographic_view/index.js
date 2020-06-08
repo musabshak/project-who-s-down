@@ -12,6 +12,7 @@ import {
   FlatList,
   TouchableHighlight,
 } from 'react-native';
+import { Fab, Icon } from 'native-base';
 /* eslint-disable global-require */
 import { connect } from 'react-redux';
 import MapView, { Marker, Callout } from 'react-native-maps';
@@ -30,20 +31,23 @@ class GeographicDisplay extends Component {
       errorMessage: '',
       isMapReady: false,
       location: {},
-      region: { // default just set it to NC b/c my event markers were located here; feel free to change for your testing purposes
+      region: { // default set to NC
         latitude: 35.78825,
         longitude: -78.4324,
         latitudeDelta: 0.0922,
         longitudeDelta: 0.0421,
       },
     };
-    console.log('about to initialize filtrs!');
+
+    this.masterDebug = false;
+
+    if (this.masterDebug) { console.log('about to initialize filtrs!'); }
     this.props.initializeFilters();
   }
 
 
   componentDidMount() {
-    console.log('component mounted!');
+    if (this.masterDebug) { console.log('component mounted!'); }
     this._getLocation();
     this.props.fetchEvents();
   }
@@ -53,13 +57,13 @@ class GeographicDisplay extends Component {
   
 
     if (status !== 'granted') {
-      console.log('permission not granted');
+      console.log('location permission not granted');
       this.setState({
         errorMessage: 'PERMISSION NOT GRANTED',
       });
     }
 
-    console.log('about to set location!');
+    if (this.masterDebug) { console.log('about to set location!'); }
     const location = await Location.getCurrentPositionAsync();
     this.setState({
       location,
@@ -76,51 +80,59 @@ class GeographicDisplay extends Component {
     this.setState({region: e});
   }
 
-  debugHelper = () => {
+  debugHelper = () => { // button for this has been removed
     console.log('\n\n\nstate = ', this.state);
     console.log('props=', this.props);
   }
 
   handleFetchClick = () => {
-    console.log('handle fetch click called!');
+    if (this.masterDebug) {
+      console.log('handle fetch click called!'); }
     this.props.fetchEvents();
   }
 
   // this function takes the current time, takes an event time, and returns a value 0 through 1 where bigger numbers are further away
+  // comment this back in when aarish changes the server to only send events 24 hours in advance
   createTransparencyFromStartTime = (time) => {
-    // const now = new Date();
-    // console.log(time);
-    // console.log(now);
-    // console.log('diffy = ', time.getTime() - now.getTime());
-    // all of this is defunct now that we're using time / date objects
-    // const hours = new Date().getHours(); // To get the Current Hours
-    // const min = new Date().getMinutes(); // To get the Current Minutes
-    // const inputTime = time.split(':');
-    // const temporalDistanceHours = (inputTime[0] - hours) + ((inputTime[1] - min) / 60);
-    // if (temporalDistanceHours < 0) {
-    //   return (1.5 - (24 - temporalDistanceHours) / 24);
+    // const currTime = new Date().getTime(); // To get the current ms
+    // const eventTime = Date.parse(time); // gives event time in ms
+
+    // let val = eventTime - currTime
+    // if (val <= 0){
+    // return 1
     // }
-    // return 1.5 - (temporalDistanceHours / 24); //
+    // else {
+    // val = val/(1000*60*60) // now val is number of hours in advance
+    // if (val > 24) {
+    // console.log('server sent an event > 24 hours in advance, not going to show this event)
+    // return 0
+    // }
+    // else {
+    // return (1 - val/24)
+    // }
+    // }
+    return 0.9; // just because we need some value
   }
 
   onMapLayout = () => {
-    console.log('Map has been laid! That makes one of us :P');
+    if (this.masterDebug) {
+      console.log('Map has been laid! That makes one of us :P'); }
     this.setState({ isMapReady: true });
     this._getLocation();
   }
 
   // this function creates the events, and is called by createMap (this is b/c markers must be children of MapView)
   createMarkers = () => {
-    const MIN_ZOOM_FOR_MARKER_CHANGE = 0.02;
+    const MIN_ZOOM_FOR_MARKER_CHANGE = 0.02; // this constant decides at what point the view of the event switches from icon to text
 
     // these maps are used to give meaning to the icons
     const eventCategoryToIcon = new Map([
       ['nightlife', require('../../../assets/nightlife.png')],
       ['culture', require('../../../assets/culture.png')],
       ['educational', require('../../../assets/educational.png')],
-      ['Sport', require('../../../assets/sports.png')],
-      ['Game', require('../../../assets/boardgames.png')],
-      ['Food', require('../../../assets/food.png')],
+      ['sport', require('../../../assets/sports.png')],
+      ['game', require('../../../assets/boardgames.png')],
+      ['food', require('../../../assets/food.png')],
     ]);
 
     const eventLevelToIcon = new Map([ 
@@ -131,23 +143,23 @@ class GeographicDisplay extends Component {
 
     if (this.props.eventList) {
       return this.props.eventList.map((obj) => {
-        const eventOpacity = 0.9; 
-        this.createTransparencyFromStartTime(obj.startTime);
-        // this first part handles what happens if you zoom super far in on a marker (we decided we want it to show more information)
+        const eventOpacity = this.createTransparencyFromStartTime(obj.startTime);
+        // if we're zoomed in a lot
+        // waiting on April to merge pull request to 
         if (this.state.region.longitudeDelta < MIN_ZOOM_FOR_MARKER_CHANGE) { 
           return (
             <Marker key={obj.id} coordinate={{ latitude: obj.latitude, longitude: obj.longitude}}>
               <Text> {obj.eventTitle} </Text>
-              <Callout>
+              {/* <Callout>
                 <EventPreview />
-              </Callout>
+              </Callout> */}
 
 
             </Marker>
           ); 
         }
 
-        // this second part handles what happens normally, and shows just the event icon etc
+        // show event Icon 
         else {
           return (
             <Marker key={obj.id} coordinate={{ latitude: obj.latitude, longitude: obj.longitude}}>
@@ -167,14 +179,16 @@ class GeographicDisplay extends Component {
     }
 
     else {
-      console.log('this.props.eventlist does not exist; this is this.props:', this.props);
-      console.log('about to call fetchevents!');
+      console.log('this.props.eventlist does not exist');
+      if (this.masterDebug) { console.log('this is this.props:', this.props); }
+      console.log('attempting to fix automatically by calling fetchevents!');
       this.props.fetchEvents();
     }
   }
 
   callInitializeFilters = () => {
-    console.log('in geo views initialize filters method!');
+    if (this.masterDebug) {
+      console.log('in geo views initialize filters method!'); }
     this.props.initializeFilters();
   }
 
@@ -182,11 +196,10 @@ class GeographicDisplay extends Component {
   createMap = () => {
     return (
       <View>
-        {/* <Text>This should be the map view!</Text> */}
+        {this.masterDebug && (<Text>This should be the map view!</Text>)}
         <MapView
           style={{
-            minHeight: 200,
-            minWidth: 200,
+            minHeight: 500, // may need to change based on device, maybe we take device dimensions in App and put it in the store?
           }}
           region={this.state.region}
           onLayout={this.onMapLayout}
@@ -201,19 +214,17 @@ class GeographicDisplay extends Component {
   }
 
   render() {
-    // so even this image here is not rendering on Arjun's android, making him wonder if the map marker image issue is just a
-    // specific instance of this larger issue
-    console.log('just rerendered!');
+    if (this.masterDebug) { console.log('just rerendered!'); }
     return (
       <View style={{flex: 1}}>
-        <Search
+        {/* <Search
           backgroundColor="#c4302b"
           showsCancelButton={false}
           textFieldBackgroundColor="#c4302b"
           onChangeText={(query) => {
             this.setState({ query });
           }}
-        />
+        /> */}
         {/* <Button
           onPress={() => this.props.navigation.navigate('EventList')}
           title="Event List View"
@@ -224,11 +235,18 @@ class GeographicDisplay extends Component {
 
         <Text>This is the mapview component</Text>
         <Text>I think youre at {JSON.stringify(this.state.location)}</Text> */}
+        <Fab
+          onPress={this.handleFetchClick}
+          position="bottomLeft"
+          style={{}}
+        >
+          <Icon name="ios-refresh" />
+        </Fab>
 
         {this.createMap()}
         <FilterMenu />
         {/* <Button title="show geographic display state" onPress={this.debugHelper}> show GeographicDisplay state</Button> */}
-        <Button title="Refresh map" onPress={this.handleFetchClick}> call get events</Button>
+
         {/* <Button title="call initialize filters" onPress={this.callInitializeFilters}> call get events</Button> */}
 
       </View>
