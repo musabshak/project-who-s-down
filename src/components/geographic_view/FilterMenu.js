@@ -121,7 +121,6 @@ class FilterMenu extends Component {
   render() {
     return (
       <View>
-
         {this.state.filterMasterDebug && (
           <Button style={{ backgroundColor: '#3B5998' }} onPress={this.debugPress}>
             <Icon name="md-print" />
