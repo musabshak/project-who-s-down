@@ -51,6 +51,8 @@
     "react-native-svg": "11.0.1",
     "react-native-svg-uri": "^1.2.3",
     "react-native-textarea": "^1.0.4",
+    "react-native-uuid": "^1.4.9",
+    "react-native-uuid-generator": "^6.1.1",
     "react-native-vector-icons": "^6.6.0",
     "react-native-web": "~0.11.7",
     "react-native-web-maps": "^0.2.0",
@@ -59,7 +61,8 @@
     "react-router-dom": "^5.2.0",
     "redux": "^4.0.5",
     "redux-thunk": "^2.3.0",
-    "styled-components": "^5.1.1"
+    "styled-components": "^5.1.1",
+    "uuid": "^8.1.0"
   },
   "devDependencies": {
     "@babel/core": "^7.8.6",
