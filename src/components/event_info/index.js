@@ -77,10 +77,15 @@ class EventInfo extends Component {
       });
     
     this._getLocation();
-    // this.props.fetchImdownEvents(this.props.token).then((res) => {
-    //   console.log('Feeeee: ', res);
-    // });
-    if (this.props.token) 
+    if (this.props.token) {
+      this.props.fetchImdownEvents(this.props.token).then((res) => {
+        console.log(res);
+        for (let i = 0; i < res.length; i++)
+          if (res[i].id === this.props.route.params.event.id) {
+            this.setState({ imdown: 1 });
+            break;
+          }
+      });
       this.props.fetchSubscribedEvents(this.props.token).then((res) => {
         console.log(res);
         for (let i = 0; i < res.length; i++)
@@ -89,6 +94,7 @@ class EventInfo extends Component {
             break;
           }
       });
+    }
     
   }
 
@@ -335,11 +341,12 @@ createMarkers = () => {
   }
 
   onImdown = () => {
-    console.log('OnImdown', this.state.imdown);
     if (this.state.imdown) {
       this.props.unimdownEvent(this.props.token, this.props.route.params.event.id)
         .then(() => {
-          this.setState({ imdown: 0, subscribed: 0 });
+          this.setState({ imdown: 0, subscribed: 0 }, () => {
+            this.props.navigation.pop();
+          });
         });
     } else {
       if (!this.props.token) {
@@ -349,7 +356,9 @@ createMarkers = () => {
       else {
         this.props.imdownEvent(this.props.token, this.props.route.params.event.id)
         .then(() => {
-          this.setState({ imdown: 1, subscribed: 1 });
+          this.setState({ imdown: 1, subscribed: 1 }, () => {
+            this.props.navigation.pop();
+          });
         });
       };
     }
