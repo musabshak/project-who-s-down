@@ -178,8 +178,8 @@ class NewEventPage extends Component {
 
     const token = await AsyncStorage.getItem('token');
 
-    // console.log('Printing token');
-    // console.log(token);
+    console.log('Printing token');
+    console.log(token);
 
     navigator.geolocation.getCurrentPosition(
       (position) => {
@@ -413,7 +413,7 @@ class NewEventPage extends Component {
             // borderWidth: 2, 
             display: 'flex',
             width: Dimensions.get('window').width,
-            justifyContent: 'center',
+            justifyContent: 'space-around',
             alignItems: 'center',
             backgroundColor: 'floralwhite',
             borderRadius: 10,
@@ -432,6 +432,28 @@ class NewEventPage extends Component {
             }}
             > The following event has been successfully created: "{this.props.createdEventTitle}"
             </Text>
+            <View>
+              <Button 
+                style={{
+                  backgroundColor: 'white',
+                  borderRadius: 10,
+                  height: 40,
+                  width: 150,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+                onPress={() => { this.props.navigation.pop(); 
+                  this.props.resetBackEndErrorState(); }}
+              >
+                <Text style={{
+                  color: 'black',
+                  fontFamily: 'TitilliumWeb-Regular',
+                  fontSize: 17, 
+                }}
+                >Okay
+                </Text>
+              </Button>
+            </View>
 
           </View>
         </View>
@@ -460,7 +482,7 @@ class NewEventPage extends Component {
             width: Dimensions.get('window').width,
             justifyContent: 'space-evenly',
             alignItems: 'center',
-            minHeight: 150,
+            minHeight: 170,
             backgroundColor: 'floralwhite',
             borderRadius: 10,
             padding: 15,
@@ -476,6 +498,27 @@ class NewEventPage extends Component {
             }}
             > Something went wrong at the back-end while creating this event; sorry!
             </Text>
+            <View>
+              <Button 
+                style={{
+                  backgroundColor: 'white',
+                  borderRadius: 10,
+                  height: 40,
+                  width: 150,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+                onPress={() => this.props.resetBackEndErrorState()}
+              >
+                <Text style={{
+                  color: 'black',
+                  fontFamily: 'TitilliumWeb-Regular',
+                  fontSize: 17, 
+                }}
+                >Okay
+                </Text>
+              </Button>
+            </View>
 
           </View>
         </View>
@@ -486,6 +529,7 @@ class NewEventPage extends Component {
   renderErrorModal = () => {
     const errors = this.state.validationErrors.map((errorMessage) => {
       return (
+       
         <Text style={{
           color: 'red',
           fontSize: 17,
@@ -493,9 +537,11 @@ class NewEventPage extends Component {
           borderWidth: 0,
           flex: 1,
           alignSelf: 'flex-start',
+          padding: 5,
         }}
         >{'\u2B24'} {errorMessage}
         </Text>
+        
       );
     });
 
@@ -519,9 +565,9 @@ class NewEventPage extends Component {
             // borderColor: 'white',
             // borderWidth: 2, 
             width: Dimensions.get('window').width,
-            justifyContent: 'space-evenly',
+            justifyContent: 'space-around',
             alignItems: 'center',
-            minHeight: 170,
+            minHeight: 300,
             backgroundColor: 'floralwhite',
             borderRadius: 10,
             padding: 15,
@@ -542,6 +588,27 @@ class NewEventPage extends Component {
             >Please fix the following:
             </Text>
             {errors}
+            <View>
+              <Button 
+                style={{
+                  backgroundColor: 'white',
+                  borderRadius: 10,
+                  height: 40,
+                  width: 150,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+                onPress={() => this.setState({errorModalVisible: false})}
+              >
+                <Text style={{
+                  color: 'black',
+                  fontFamily: 'TitilliumWeb-Regular',
+                  fontSize: 17, 
+                }}
+                >Okay
+                </Text>
+              </Button>
+            </View>
 
           </View>
         </View>

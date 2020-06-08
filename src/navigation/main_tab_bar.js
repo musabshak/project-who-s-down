@@ -1,14 +1,15 @@
 /* eslint-disable react/no-string-refs */
 /* eslint-disable no-alert */
 import React, { useState } from 'react';
-import { Text, View, Button } from 'react-native';
+import { Text, View } from 'react-native';
+import { Button, Icon} from 'native-base';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import Ionicons from 'react-native-vector-icons/FontAwesome';
 import AsyncStorage from '@react-native-community/async-storage';
 import Modal from 'react-native-modal';
-import {Icon} from 'native-base';
+
 import GeographicView from '../components/geographic_view';
 import EventList from '../components/event_list';
 import MyEvents from '../components/my_events';
@@ -139,11 +140,12 @@ const MainTabBar = (props) => {
                   <View style={{
                     // borderColor: 'white',
                     // borderWidth: 2, 
-                    justifyContent: 'center',
+                    display: 'flex',
+                    justifyContent: 'space-around',
                     alignItems: 'center',
-                    height: 160,
                     backgroundColor: 'floralwhite',
                     borderRadius: 10,
+                    minHeight: 180,
                   }}
                   >
                     <Text>
@@ -156,6 +158,26 @@ const MainTabBar = (props) => {
                     }}
                     >You need to be signed in to create new events!
                     </Text>
+                    <View>
+                      <Button 
+                        style={{
+                          backgroundColor: 'white',
+                          borderRadius: 10,
+                          width: 150,
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                        }}
+                        onPress={() => setModalVisible(false)}
+                      >
+                        <Text style={{
+                          color: 'black',
+                          // fontFamily: 'TitilliumWeb-Regular',
+                          fontSize: 17, 
+                        }}
+                        >Okay
+                        </Text>
+                      </Button>
+                    </View>
                   </View>
                 </View>
               </Modal>

@@ -22,25 +22,26 @@ async function getToken() {
   }
 }
 
-let authToken;
-getToken().then((token) => { authToken = token; });
-console.log(authToken);
+// let authToken;
+// getToken().then((token) => { authToken = token; });
+// console.log(authToken);
 
 export function createEvent(event) {
-  // console.log(event);
+  console.log(event);
   // console.log(authToken);
   return (dispatch) => {
-    axios.post(`${ROOT_URL}/newEvent`, event, {headers: {authorization: authToken}})
-      .then((response) => {
-        console.log('successful post request');
-        console.log(response.data);
-        dispatch({ type: ActionTypes.NEW_EVENT_SUCCESS, payload: response.data.eventTitle });
-      })
-      .catch((error) => {
-        console.log(error);
-        console.log('UNsuccessful post request');
-        dispatch({ type: ActionTypes.NEW_EVENT_ERROR});
-      });
+    getToken().then((token) => {
+      axios.post(`${ROOT_URL}/newEvent`, event, {headers: {authorization: token}})
+        .then((response) => {
+          console.log('successful post request');
+          console.log(response.data);
+          dispatch({ type: ActionTypes.NEW_EVENT_SUCCESS, payload: response.data.eventTitle });
+        })
+        .catch((error) => {
+          console.log(error);
+          console.log('UNsuccessful post request');
+          dispatch({ type: ActionTypes.NEW_EVENT_ERROR});
+        }); });
   };
 }
 
