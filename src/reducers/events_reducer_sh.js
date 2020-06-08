@@ -3,6 +3,7 @@ import { ActionTypes } from '../components/event_info/actions';
 const initialState = {
   all: [],
   subscribedEvents: [],
+  imdownEvents: [],
   error: null,
 };
 
@@ -16,6 +17,12 @@ const EventsReducer = (state = initialState, action) => {
     return { error: action.error, subscribedEvents: state.subscribedEvents, all: state.all };
   case ActionTypes.UNSUBSCRIBE_EVENT:
     return { error: action.error, subscribedEvents: state.subscribedEvents, all: state.all };
+  case ActionTypes.FETCH_IMDOWN_EVENTS:
+    return { ...state, error: action.error, imdownEvents: action.payload};
+  case ActionTypes.IMDOWN_EVENT:
+    return { ...state, error: action.error};
+  case ActionTypes.UNIMDOWN_EVENT:
+    return { ...state, error: action.error};
   // case ActionTypes.FETCH_EVENT_FAILED:
   //   return { error: 1, all: state.all };
   // case ActionTypes.FETCH_EVENT_SUCCEEDED:

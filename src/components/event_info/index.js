@@ -2,24 +2,27 @@
 /* eslint-disable global-require */
 import React, { Component } from 'react';
 import {
-  Icon,
+  Icon, Fab,
 } from 'native-base';
 import {
-  View, Text, ActivityIndicator, TouchableOpacity,
+  View, Text, ActivityIndicator, TouchableOpacity, ScrollView, Dimensions,
 } from 'react-native';
 import { connect } from 'react-redux';
 import * as Permissions from 'expo-permissions';
 import * as Location from 'expo-location';
-import * as Font from 'expo-font';
+// import * as Font from 'expo-font';
 // import SvgUri from 'react-native-svg-uri';
 import MapView, { Marker, Callout } from 'react-native-maps';
 import { getDistance } from 'geolib';
-import { API_KEY, customFormatTime } from '../new_event';
+import { API_KEY } from '../new_event';
 // import { customFormatTime } from '../new_event';
 // import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 
 import { styles } from '../../../assets/styles/event_info';
-import { fetchEvents, fetchSubscribedEvents, subscribeEvent, unsubscribeEvent } from './actions';
+import {
+  fetchEvents, fetchSubscribedEvents, subscribeEvent, unsubscribeEvent,
+  fetchImdownEvents, imdownEvent, unimdownEvent,
+} from './actions';
 
 class EventInfo extends Component {
   constructor(props) {
@@ -37,6 +40,7 @@ class EventInfo extends Component {
       skillLevel: this.props.route.params.event.skillLevel,
       startTime: this.props.route.params.event.startTime,
       description: this.props.route.params.event.description,
+      hostName: this.props.route.params.event.hostName,
       category: this.props.route.params.event.category,
       eventList: [],
       currentTime: new Date(),
@@ -44,20 +48,20 @@ class EventInfo extends Component {
   }
 
   async componentDidMount() {
-    try {
-      await Font.loadAsync({
-        'pacifico-regular': require('../../../assets/fonts/Pacifico-Regular.ttf'),
-        'TitilliumWeb-SemiBold': require('../../../assets/fonts/TitilliumWeb-SemiBold.ttf'),
-        'ReenieBeanie-Regular': require('../../../assets/fonts/ReenieBeanie-Regular.ttf'),
-        'Montserrat-Regular': require('../../../assets/fonts/Montserrat-Regular.ttf'),
-        'Montserrat-SemiBold': require('../../../assets/fonts/Montserrat-SemiBold.ttf'),
-        'OpenSans-Regular': require('../../../assets/fonts/OpenSans-Regular.ttf'),
-      });
-      this.setState({ fontLoaded: true });
-      console.log('fonts are loaded');
-    } catch (error) {
-      console.log(error);
-    }
+    // try {
+      // await Font.loadAsync({
+      //   'pacifico-regular': require('../../../assets/fonts/Pacifico-Regular.ttf'),
+      //   'TitilliumWeb-SemiBold': require('../../../assets/fonts/TitilliumWeb-SemiBold.ttf'),
+      //   'ReenieBeanie-Regular': require('../../../assets/fonts/ReenieBeanie-Regular.ttf'),
+      //   'Montserrat-Regular': require('../../../assets/fonts/Montserrat-Regular.ttf'),
+      //   'Montserrat-SemiBold': require('../../../assets/fonts/Montserrat-SemiBold.ttf'),
+      //   'OpenSans-Regular': require('../../../assets/fonts/OpenSans-Regular.ttf'),
+      // });
+    //   this.setState({ fontLoaded: true });
+    //   console.log('fonts are loaded');
+    // } catch (error) {
+    //   console.log(error);
+    // }
     // console.log(customFormatTime(this.state.startTime));
     // // fetching events for testing
     // try {
@@ -73,14 +77,19 @@ class EventInfo extends Component {
       });
     
     this._getLocation();
+    // this.props.fetchImdownEvents(this.props.token).then((res) => {
+    //   console.log('Feeeee: ', res);
+    // });
     if (this.props.token) 
       this.props.fetchSubscribedEvents(this.props.token).then((res) => {
+        console.log(res);
         for (let i = 0; i < res.length; i++)
           if (res[i].id === this.props.route.params.event.id) {
             this.setState({ subscribed: 1 });
             break;
           }
       });
+    
   }
 
   // componentDidUpdate(prevProps) {
@@ -237,6 +246,7 @@ createMarkers = () => {
         <MapView
           style={styles.mapCard}
           region={this.state.region}
+          // scrollEnabled={false}
           // onLayout={this.onMapLayout}
           onRegionChangeComplete={this.handleRegionChange}
           // showsUserLocation
@@ -304,7 +314,7 @@ createMarkers = () => {
   //   }
   // }
   onSubscribe = () => {
-    console.log('OnSubscribe', this.state.subscribed);
+    // console.log('OnSubscribe', this.state.subscribed);
     if (this.state.subscribed) {
       this.props.unsubscribeEvent(this.props.token, this.props.route.params.event.id)
         .then(() => {
@@ -319,6 +329,27 @@ createMarkers = () => {
         this.props.subscribeEvent(this.props.token, this.props.route.params.event.id)
         .then(() => {
           this.setState({ subscribed: 1 });
+        });
+      };
+    }
+  }
+
+  onImdown = () => {
+    console.log('OnImdown', this.state.imdown);
+    if (this.state.imdown) {
+      this.props.unimdownEvent(this.props.token, this.props.route.params.event.id)
+        .then(() => {
+          this.setState({ imdown: 0, subscribed: 0 });
+        });
+    } else {
+      if (!this.props.token) {
+        // popup - go login
+        this.props.navigation.push('SignIn', { return: 1 });
+      }
+      else {
+        this.props.imdownEvent(this.props.token, this.props.route.params.event.id)
+        .then(() => {
+          this.setState({ imdown: 1, subscribed: 1 });
         });
       };
     }
@@ -355,8 +386,89 @@ createMarkers = () => {
     );
   }
 
+  renderImdownBtn = () => {
+    if (this.state.imdown) return (
+      <TouchableOpacity
+        style={styles.btnContWithBackground}
+        activeOpacity={0.8}
+        onPress={this.onImdown}
+      >
+        {/* <Ionicons name="thumbs-up" size={45} color="#FFF" /> */}
+        <Icon type="MaterialCommunityIcons" name="emoticon-dead-outline" style={{ fontSize: 45, color: '#fff' }} />
+        <Text style={styles.tabBarLabel}>Nevermind!</Text>
+      </TouchableOpacity>
+    );
+    else return (
+      <TouchableOpacity
+        style={styles.btnContWithBackground}
+        activeOpacity={0.8}
+        onPress={this.onImdown}
+      >
+        {/* <Ionicons name="thumbs-up" size={45} color="#FFF" /> */}
+        <Icon type="MaterialCommunityIcons" name="emoticon-devil-outline" style={{ fontSize: 45, color: '#fff' }} />
+        <Text style={styles.tabBarLabel}>I&#39;m down!</Text>
+      </TouchableOpacity>
+    );
+  }
+
+  renderCatTag = () => {
+    if (!this.state.category) return null;
+    switch (this.state.category) {
+      case 'educational':
+        return (
+          <View style={styles.catTag}>
+            <Icon type="MaterialCommunityIcons" name="book-open-page-variant" style={styles.catTagImg} />
+            <Text style={styles.catTagText}>{this.state.category}</Text>
+          </View>
+        );
+      case 'culture':
+        return (
+          <View style={styles.catTag}>
+            <Icon type="MaterialCommunityIcons" name="translate" style={styles.catTagImg} />
+            <Text style={styles.catTagText}>{this.state.category}</Text>
+          </View>
+        );
+      case 'food':
+        return (
+          <View style={styles.catTag}>
+            <Icon type="MaterialCommunityIcons" name="food" style={styles.catTagImg} />
+            <Text style={styles.catTagText}>{this.state.category}</Text>
+          </View>
+        );
+      case 'nightlife':
+        return (
+          <View style={styles.catTag}>
+            <Icon type="MaterialCommunityIcons" name="book-open-page-variant" style={styles.catTagImg} />
+            <Text style={styles.catTagText}>{this.state.category}</Text>
+          </View>
+        );
+      case 'sport':
+        return (
+          <View style={styles.catTag}>
+            <Icon type="MaterialCommunityIcons" name="volleyball" style={styles.catTagImg} />
+            <Text style={styles.catTagText}>{this.state.category}</Text>
+          </View>
+        );
+      case 'game':
+        return (
+          <View style={styles.catTag}>
+            <Icon type="MaterialCommunityIcons" name="gamepad-variant" style={styles.catTagImg} />
+            <Text style={styles.catTagText}>{this.state.category}</Text>
+          </View>
+        );
+      default:
+        return (
+          <View style={styles.catTag}>
+            <Icon type="MaterialCommunityIcons" name="emoticon-cool-outline" style={styles.catTagImg} />
+            <Text style={styles.catTagText}>{this.state.category}</Text>
+          </View>
+        );
+    }
+  }
+
   render() {
-    if (this.state.fontLoaded && this.state.addr) {
+    // if (this.state.fontLoaded && this.state.addr) {
+    if (this.state.addr) {
       return (
         <View style={styles.container}>
           {/* <SvgUri
@@ -371,98 +483,124 @@ createMarkers = () => {
             <Text style={styles.header}>Details</Text>
             {/* <Ionicons style={styles.headerIcon} name="user-circle" size={45} color="#FF5722" /> */}
           </View>
-          <View style={styles.mapCardCont}>
-            <View style={styles.mapCardInfo}>
-              <Text style={{ color: '#fff', fontSize: 24, fontFamily: 'TitilliumWeb-SemiBold' }}>{this.state.title}</Text>
-            </View>
-            {this.createMap()}
-            {/* <Image
-              style={styles.mapCardImage}
-              source={{ uri: 'https://www.google.com/maps/about/images/mymaps/mymaps-desktop-16x9.png' }}
-            /> */}
-          </View>
-          <View style={styles.contentCont}>
-            <View style={styles.catTagCont}>
-              <View style={styles.catTag}>
-                {/* <SvgUri
-                  width="20"
-                  height="20"
-                  fill="#fff"
-                  source={require('../../../assets/images/icn-smile.svg')}
-                  style={styles.catTagImg}
-                /> */}
-                <Icon type="MaterialCommunityIcons" name="bell-outline" style={styles.catTagImg} />
-                <Text style={styles.catTagText}>Casual Game</Text>
+          
+          <ScrollView style={styles.contentCont}>
+            <View style={styles.titleCardCont}>
+              <View style={styles.titleCard}>              
+                <View style={styles.title}>
+                    <Text style={{ color: '#000', fontSize: 24, fontFamily: 'TitilliumWeb-SemiBold' }}>{this.state.title}</Text>
+                </View>
+                <View style={styles.addrCont}>
+                  <Text style={styles.addr}>{this.state.addr}</Text>
+                </View>
+                <View style={styles.addrCont}>
+                  <Text style={styles.timeLabel}>{this.customFormatTime(this.state.startTime)}</Text>
+                </View>
+                <View style={styles.TagCont}>
+                  <View style={styles.nameTagCont}>
+                    <View style={styles.nameTag}>
+                      {/* <SvgUri
+                        width="20"
+                        height="20"
+                        fill="#fff"
+                        source={require('../../../assets/images/icn-smile.svg')}
+                        style={styles.catTagImg}
+                      /> */}
+                      <Text style={[styles.catTagText, { color: '#757575', fontSize: 12 }]}>Created by </Text>
+                      <Text style={[styles.catTagText, { color: '#000', fontSize: 12 }]}>{this.state.hostName}</Text>
+                    </View>
+                  </View>
+                  <View style={styles.catTagCont}>
+                    {this.renderCatTag()}
+                  </View>
+                </View>
               </View>
             </View>
-            <Text style={styles.addr}>{this.state.addr}</Text>
-            <Text style={styles.timeLabel}>{this.customFormatTime(this.state.startTime)}</Text>
-            <View style={styles.btnGroup}>
-              {/* Distance Estimate */}
-              <View style={styles.btnDist}>
-                {/* <SvgUri
-                  width="50"
-                  height="50"
-                  fill="#fff"
-                  source={require('../../../assets/images/icn-car.svg')}
-                  style={styles.btnDistImg}
-                /> */}
-                <Icon type="MaterialCommunityIcons" name={this.state.estimatedTime?.name} style={styles.btnDistImg} />
-                <Text style={styles.btnDistText}>{this.state.estimatedTime?.res}</Text>
+            <View style={styles.btnGroupCont}>
+              <View style={styles.btnGroup}>
+                {/* Distance Estimate */}
+                <View style={styles.btnDist}>
+                  {/* <SvgUri
+                    width="50"
+                    height="50"
+                    fill="#fff"
+                    source={require('../../../assets/images/icn-car.svg')}
+                    style={styles.btnDistImg}
+                  /> */}
+                  <Icon type="MaterialCommunityIcons" name={this.state.estimatedTime?.name} style={styles.btnDistImg} />
+                  <Text style={styles.btnDistText}>{this.state.estimatedTime?.res}</Text>
+                </View>
+                {/* Time Left */}
+                <View style={styles.btnTime}>
+                  {/* <SvgUri
+                    width="50"
+                    height="50"
+                    fill="#fff"
+                    source={require('../../../assets/images/icn-stopwatch.svg')}
+                    style={styles.btnTimeImg}
+                  /> */}
+                  <Icon type="MaterialIcons" name="schedule" style={styles.btnTimeImg} />
+                  <Text style={styles.btnTimeText}>{ this.hourDiff() < 0 ? 'Ended' : (this.hourDiff() ? `${this.hourDiff()}h left` : '<1h left') }</Text>
+                </View>
+                {/* Chat room */}
+                <TouchableOpacity style={styles.btnChat} onPress={() => this.props.navigation.push('Chat', { eventId: this.state.id })}>
+                  {/* <SvgUri
+                    width="50"
+                    height="50"
+                    fill="#FF5722"
+                    source={require('../../../assets/images/icn-chat.svg')}
+                    style={styles.btnChatImg}
+                  /> */}
+                  <Icon type="MaterialCommunityIcons" name="forum" style={styles.btnChatImg} />
+                  <Text style={styles.btnChatText}>Chat Board</Text>
+                </TouchableOpacity>
+                {/* Subscribe */}
+                {this.renderSubscribeBtn()}
               </View>
-              {/* Time Left */}
-              <View style={styles.btnTime}>
-                {/* <SvgUri
-                  width="50"
-                  height="50"
-                  fill="#fff"
-                  source={require('../../../assets/images/icn-stopwatch.svg')}
-                  style={styles.btnTimeImg}
-                /> */}
-                <Icon type="MaterialIcons" name="schedule" style={styles.btnTimeImg} />
-                <Text style={styles.btnTimeText}>{ this.hourDiff() < 0 ? 'Ended' : (this.hourDiff() ? `${this.hourDiff()}h left` : '<1h left') }</Text>
-              </View>
-              {/* Chat room */}
-              <TouchableOpacity style={styles.btnChat}>
-                {/* <SvgUri
-                  width="50"
-                  height="50"
-                  fill="#FF5722"
-                  source={require('../../../assets/images/icn-chat.svg')}
-                  style={styles.btnChatImg}
-                /> */}
-                <Icon type="MaterialCommunityIcons" name="forum" style={styles.btnChatImg} />
-                <Text style={styles.btnChatText}>Chat Board</Text>
-              </TouchableOpacity>
-              {/* Subscribe */}
-              {this.renderSubscribeBtn()}
             </View>
-            <Text style={styles.desc}>{this.state.description}</Text>
-          </View>
+
+            <View style={styles.mapCardContCont}>
+              <View style={styles.mapCardCont}>
+                {this.createMap()}
+                {/* <Fab
+                  onPress={this.handleFetchClick}
+                  position="bottomRight"
+                  style={{ }}
+                >
+                  <Icon name="ios-refresh" />
+                </Fab> */}
+                {/* <Image
+                  style={styles.mapCardImage}
+                  source={{ uri: 'https://www.google.com/maps/about/images/mymaps/mymaps-desktop-16x9.png' }}
+                /> */}
+              </View>
+            </View>
+
+            <View style={styles.titleCardCont}>
+              <View style={[styles.titleCard, {minHeight: 150}]}>
+                
+                <View style={styles.title}>
+                  <Text style={{ color: '#000', fontSize: 24, fontFamily: 'TitilliumWeb-SemiBold' }}>Description</Text>
+                </View>
+                <View style={styles.addrCont}>
+                  <Text style={styles.addr}>{this.state.description ? this.state.description : 'The host intentionally left this emtpy :)' }</Text>
+                </View>
+              </View>
+            </View>
+          </ScrollView>
           
           <View style={styles.tabBarCont}>
             <TouchableOpacity
               activeOpacity={0.8}
               onPress={() => this.props.navigation.pop()}
               // onPress={() => this.props.navigation.navigate('Main', {})}
-              style={{ width: '50%' }}
+              style={styles.btnContWithoutBackground}
               // onPressOut={this.onPressOut}
               // onPressIn={this.onPressIn}
             >
-              <View style={styles.btnCont}>
-                {/* <Ionicons name="undo" size={45} color="#FF5722" /> */}
                 <Icon type="MaterialCommunityIcons" name="arrow-left" style={{ fontSize: 45, color: '#FF5722' }} />
-              </View>
             </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.btnContWithBackground}
-              activeOpacity={0.8}
-              onPress={() => this.props.navigation.pop()}
-            >
-              {/* <Ionicons name="thumbs-up" size={45} color="#FFF" /> */}
-              <Icon type="MaterialCommunityIcons" name="hand-right" style={{ fontSize: 45, color: '#fff' }} />
-              <Text style={styles.tabBarLabel}>I&#39;m down!</Text>
-            </TouchableOpacity>
+            {this.renderImdownBtn()}
           </View>
           
         </View>
@@ -485,5 +623,5 @@ const mapStateToProps = (state) => {
     token: state.auth.token,
   });
 };
-export default connect(mapStateToProps, { fetchEvents, fetchSubscribedEvents, subscribeEvent, unsubscribeEvent })(EventInfo);
+export default connect(mapStateToProps, { fetchEvents, fetchSubscribedEvents, subscribeEvent, unsubscribeEvent, fetchImdownEvents, imdownEvent, unimdownEvent, })(EventInfo);
 // export default connect(null, { fetchEvents })(EventInfo);

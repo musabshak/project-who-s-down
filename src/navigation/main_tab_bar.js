@@ -3,18 +3,15 @@
 import React, { useState } from 'react';
 import { Text, View } from 'react-native';
 import { Button, Icon} from 'native-base';
-import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import { createStackNavigator } from '@react-navigation/stack';
 import Ionicons from 'react-native-vector-icons/FontAwesome';
 import AsyncStorage from '@react-native-community/async-storage';
 import Modal from 'react-native-modal';
 
 import GeographicView from '../components/geographic_view';
 import EventList from '../components/event_list';
-import MyEvents from '../components/my_events';
-// import Discovery from './discovery';
-import AddEvents from '../components/new_event';
+import { SCREEN_HEIGHT, SCREEN_WIDTH } from '../../assets/styles/event_info';
+
 
 
 const Tab = createBottomTabNavigator();
@@ -55,8 +52,8 @@ const MainTabBar = (props) => {
         activeTintColor: '#e91e63',
         activeBackgroundColor: '#FF5722',
         style: {
-          backgroundColor: '#ffff1',
-          height: 60,
+          backgroundColor: '#fff',
+          height: 0.12*SCREEN_HEIGHT,
         },
       }}
     >
@@ -75,9 +72,9 @@ const MainTabBar = (props) => {
                 activeBackgroundColor: 'yellow',
                 justifyContent: 'center',
                 alignItems: 'center',
-                shadowOffset: { width: 1, height: 1 },
-                shadowColor: 'black',
-                shadowOpacity: 0.50,
+                // shadowOffset: { width: 1, height: 1 },
+                // shadowColor: 'black',
+                // shadowOpacity: 0.50,
               }}
             >
               <Ionicons name="compass" size={55} color={focused ? 'white' : '#FF5722'} />
@@ -112,17 +109,14 @@ const MainTabBar = (props) => {
             <View
               style={{
                 position: 'absolute',
-                bottom: 5, // space from bottombar
-                height: 75,
-                width: 75,
                 borderRadius: 100,
                 backgroundColor: 'white',
                 activeBackgroundColor: 'yellow',
                 justifyContent: 'center',
                 alignItems: 'center',
-                shadowOffset: { width: 5, height: 5 },
-                shadowColor: 'black',
-                shadowOpacity: 0.70,
+                // shadowOffset: { width: 5, height: 5 },
+                // shadowColor: 'black',
+                // shadowOpacity: 0.70,
               }}
             >
               <Modal 
@@ -197,20 +191,15 @@ const MainTabBar = (props) => {
           tabBarIcon: ({ focused }) => (
             <View
               style={{
-                position: 'absolute',
-                bottom: -7, // space from bottombar
-                height: 75,
-                width: 75,
-                activeBackgroundColor: 'yellow',
                 justifyContent: 'center',
                 alignItems: 'center',
-                shadowOffset: { width: 1, height: 1 },
-                shadowColor: 'black',
-                shadowOpacity: 0.50,
+                // shadowOffset: { width: 1, height: 1 },
+                // shadowColor: 'black',
+                // shadowOpacity: 0.50,
               }}
             >
-              <Ionicons name="calendar" size={40} color={focused ? 'white' : '#FF5722'} />
-            </View>
+              <Ionicons name="calendar" size={30} color={focused ? 'white' : '#FF5722'} />
+          </View>
           ),
         }}
       />
