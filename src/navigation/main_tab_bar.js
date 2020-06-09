@@ -15,6 +15,7 @@ import EventList from '../components/event_list';
 import MyEvents from '../components/my_events';
 // import Discovery from './discovery';
 import AddEvents from '../components/new_event';
+import DownEvents from '../components/my_events';
 
 
 const Tab = createBottomTabNavigator();
@@ -190,7 +191,7 @@ const MainTabBar = (props) => {
       />
       <Tab.Screen
         name="EventList"
-        component={(EventList)}
+        component={(DownEvents)}
         options={{
           tabBarLabel: 'My Events',
           tabBarIcon: ({ focused }) => (

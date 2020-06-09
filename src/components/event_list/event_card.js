@@ -1,24 +1,36 @@
 /* eslint-disable eqeqeq */
 import React, { Component } from 'react';
 import {
-  Button,
   ActivityIndicator,
   StyleSheet,
+  Image,
   View,
   Text,
   TouchableOpacity,
+  TouchableWithoutFeedback,
 } from 'react-native';
-import { Card } from '@paraboly/react-native-card';
-import Ionicons from 'react-native-vector-icons/FontAwesome';
+import {Button} from 'native-base';
+import {Card} from '@paraboly/react-native-card'
+import Ionicons from 'react-native-vector-icons/FontAwesome5';
+import { connect } from 'react-redux';
+
+
+const eventCategoryToIcon = new Map([
+  ['nightlife', require('../../../assets/nightlife.png')],
+  ['culture', require('../../../assets/culture.png')],
+  ['educational', require('../../../assets/educational.png')],
+  ['Sport', require('../../../assets/sports.png')],
+  ['Game', require('../../../assets/boardgames.png')],
+  ['Food', require('../../../assets/food.png')],
+]);
 
 class EventCard extends Component {
   constructor(props) {
     super(props);
-    // console.log(this.props.event);
   }
 
     onDown = (event) => {
-      if (this.props.event.down == true) {
+      if (this.props.event.imdown == true) {
         this.props.event.setState({
           down: false,
         }); }
@@ -31,7 +43,7 @@ class EventCard extends Component {
 
     // this.props.post.id
     render() {
-      if (this.props.event.down == true) {
+      if (this.props.authenticated) {
         return (
           <View style={{
             borderRadius: 5,
@@ -40,17 +52,35 @@ class EventCard extends Component {
             alignItems: 'center',
           }}
           >
+          <View style={{
+            zIndex: 0,
+          }}
+          >
+            <TouchableOpacity >
             <Card
               title={this.props.event.eventTitle}
-              iconName="home"
-              defaultTitle=""
-              iconType="Entypo"
-              defaultContent=""
-              onPress={() => { this.props.navigate('EventInfo', { event: this.props.event }); }}
-              topRightText={this.props.event.startTime.substring(11, 16)}
-              bottomRightText={this.props.event.category}
+              iconComponent={<Image source={eventCategoryToIcon.get(this.props.event.category)}
+                style={{ margin: -20, marginTop:-50, alignItems: 'center', justifyContent:'center',
+                  height: 40, width: 40,
+                }}/>}
+              onPress={() => {this.props.navigate('EventInfo', { event: this.props.event });}}
+              topRightText={<Text><Ionicons name={'clock'} size={17} color={'#FF5722'} style={{
+              justifyContent: 'flex-start'}}/>{this.props.event.startTime.substring(11, 16)}</Text>}
               content={this.props.event.description}
+              bottomRightComponent={<View style={{
+                alignSelf:'flex-end',
+
+              }}
+              >
+               <TouchableOpacity onPress={() => e.stopPropogation()}>
+                 <Button onPress={() => e.stopPropogation()} style={{backgroundColor:'#fff', borderColor:'#FF5722',}}><Ionicons name={'thumbs-up'} size={30} color={'#FF5722'} style={{paddingLeft: 20}}/>
+                 </Button>
+               </TouchableOpacity>
+               </View >}
+              defaultContent="Click on the event to learn more!"
             />
+            </TouchableOpacity>
+            </View>
           </View>
         );  
       }
@@ -65,20 +95,22 @@ class EventCard extends Component {
           >
             <Card
               title={this.props.event.eventTitle}
-              iconName="home"
-              defaultTitle=""
-              iconType="Entypo"
-              defaultContent=""
-              onPress={() => { this.props.navigate('EventInfo', { event: this.props.event }); }}
-              topRightText={this.props.event.startTime.substring(11, 16)}
-              bottomRightText={this.props.event.category}
+              iconComponent={<Image source={eventCategoryToIcon.get(this.props.event.category)}
+                style={{ margin: -20, marginTop:30, alignItems: 'center', justifyContent:'center',
+                  height: 40, width: 40,
+                }}/>}
+              onPress={() => {this.props.navigate('EventInfo', { event: this.props.event });}}
+              topRightText={<Text><Ionicons name={'clock'} size={17} color={'#FF5722'} style={{
+              justifyContent: 'flex-start', paddingRight: 20, paddingLeft: 20}}/>{this.props.event.startTime.substring(11, 16)}</Text>}
               content={this.props.event.description}
+              bottomRightText={this.props.event.skillLevel}
             />
           </View>
-        ); 
+        );  
       }
     }
 }
+
 
 export default EventCard;
 
@@ -105,3 +137,7 @@ export default EventCard;
     buttonStyle={{borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0}}
     title='VIEW NOW' />
 </Card> */
+
+//...{this.props.event.startTime.substring(11, 16)}}
+
+//{() => {this.props.navigate('EventInfo', { event: this.props.event });}}
