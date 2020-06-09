@@ -10,8 +10,8 @@ class tabTwo extends Component {
   render() {
     return (
       <View>
-        <Text>Created events, this is coming from Anjali and will be called my created events</Text>
-        <MyEvents />
+        {/* {console.log('musabs props in tab two', this.props)} */}
+        <MyEvents navigation={this.props.navigation} />
       </View>
     );
   }
