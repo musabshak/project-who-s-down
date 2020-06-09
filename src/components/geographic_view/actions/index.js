@@ -16,7 +16,6 @@ const masterDebug = false;
 
 // changeFilters
 export function changeFilters(newFilters) {
-  console.log('trust in the changeFilter (producing the action)');
   if (masterDebug) { console.log('We are in the action creator for changeFilters, producing a changeFilters action! passing this as payload', newFilters); }
   return (dispatch) => {
     if (masterDebug) { console.log('dispatching an action!'); }

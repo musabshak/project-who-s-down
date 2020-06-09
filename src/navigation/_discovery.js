@@ -5,7 +5,6 @@ import Ionicons from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
 import EventList from '../components/event_list';
 import EventInfo from '../components/event_info';
-import Chat from '../components/chat';
 import GeographicDisplay from '../components/geographic_view';
 import { signoutUser } from '../components/signin/actions';
 import DownEvents from '../components/down_events';
@@ -59,24 +58,6 @@ const Discovery = (props) => {
         component={EventInfo}
         options={{
           title: 'Details',
-          headerStyle: {
-            backgroundColor: '#fffff',
-          },
-          headerTintColor: '#FF5722',
-          // headerTitle: (props) => <LogoTitle {...props} />,
-          headerRight: () => (
-            <Button
-              onPress={() => (props.token ? props.signoutUser() : props.signoutUser(props.navigation.navigate))}
-              title={props.userName ? 'Logout' : 'Login'}
-              color="#fff"
-            />
-          ),
-        }}
-      />
-      <Stack.Screen name="Chat"
-        component={Chat}
-        options={{
-          title: 'Chat Board',
           headerStyle: {
             backgroundColor: '#fffff',
           },
