@@ -63,8 +63,8 @@ class Main extends Component {
   }
 
   genSettingsName = (props) => {
-    // console.log('gen settings name!');
-    // console.log('props=', props);
+    console.log('gen settings name!');
+    console.log('props=', props);
     if (props.notifNumber) {
       // console.log('we think notifnumber exists here:::!', props);
       if (props.notifNumber > 9) {
@@ -210,7 +210,8 @@ const mapStateToProps = (state) => {
   return (
     {
       userName: state.auth.userName,
-      token: state.auth.token, 
+      token: state.auth.token,
+      notifNumber: state.settings.notifNumber, 
     }
   );
 };
