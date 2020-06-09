@@ -134,7 +134,7 @@ const geoViewReducer = (state = initialState, action, debug = false, debug2 = fa
     else {
       if (masterDebug) {
         console.log('we are in fetch events!');
-        console.log('state.filteredOut:', state.filteredOut);
+        // console.log('state.filteredOut:', state.filteredOut);
       }
 
       // if it passes the category and skill filters, add it to a list
