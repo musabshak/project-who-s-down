@@ -79,6 +79,9 @@ class Main extends Component {
     }
   }
 
+  settingsHelper = () => {
+    navigate('Profile');
+  }
 
   render() {
     if (this.state.fontLoaded) {
@@ -95,17 +98,18 @@ class Main extends Component {
               component={MainTabBar}
               options={{
                 // title: 'Who\'s Down?',
-                headerMode : 'none',
+                headerMode: 'none',
                 headerTitle: () => (
                   <Text style={{
-                    fontFamily: "pacifico-regular",
+                    fontFamily: 'pacifico-regular',
                     fontSize: 30,
                     // position: 'absolute',
                     // top: 0,
                     color: '#fff',
                     textAlign: 'center',
                     textAlignVertical: 'center',
-                  }}>
+                  }}
+                  >
                     Who's Down?
                   </Text>
                 ),
@@ -132,7 +136,7 @@ class Main extends Component {
                     onPress={() => (this.props.token ? this.props.signoutUser() : this.props.signoutUser(navigate))}
                     style={{ justifyContent: 'center', alignItems: 'center', paddingRight: 20 }}
                   >
-                    <Text style={{ color: "#fff", fontFamily: "TitilliumWeb-SemiBold", fontSize: 16 }}>{this.props.userName ? 'Logout' : 'Login'}</Text>
+                    <Text style={{ color: '#fff', fontFamily: 'TitilliumWeb-SemiBold', fontSize: 16 }}>{this.props.userName ? 'Logout' : 'Login'}</Text>
                   </TouchableOpacity>
                 ),
                 // gestureEnabled: false,
@@ -194,7 +198,7 @@ class Main extends Component {
       );
     } else {
       return (
-        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center',}}>
+        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
           <ActivityIndicator size="large" color="#FF5722" />
         </View>
       );
@@ -204,10 +208,12 @@ class Main extends Component {
 
 const mapStateToProps = (state) => {
   return (
-    { userName: state.auth.userName,
-    token: state.auth.token }
+    {
+      userName: state.auth.userName,
+      token: state.auth.token, 
+    }
   );
-}
+};
 
 export default connect(mapStateToProps, { loadToken, signoutUser })(Main);
 
