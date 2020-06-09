@@ -423,7 +423,7 @@ class NewEventPage extends Component {
           >
             <Icon type="MaterialCommunityIcons" name='emoticon-wink-outline' style={{ fontSize: 30, color: '#FF5722' }}/>
             <Text style={{
-              color: 'black',
+              color: '#757575',
               fontSize: 16,
               fontFamily: 'OpenSans-Regular',
               // borderColor: 'black',
@@ -431,7 +431,7 @@ class NewEventPage extends Component {
               // paddingTop: 15,
               textAlign: 'center',
             }}
-            > The following event has been successfully created: "{this.props.createdEventTitle}"
+            >You're all set! The following event has been successfully created: "{this.props.createdEventTitle}"
             </Text>
             {/* <View>
               <Button 
@@ -490,7 +490,7 @@ class NewEventPage extends Component {
           >
 
             <Text style={{
-              color: 'red',
+              color: '#757575',
               fontSize: 20,
               borderColor: 'black',
               borderWidth: 0,
@@ -532,10 +532,10 @@ class NewEventPage extends Component {
         <View style={{ justifyContent: 'center', alignItems: 'center', flexDirection: 'row' }}>
           <Icon type="MaterialCommunityIcons" name="alert-circle-outline" style={{ fontSize: 15, color: '#FF5722' }}/>
           <Text style={{
-            color: '#000',
+            color: '#757575',
             fontSize: 16,
-            borderColor: 'black',
-            borderWidth: 0,
+            // borderColor: 'black',
+            // borderWidth: 0,
             fontFamily: 'OpenSans-Regular',
             // alignSelf: 'flex-start',
             textAlign: 'center',
@@ -696,7 +696,7 @@ class NewEventPage extends Component {
     if (this.state.loading) {
       return (
         <View style={styles.spinnerView}>
-          <ActivityIndicator size="large" color="#0000ff" />
+          <ActivityIndicator size="large" color="#FF5722" />
         </View>
       );
     }

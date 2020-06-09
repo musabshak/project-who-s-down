@@ -48,7 +48,7 @@ export function signinUser({ email, password }, navigation, ret) {
   console.log('Signing in!');
   return (dispatch) => {
     /* axios post */
-    axios.post(`${ROOT_URL}/signin`, { email, password }).then((response) => {
+    return axios.post(`${ROOT_URL}/signin`, { email, password }).then((response) => {
       console.log('Signin succeeded.');
       saveValue('token', response.data.token);
       saveValue('userName', response.data.userName);
@@ -56,12 +56,14 @@ export function signinUser({ email, password }, navigation, ret) {
       console.log('ret', ret);
       if (!ret) navigation.navigate('Main', {}); 
       else navigation.pop();
+      return 0;
       // localStorage.setItem('token', response.data.token);
     })
       .catch((error) => {
         console.log('Signin failed.');
         console.log(error.response.data.error);
         dispatch({ type: ActionTypes.AUTH_ERROR, signinMsg: 'Signin failed.' });
+        return 1;
       });
   };
 }
