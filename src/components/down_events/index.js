@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 import React, { Component } from 'react';
 import {
   StyleSheet,
@@ -25,18 +26,18 @@ class DownEvents extends Component {
 
 
   displayEvent =() => {
-    if(this.props.authenticated){
+    if (this.props.authenticated) {
       if (this.props.events.imdownEvents !== undefined) {
         return (
           this.props.events.imdownEvents.map((item, key) => {
             return (
-              <EventCard event={item} key={item.id} navigate={this.props.navigation.navigate} authenticated ={this.props.authenticated}/>
+              <EventCard event={item} key={item.id} navigate={this.props.navigation.navigate} authenticated={this.props.authenticated} />
             );
           })
         );
       }
-      else{
-        return(<View><Text>You aren't down for anything!</Text></View>)
+      else {
+        return (<View><Text>You aren't down for anything!</Text></View>);
       }
     }
     else {
@@ -50,7 +51,7 @@ class DownEvents extends Component {
         <ScrollView>
           {this.displayEvent()}
         </ScrollView>
-        <FilterMenu/>
+        <FilterMenu />
       </View>
       
     );

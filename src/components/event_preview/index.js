@@ -10,7 +10,7 @@ import Modal from 'react-native-modal';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
 import {
-  fetchImdownEvents, imdownEvent, unimdownEvent,
+  fetchImdownEvents, imdownEvent, unimdownEvent, increment,
 } from './actions';
 
 
@@ -45,6 +45,7 @@ class EventPreview extends Component {
   }
 
   onDown=() => {
+    // eslint-disable-next-line no-alert
     if (!this.props.token) { alert('You need to login first!'); }
     else if (this.state.imdown === 0) {
       this.props.imdownEvent(this.props.token, this.props.event.id).then(() => {
@@ -81,6 +82,8 @@ openPreview = () => {
 // }
 
 closePreview = () => {
+  this.props.increment();
+  // console.log(this.props.count);
   this.setState({
     EventPreviewVisible: false,
   });
@@ -413,8 +416,9 @@ const mapStateToProps = (state) => {
     subscribeError: state.eventsSh.subscribeError,
     subscribedEvents: state.eventsSh.subscribedEvents,
     token: state.auth.token,
+  
   });
 };
 export default connect(mapStateToProps, {
-  fetchImdownEvents, imdownEvent, unimdownEvent, 
+  fetchImdownEvents, imdownEvent, unimdownEvent, increment,
 })(EventPreview);

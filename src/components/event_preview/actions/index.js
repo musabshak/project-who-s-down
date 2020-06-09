@@ -12,6 +12,7 @@ export const ActionTypes = {
   FETCH_IMDOWN_EVENTS: 'FETCH_IMDOWN_EVENTS',
   IMDOWN_EVENT: 'IMDOWN_EVENT',
   UNIMDOWN_EVENT: 'UNIMDOWN_EVENT',
+  INCREMENT: 'INCREMENT',
 };
 
 
@@ -60,5 +61,12 @@ export function unimdownEvent(token, eventId) {
         console.log('UnimdownEvent failed.', error.response.data);
         dispatch({ type: ActionTypes.UNIMDOWN_EVENT, error: error.response.data, payload: []});
       });
+  };
+}
+
+export function increment() {
+  return {
+    type: ActionTypes.INCREMENT,
+    payload: null,
   };
 }

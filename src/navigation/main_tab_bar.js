@@ -16,10 +16,8 @@ import MyEvents from '../components/my_events';
 // import Discovery from './discovery';
 import AddEvents from '../components/new_event';
 import DownEvents from '../components/down_events';
-import myEvents from '../components/my_events';
 
 import { SCREEN_HEIGHT, SCREEN_WIDTH } from '../../assets/styles/event_info';
-
 
 
 const Tab = createBottomTabNavigator();

@@ -9,9 +9,12 @@ import eventPreviewReducer from './events_preview_reducer';
 import geoViewReducer from './geo_view_reducers';
 import alleventsReducer from './list_reducer';
 import chatReducer from './chat_reducer';
+import settingsReducer from './settings-reducer';
+import modalReducer from './modalReducer';
 
 
 const rootReducer = combineReducers({
+  settings: settingsReducer,
   auth: authReducer,
   newEventStatus: newEventStatusReducer,
   eventsSh: eventsReducerSh,
@@ -19,6 +22,7 @@ const rootReducer = combineReducers({
   list: alleventsReducer,
   chat: chatReducer,
   eventPreview: eventPreviewReducer,
+  modal: modalReducer,
 });
 
 export default rootReducer;

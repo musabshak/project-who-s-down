@@ -1,7 +1,6 @@
-/* eslint-disable max-len */
-/* eslint-disable eqeqeq */
-/* eslint-disable no-plusplus */
 /* eslint-disable no-nested-ternary */
+/* eslint-disable max-len */
+/* eslint-disable no-plusplus */
 /* eslint-disable react/no-did-update-set-state */
 /* eslint-disable global-require */
 import React, { Component } from 'react';
@@ -61,6 +60,27 @@ class EventInfo extends Component {
   }
 
   async componentDidMount() {
+    // try {
+    // await Font.loadAsync({
+    //   'pacifico-regular': require('../../../assets/fonts/Pacifico-Regular.ttf'),
+    //   'TitilliumWeb-SemiBold': require('../../../assets/fonts/TitilliumWeb-SemiBold.ttf'),
+    //   'ReenieBeanie-Regular': require('../../../assets/fonts/ReenieBeanie-Regular.ttf'),
+    //   'Montserrat-Regular': require('../../../assets/fonts/Montserrat-Regular.ttf'),
+    //   'Montserrat-SemiBold': require('../../../assets/fonts/Montserrat-SemiBold.ttf'),
+    //   'OpenSans-Regular': require('../../../assets/fonts/OpenSans-Regular.ttf'),
+    // });
+    //   this.setState({ fontLoaded: true });
+    //   console.log('fonts are loaded');
+    // } catch (error) {
+    //   console.log(error);
+    // }
+    // console.log(customFormatTime(this.state.startTime));
+    // // fetching events for testing
+    // try {
+    //   await this.props.fetchEvents();
+    // } catch (error) {
+    //   console.log(error);
+    // }
     fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${this.props.route.params.event.latitude},${this.props.route.params.event.longitude}&key=${API_KEY}`)
       .then((response) => response.json())
       .then((responseJson) => {
@@ -112,6 +132,7 @@ class EventInfo extends Component {
   customFormatTime = (dateString) => {
     const date = new Date(dateString);
     const tks = date.toDateString().split(' ');
+    // eslint-disable-next-line no-nested-ternary
     const hours = date.getHours() === 0 ? '12' : date.getHours() > 12 ? date.getHours() - 12 : date.getHours();
     const minutes = (date.getMinutes() < 10 ? '0' : '') + date.getMinutes();
     const ampm = date.getHours() < 12 ? 'AM' : 'PM';
@@ -122,6 +143,7 @@ class EventInfo extends Component {
   hourDiff = () => {
     const curr = new Date();
     const sTime = new Date(this.state.startTime);
+    // eslint-disable-next-line eqeqeq
     if (!this.state.startTime || sTime.getDate() - curr.getDate() < 0 || (sTime.getDate() - curr.getDate() == 0 && sTime.getHours() - curr.getHours() < 0)) return -1;
     let sHour = sTime.getHours();
     sHour += 24 * (sTime.getDate() - curr.getDate());

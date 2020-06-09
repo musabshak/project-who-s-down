@@ -25,14 +25,8 @@ class Chat extends Component {
     // };
     };
   }
-
   
-  //   async componentDidMount() {
-  //     if (this.props.token) {
-  //       setInterval(this.callToFetchChat, 1000);
-  //     }
-  //   }
-
+  
     componentDidMount = () => {
       setInterval(this.callToFetchChat, 1000);
     }
