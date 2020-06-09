@@ -12,6 +12,7 @@ export const ActionTypes = {
   SUBSCRIBE_EVENT: 'SUBSCRIBE_EVENT',
   UNSUBSCRIBE_EVENT: 'UNSUBSCRIBE_EVENT',
   FETCH_IMDOWN_EVENTS: 'FETCH_IMDOWN_EVENTS',
+  FETCH_MY_EVENTS: 'FETCH_MY_EVENTS',
   IMDOWN_EVENT: 'IMDOWN_EVENT',
   UNIMDOWN_EVENT: 'UNIMDOWN_EVENT',
 };
@@ -94,6 +95,24 @@ export function fetchImdownEvents(token) {
       });
   };
 };
+
+export function fetchMyEvents(token) {
+  console.log('Fetching my events...');
+  return (dispatch) => {
+    // get doesn't require a boday, post does
+    return axios.get(`${ROOT_URL}/fetchMyEventsByUser`, { headers: { authorization: token } }).then((response) => {
+      console.log('FetchMyEvents succeeded.');
+      // console.log(response.data);
+      dispatch({ type: ActionTypes.FETCH_MY_EVENTS, error: null, payload: response.data });
+      return response.data;
+    })
+      .catch((error) => {
+        console.log('FetchmyEvents failed.');
+        dispatch({ type: ActionTypes.FETCH_MY_EVENTS, error: error.response.data, payload: []});
+      });
+  };
+};
+
 
 export function imdownEvent(token, eventId) {
   return (dispatch) => {
