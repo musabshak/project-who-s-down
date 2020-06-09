@@ -1,57 +1,55 @@
-/* eslint-disable react/no-unescaped-entities */
 import React, { Component } from 'react';
+import Search from 'react-native-search-box';
 import {
+  ActivityIndicator,
   StyleSheet,
   View,
   Text,
-  ScrollView,
-  FlatList,
-
 } from 'react-native';
 import { connect } from 'react-redux';
-import { fetchMyEvents } from '../event_list/actions';
+import { fetchEvents } from '../event_list/actions';
 import FilterMenu from '../geographic_view/FilterMenu';
 import EventCard from '../event_list/event_card';
 
 
-class myEvents extends Component {
+class EventList extends Component {
   constructor(props) {
     super(props);
   }
 
   componentDidMount = () => {
-    this.props.fetchMyEvents(this.props.token);
+    this.props.fetchEvents();
+    console.log('mounting my event');
     console.log(this.props.events);
   } 
 
-
   displayEvent =() => {
-    if (this.props.authenticated) {
-      if (this.props.events.myEvents !== undefined) {
-        return (
-          this.props.events.myEvents.map((item, key) => {
-            return (
-              <EventCard event={item} key={item.id} navigate={this.props.navigation.navigate} authenticated={this.props.authenticated} />
-            );
-          })
-        );
-      }
-      else {
-        return (<View><Text>You aren't down for anything!</Text></View>);
-      }
-    }
-    else {
-      return (<View><Text>Waiting for events</Text></View>);
+    if (this.props.events.all !== undefined) {
+      return (
+        this.props.events.all.map((item, key) => {
+          return (
+            <EventCard event={item} key={item.id} />
+          );
+        })
+      );
+    } else {
+      return (<View><Text>Start by signing in and adding events!</Text></View>);
     }
   }
 
   render() {
     return (
       <View>
-        <ScrollView>
-          {this.displayEvent()}
-        </ScrollView>
+        <Search
+          backgroundColor="#c4302b"
+          showsCancelButton={false}
+          textFieldBackgroundColor="#c4302b"
+          onChangeText={(query) => {
+            this.setState({ query });
+          }}
+        />
         <FilterMenu />
+        {this.displayEvent()}
       </View>
       
     );
@@ -61,13 +59,10 @@ class myEvents extends Component {
 function mapStateToProps(reduxState) {
   return { 
     events: reduxState.list,
-    authenticated: reduxState.auth.authenticated,
-    token: reduxState.auth.token,
-
   };
 }
 
-export default connect(mapStateToProps, { fetchMyEvents })(myEvents);
+export default connect(mapStateToProps, { fetchEvents })(EventList);
 
 
 const styles = StyleSheet.create({
