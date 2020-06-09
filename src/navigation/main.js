@@ -72,7 +72,6 @@ class Main extends Component {
             <Stack.Screen
               name="Main"
               component={MainTabBar}
-                
               options={{
                 // title: 'Who\'s Down?',
                 headerMode : 'none',

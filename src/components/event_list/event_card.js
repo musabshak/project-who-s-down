@@ -49,6 +49,15 @@ class EventCard extends Component {
     }
   }
 
+  customFormatTime = (dateString) => {
+    const date = new Date(dateString);
+    const tks = date.toDateString().split(' ');
+    const hours = date.getHours() === 0 ? '12' : date.getHours() > 12 ? date.getHours() - 12 : date.getHours();
+    const minutes = (date.getMinutes() < 10 ? '0' : '') + date.getMinutes();
+    const ampm = date.getHours() < 12 ? 'AM' : 'PM';
+    const formattedTime = `${hours}:${minutes} ${ampm}`;
+    return `${formattedTime}`;
+  }
     onDown(){
       if (this.state.imdown === 0) {
         this.props.imdownEvent(this.props.token, this.props.event.id).then(() => {
@@ -88,7 +97,7 @@ class EventCard extends Component {
                 }}/>}
               onPress={() => {this.props.navigate('EventInfo', { event: this.props.event });}}
               topRightText={<Text><Ionicons name={'clock'} size={17} color={'#FF5722'} style={{
-              justifyContent: 'flex-start'}}/>{this.props.event.startTime.substring(11, 16)}</Text>}
+              justifyContent: 'flex-start'}}/>{this.customFormatTime(this.props.event.startTime)}</Text>}
               content={this.props.event.description}
               defaultContent="Click on the event to learn more!"
             /><Button 
@@ -127,7 +136,7 @@ class EventCard extends Component {
                 }}/>}
               onPress={() => {this.props.navigate('EventInfo', { event: this.props.event });}}
               topRightText={<Text><Ionicons name={'clock'} size={17} color={'#FF5722'} style={{
-              justifyContent: 'flex-start'}}/>{this.props.event.startTime.substring(11, 16)}</Text>}
+              justifyContent: 'flex-start'}}/>{this.customFormatTime(this.props.event.startTime)}</Text>}
               content={this.props.event.description}
               defaultContent="Click on the event to learn more!"
             /><Button 
@@ -164,7 +173,7 @@ class EventCard extends Component {
                 }}/>}
               onPress={() => {this.props.navigate('EventInfo', { event: this.props.event });}}
               topRightText={<Text><Ionicons name={'clock'} size={17} color={'#FF5722'} style={{
-              justifyContent: 'flex-start', paddingRight: 20, paddingLeft: 20}}/>{this.props.event.startTime.substring(11, 16)}</Text>}
+              justifyContent: 'flex-start', paddingRight: 20, paddingLeft: 20}}/>{this.customFormatTime(this.props.event.startTime)}</Text>}
               content={this.props.event.description}
               bottomRightText={this.props.event.skillLevel}
             />
