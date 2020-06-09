@@ -35,6 +35,17 @@ openPreview = () => {
   });
 }
 
+customFormatTime = (dateString) => {
+  const date = new Date(dateString);
+  const tks = date.toDateString().split(' ');
+  // eslint-disable-next-line no-nested-ternary
+  const hours = date.getHours() === 0 ? '12' : date.getHours() > 12 ? date.getHours() - 12 : date.getHours();
+  const minutes = (date.getMinutes() < 10 ? '0' : '') + date.getMinutes();
+  const ampm = date.getHours() < 12 ? 'AM' : 'PM';
+  const formattedTime = `${hours}:${minutes} ${ampm}`;
+  return `${formattedTime}`;
+}
+
 
 toggleModal = () => {
   this.setState({
@@ -77,7 +88,7 @@ render() {
             <View style={styles.exclude} />
             <View style={styles.title}>
               <Text style={styles.titleFont}>{this.props.title} </Text>
-              <Text style={styles.timeFont}>{this.props.startTime} </Text>
+              <Text style={styles.timeFont}>{this.customFormatTime(this.props.startTime)} </Text>
             </View>
             <View style={styles.people}>
               <View style={styles.host}>
@@ -95,7 +106,7 @@ render() {
                 </Text>
               </View>
               <View style={styles.skillLevel2}>
-                <Text style={styles.hostFont}>professional{this.props.skillLevel} </Text>
+                <Text style={styles.hostFont}>{this.props.skillLevel} </Text>
               </View>
             </View>
 
@@ -111,7 +122,7 @@ render() {
               <View style={styles.buttonGroup}>
                 <FontAwesome name="thumb-tack" color="white" size={30} style={styles.down} />
                 <Text style={styles.eventText}>I'm down!</Text>
-                
+
               </View>
             </TouchableOpacity>
             <View style={styles.shortDescription}>
@@ -119,15 +130,29 @@ render() {
               
               <ScrollView style={styles.bio}>
                 {/* <View style={styles.bio}> */}
-                <Text style={styles.bioFont2}>reeeeeeeeeeeeeeeeeeeeeeeeeee
+                <Text style={styles.bioFont2}>
                   {this.props.description}
                 </Text>
               </ScrollView>
              
             </View>
             <View style={styles.participants}>
-              <FontAwesome name="commenting" color="#FF5722" size={22} style={styles.icon1} />
-              <FontAwesome name="ellipsis-h" color="#FF5722" size={22} style={styles.icon2} />
+              <TouchableOpacity 
+                onPress={() => { 
+                  this.props.navigate('Chat', {eventId: this.props.eventId }); 
+                  this.closePreview();
+                }}
+              >
+                <FontAwesome name="commenting" color="#FF5722" size={22} style={styles.icon1} />
+              </TouchableOpacity>
+              <TouchableOpacity 
+                onPress={() => { 
+                  this.props.navigate('EventInfo', {event: this.props.event }); 
+                  this.closePreview();
+                }}
+              >
+                <FontAwesome name="ellipsis-h" color="#FF5722" size={22} style={styles.icon2} />
+              </TouchableOpacity>
             </View>
           </ImageBackground>
         </View>
