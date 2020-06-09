@@ -8,13 +8,13 @@ import {
 
 } from 'react-native';
 import { connect } from 'react-redux';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import Ionicons from 'react-native-vector-icons/FontAwesome';
+import { Fab, Icon } from 'native-base';
 import { fetchEvents } from './actions';
 import FilterMenu from '../geographic_view/FilterMenu';
 import EventCard from './event_card';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-//import { initializeFilters } from '../geographic_view/FilterMenu/actions'
-import Ionicons from 'react-native-vector-icons/FontAwesome';
-import { Fab, Icon } from 'native-base';
+// import { initializeFilters } from '../geographic_view/FilterMenu/actions'
 
 
 class EventList extends Component {
@@ -35,7 +35,7 @@ class EventList extends Component {
       return (
         this.props.events.all.map((item, key) => {
           return (
-            <EventCard event={item} key={item.id} navigate={this.props.navigation.navigate} token = {this.props.token} authenticated ={this.props.authenticated} imdown={this.imdown}/>
+            <EventCard event={item} key={item.id} navigate={this.props.navigation.navigate} token={this.props.token} authenticated={this.props.authenticated} imdown={this.imdown} />
           );
         })
       );
