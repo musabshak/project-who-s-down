@@ -82,7 +82,7 @@ class Main extends Component {
         return (`Profile(${props.notifNumber})`); }
     }
     else {
-      console.log('no props detected');
+      // console.log('no props detected');
       return ('Profile');
     }
   }

@@ -6,6 +6,7 @@ import {
   Text,
   ScrollView,
   FlatList,
+  ActivityIndicator,
 
 } from 'react-native';
 import { connect } from 'react-redux';
@@ -17,17 +18,27 @@ import EventCard from '../event_list/event_card';
 class DownEvents extends Component {
   constructor(props) {
     super(props);
+
+    this.props.navigation.addListener(
+      'focus',
+      (payload) => {
+        console.log('token', this.props.token);
+        this.props.fetchImdownEvents(this.props.token);
+        console.log('navigation event listener', 'in focus');
+      },
+    );
   }
 
   componentDidMount = () => {
     this.props.fetchImdownEvents(this.props.token);
-    console.log(this.props.events);
+    console.log('list of im down events', this.props.imdownEvents);
   } 
 
 
   displayEvent =() => {
+    console.log(this.props.events.imdownEvents);
     if (this.props.authenticated) {
-      if (this.props.events.imdownEvents !== undefined) {
+      if (this.props.events.imdownEvents && this.props.events.imdownEvents.length) {
         return (
           this.props.events.imdownEvents.map((item, key) => {
             return (
@@ -36,8 +47,11 @@ class DownEvents extends Component {
           })
         );
       }
-      else {
+      else if (!(this.props.events.imdownEvents && this.props.events.imdownEvents.length)) {
         return (<View><Text>You aren't down for anything!</Text></View>);
+      }
+      else {
+        return (<ActivityIndicator size="large" color="#FF5722" />);
       }
     }
     else {

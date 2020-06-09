@@ -10,8 +10,7 @@ class tabThree extends Component {
   render() {
     return (
       <View>
-        <Text>Events I am down for, this is also coming from Anjali and is currently called my_events</Text>
-        <DownEvents />
+        <DownEvents navigation={this.props.navigation} />
       </View>
     );
   }
