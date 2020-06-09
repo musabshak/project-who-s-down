@@ -4,17 +4,21 @@ const initialState = {
   all: [],
   error: null,
   newText: '',
+  timer: null,
 };
 
 
 const chatReducer = (state = initialState, action) => {
   switch (action.type) {
-  case ActionTypes.FETCH_EVENTS:
-    return { error: action.error, all: action.payload };
+  // case ActionTypes.FETCH_EVENTS:
+  //   return { error: action.error, all: action.payload };
   case ActionTypes.FETCH_CHAT:
-    return { error: action.error, all: action.payload };
+    // console.log('chatReducer: ', action.payload);
+    return { ...state, error: action.error, all: action.payload };
   case ActionTypes.NEW_CHAT:
-    return {newText: action.payload, error: false, success: true}; 
+    return { ...state, newText: action.payload, error: false, success: true}; 
+    case ActionTypes.SET_CHAT_TIMER:
+      return { ...state, error: action.error, timer: action.payload, test: action.test}; 
   default:
     return state;
   }

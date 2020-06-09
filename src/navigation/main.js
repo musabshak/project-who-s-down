@@ -5,8 +5,9 @@ import React, { Component } from 'react';
 import {
   StyleSheet, Button, Text, ActivityIndicator, View, 
 } from 'react-native';
+import { Icon } from 'native-base';
 import { connect } from 'react-redux';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, StackActions } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import * as Font from 'expo-font';
 
@@ -24,6 +25,10 @@ const NullComponent = () => null;
 export const navigationRef = React.createRef();
 export function navigate(name, params) {
   navigationRef.current && navigationRef.current.navigate(name, params);
+}
+export function pop(params) {
+  if (params) navigationRef.current?.dispatch(StackActions.pop(...params));
+  else navigationRef.current?.dispatch(StackActions.pop());
 }
 
 const Stack = createStackNavigator();
@@ -168,6 +173,15 @@ class Main extends Component {
                 component={Chat} 
                 options={{
                   headerShown: true,
+                  headerLeft: () => (
+                    <TouchableOpacity
+                      activeOpacity={0.6}
+                      onPress={() => {console.log('Clearing timer: ', this.props.timer); clearInterval(this.props.timer); pop();}}
+                      style={{ justifyContent: 'center', alignItems: 'center', paddingRight: 20 }}
+                    >
+                      <Icon type="MaterialCommunityIcons" name='arrow-left' style={{ fontSize: 30, color: '#FF5722', marginLeft: 15 }}/>
+                    </TouchableOpacity>
+                  ),
                 }}
               />
             </Stack.Navigator>
@@ -188,6 +202,7 @@ const mapStateToProps = (state) => {
   return ({
     userName: state.auth.userName,
     token: state.auth.token,
+    timer: state.chat.timer,
   });
 };
 

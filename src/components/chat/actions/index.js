@@ -13,6 +13,7 @@ export const ActionTypes = {
   FETCH_CHAT: 'FETCH_CHAT',
   NEW_CHAT: 'FETCH_POST_SUCCEEDED',
   NEW_CHAT_ERROR: 'NEW_CHAT_ERROR',
+  SET_CHAT_TIMER: 'SET_CHAT_TIMER',
 };
 
 export function fetchEvents() {
@@ -47,6 +48,17 @@ export function fetchChat(eventID, token) {
   };
 }
 
+export function setChatTimer(timer) {
+  console.log('setting chat timer: ', timer);
+  return (dispatch) => {
+    if (timer) {
+      console.log('Dispatched', { type: ActionTypes.SET_CHAT_TIMER, error: null, payload: timer });
+      dispatch({ type: ActionTypes.SET_CHAT_TIMER, error: null, payload: timer, test: 'test' });
+    }
+     
+    else console.log('chat/actions: invalid timer.');
+  };
+}
 
 export function newChat(newMessage, eventID, token) {
   // console.log(authToken);
