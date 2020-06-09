@@ -8,27 +8,27 @@ import {
 
 } from 'react-native';
 import { connect } from 'react-redux';
-import { fetchMyEvents } from '../event_list/actions';
+import { fetchImdownEvents } from '../event_list/actions';
 import FilterMenu from '../geographic_view/FilterMenu';
 import EventCard from '../event_list/event_card';
 
 
-class MyEvents extends Component {
+class DownEvents extends Component {
   constructor(props) {
     super(props);
   }
 
   componentDidMount = () => {
-    this.props.fetchMyEvents(this.props.token);
+    this.props.fetchImdownEvents(this.props.token);
     console.log(this.props.events);
   } 
 
 
   displayEvent =() => {
     if(this.props.authenticated){
-      if (this.props.events.myEvents !== undefined) {
+      if (this.props.events.imdownEvents !== undefined) {
         return (
-          this.props.events.myEvents.map((item, key) => {
+          this.props.events.imdownEvents.map((item, key) => {
             return (
               <EventCard event={item} key={item.id} navigate={this.props.navigation.navigate} authenticated ={this.props.authenticated}/>
             );
@@ -66,7 +66,7 @@ function mapStateToProps(reduxState) {
   };
 }
 
-export default connect(mapStateToProps, { fetchMyEvents })(MyEvents);
+export default connect(mapStateToProps, { fetchImdownEvents })(DownEvents);
 
 
 const styles = StyleSheet.create({

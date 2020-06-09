@@ -4,12 +4,16 @@ import {
   View,
   Text,
   ScrollView,
+  FlatList,
+
 } from 'react-native';
 import { connect } from 'react-redux';
 import { fetchEvents } from './actions';
 import FilterMenu from '../geographic_view/FilterMenu';
 import EventCard from './event_card';
-
+import { TouchableOpacity } from 'react-native-gesture-handler';
+//import { initializeFilters } from '../geographic_view/FilterMenu/actions'
+import Ionicons from 'react-native-vector-icons/FontAwesome';
 
 class EventList extends Component {
   constructor(props) {
@@ -20,12 +24,14 @@ class EventList extends Component {
     this.props.fetchEvents();
   } 
 
+
+
   displayEvent =() => {
     if (this.props.events.all !== undefined) {
       return (
         this.props.events.all.map((item, key) => {
           return (
-            <EventCard event={item} key={item.id} navigate={this.props.navigation.navigate} />
+            <EventCard event={item} key={item.id} navigate={this.props.navigation.navigate} token = {this.props.token} authenticated ={this.props.authenticated} imdown={this.imdown}/>
           );
         })
       );
@@ -38,9 +44,9 @@ class EventList extends Component {
     return (
       <View>
         <ScrollView>
-          <FilterMenu />
           {this.displayEvent()}
         </ScrollView>
+        <FilterMenu/>
       </View>
       
     );
@@ -50,6 +56,8 @@ class EventList extends Component {
 function mapStateToProps(reduxState) {
   return { 
     events: reduxState.list,
+    authenticated: reduxState.auth.authenticated,
+    token: reduxState.auth.token,
   };
 }
 

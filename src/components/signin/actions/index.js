@@ -58,6 +58,7 @@ export function signinUser({ email, password }, navigation, ret) {
       else navigation.pop();
       return 0;
       // localStorage.setItem('token', response.data.token);
+
     })
       .catch((error) => {
         console.log('Signin failed.');

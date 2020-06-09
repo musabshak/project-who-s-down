@@ -11,7 +11,7 @@ import { signoutUser, loadToken } from '../components/signin/actions';
 import SignIn from '../components/signin';
 import SignUp from '../components/signup';
 import EventInfo from '../components/event_info';
-import MyEvents from '../components/my_events';
+import DownEvents from '../components/down_events';
 import NewEventPage from '../components/new_event';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
@@ -56,7 +56,7 @@ class Main extends Component {
   }
 
   componentDidMount() {
-
+    
   }
 
   render() {
@@ -169,7 +169,6 @@ class Main extends Component {
       );
     }
   }
-  
   
 }
 

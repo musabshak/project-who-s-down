@@ -10,8 +10,16 @@ import Modal from 'react-native-modal';
 
 import GeographicView from '../components/geographic_view';
 import EventList from '../components/event_list';
+
+import MyEvents from '../components/my_events';
+// import Discovery from './discovery';
+import AddEvents from '../components/new_event';
+import DownEvents from '../components/down_events';
+import myEvents from '../components/my_events';
+
 import { SCREEN_HEIGHT, SCREEN_WIDTH } from '../../assets/styles/event_info';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+
 
 
 
