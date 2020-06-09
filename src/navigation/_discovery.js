@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button } from 'react-native';
+import { Button, Text } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import Ionicons from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
@@ -7,6 +7,7 @@ import EventList from '../components/event_list';
 import EventInfo from '../components/event_info';
 import GeographicDisplay from '../components/geographic_view';
 import { signoutUser } from '../components/signin/actions';
+import DownEvents from '../components/down_events';
 
 
 const Stack = createStackNavigator();
@@ -36,7 +37,7 @@ const Discovery = (props) => {
         }}
       />
       <Stack.Screen name="EventList"
-        component={EventList}
+        component={DownEvents}
         options={{
           title: 'Who\'s Down?',
           headerStyle: {
@@ -73,6 +74,11 @@ const Discovery = (props) => {
       />
     </Stack.Navigator>
   );
+};
+
+const headerLeftHelper = () => {
+  console.log('header left called!');
+  return 'hi';
 };
 
 const mapStateToProps = (state) => {
