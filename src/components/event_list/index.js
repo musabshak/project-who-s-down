@@ -14,6 +14,8 @@ import EventCard from './event_card';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 //import { initializeFilters } from '../geographic_view/FilterMenu/actions'
 import Ionicons from 'react-native-vector-icons/FontAwesome';
+import { Fab, Icon } from 'native-base';
+
 
 class EventList extends Component {
   constructor(props) {
@@ -24,7 +26,9 @@ class EventList extends Component {
     this.props.fetchEvents();
   } 
 
-
+  handleFetchClick = () => {
+    this.props.fetchEvents();
+  }
 
   displayEvent =() => {
     if (this.props.events.all !== undefined) {
@@ -47,6 +51,13 @@ class EventList extends Component {
           {this.displayEvent()}
         </ScrollView>
         <FilterMenu/>
+        <Fab
+          onPress={() => this.handleFetchClick()}
+          position="bottomLeft"
+          style={{ }}
+        >
+          <Icon name="ios-refresh" />
+        </Fab>
       </View>
       
     );
