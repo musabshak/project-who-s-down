@@ -10,10 +10,12 @@ import {
 import { connect } from 'react-redux';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Ionicons from 'react-native-vector-icons/FontAwesome';
+import { Fab, Icon } from 'native-base';
 import { fetchEvents } from './actions';
 import FilterMenu from '../geographic_view/FilterMenu';
 import EventCard from './event_card';
 // import { initializeFilters } from '../geographic_view/FilterMenu/actions'
+
 
 class EventList extends Component {
   constructor(props) {
@@ -22,16 +24,18 @@ class EventList extends Component {
 
   componentDidMount = () => {
     this.props.fetchEvents();
-    console.log(this.props.events);
   } 
 
+  handleFetchClick = () => {
+    this.props.fetchEvents();
+  }
 
   displayEvent =() => {
     if (this.props.events.all !== undefined) {
       return (
         this.props.events.all.map((item, key) => {
           return (
-            <EventCard event={item} key={item.id} navigate={this.props.navigation.navigate} authenticated={this.props.authenticated} />
+            <EventCard event={item} key={item.id} navigate={this.props.navigation.navigate} token={this.props.token} authenticated={this.props.authenticated} imdown={this.imdown} />
           );
         })
       );
@@ -46,7 +50,13 @@ class EventList extends Component {
         <ScrollView>
           {this.displayEvent()}
         </ScrollView>
-        <FilterMenu />
+        <Fab
+          onPress={() => this.handleFetchClick()}
+          position="bottomLeft"
+          style={{ }}
+        >
+          <Icon name="ios-refresh" />
+        </Fab>
       </View>
       
     );
@@ -57,6 +67,7 @@ function mapStateToProps(reduxState) {
   return { 
     events: reduxState.list,
     authenticated: reduxState.auth.authenticated,
+    token: reduxState.auth.token,
   };
 }
 

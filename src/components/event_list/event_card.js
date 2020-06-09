@@ -1,3 +1,6 @@
+/* eslint-disable react/jsx-closing-tag-location */
+/* eslint-disable no-plusplus */
+/* eslint-disable global-require */
 /* eslint-disable eqeqeq */
 import React, { Component } from 'react';
 import {
@@ -10,9 +13,10 @@ import {
   TouchableWithoutFeedback,
 } from 'react-native';
 import {Button} from 'native-base';
-import {Card} from '@paraboly/react-native-card'
+import {Card} from '@paraboly/react-native-card';
 import Ionicons from 'react-native-vector-icons/FontAwesome5';
 import { connect } from 'react-redux';
+import {imdownEvent, unimdownEvent, fetchImdownEvents} from './actions';
 
 
 const eventCategoryToIcon = new Map([
@@ -27,23 +31,57 @@ const eventCategoryToIcon = new Map([
 class EventCard extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      imdown: 0,
+    };
   }
 
-    onDown = (event) => {
-      if (this.props.event.imdown == true) {
-        this.props.event.setState({
-          down: false,
-        }); }
-      else {
-        this.props.event.setState({
-          down: true,
-        });
-      }
+  componentDidMount() {
+    if (this.props.token) {
+      this.props.fetchImdownEvents(this.props.token).then((res) => {
+        for (let i = 0; i < res.length; i++) this.setState({ imdown: 0 });
+        if (res[i].id === this.props.event.id) {
+          this.setState({ imdown: 1 });
+          console.log(res[i]);
+          i = res.length;
+        }
+      });
     }
+  }
 
-    // this.props.post.id
-    render() {
-      if (this.props.authenticated) {
+
+  onDown() {
+    if (this.state.imdown === 0) {
+      this.props.imdownEvent(this.props.token, this.props.event.id).then(() => {
+        this.setState({ imdown: 1 });
+        console.log(this.state.imdown);
+      });
+    }
+    else if (this.state.imdown === 1) {
+      this.setState({ imdown: undefined });
+      this.props.unimdownEvent(this.props.token, this.props.event.id).then(() => {
+        this.setState({ imdown: 0 });
+        console.log(this.state.imdown);
+      });
+    }
+  }
+
+  customFormatTime = (dateString) => {
+    const date = new Date(dateString);
+    const tks = date.toDateString().split(' ');
+    // eslint-disable-next-line no-nested-ternary
+    const hours = date.getHours() === 0 ? '12' : date.getHours() > 12 ? date.getHours() - 12 : date.getHours();
+    const minutes = (date.getMinutes() < 10 ? '0' : '') + date.getMinutes();
+    const ampm = date.getHours() < 12 ? 'AM' : 'PM';
+    const formattedTime = `${hours}:${minutes} ${ampm}`;
+    return `${formattedTime}`;
+  }
+
+
+  // this.props.post.id
+  render() {
+    if (this.props.token) {
+      if (this.state.imdown === 1 || this.imdown === 1) {
         return (
           <View style={{
             borderRadius: 5,
@@ -52,35 +90,47 @@ class EventCard extends Component {
             alignItems: 'center',
           }}
           >
-          <View style={{
-            zIndex: 0,
-          }}
-          >
-            <TouchableOpacity >
             <Card
               title={this.props.event.eventTitle}
-              iconComponent={<Image source={eventCategoryToIcon.get(this.props.event.category)}
-                style={{ margin: -20, marginTop:-50, alignItems: 'center', justifyContent:'center',
-                  height: 40, width: 40,
-                }}/>}
-              onPress={() => {this.props.navigate('EventInfo', { event: this.props.event });}}
-              topRightText={<Text><Ionicons name={'clock'} size={17} color={'#FF5722'} style={{
-              justifyContent: 'flex-start'}}/>{this.props.event.startTime.substring(11, 16)}</Text>}
+              containerHeight={110}
+              iconComponent={(
+                <Image source={eventCategoryToIcon.get(this.props.event.category)}
+                  style={{
+                    margin: -30,
+                    marginTop: -20,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    height: 40,
+                    width: 40,
+                  }}
+                />
+              )}
+              onPress={() => { this.props.navigate('EventInfo', { event: this.props.event }); }}
+              topRightText={(
+                <Text><Ionicons name="clock"
+                  size={17}
+                  color="#FF5722"
+                  style={{justifyContent: 'flex-start'}}
+                />{this.customFormatTime(this.props.event.startTime)}
+                </Text>
+              )}
               content={this.props.event.description}
-              bottomRightComponent={<View style={{
-                alignSelf:'flex-end',
-
-              }}
-              >
-               <TouchableOpacity onPress={() => e.stopPropogation()}>
-                 <Button onPress={() => e.stopPropogation()} style={{backgroundColor:'#fff', borderColor:'#FF5722',}}><Ionicons name={'thumbs-up'} size={30} color={'#FF5722'} style={{paddingLeft: 20}}/>
-                 </Button>
-               </TouchableOpacity>
-               </View >}
               defaultContent="Click on the event to learn more!"
-            />
-            </TouchableOpacity>
-            </View>
+            /><Button 
+              onPress={() => this.onDown()}
+              style={
+                {
+                  position: 'absolute',
+                  right: 25,
+                  bottom: 15,
+                  width: 60,
+                  height: 50,
+                  backgroundColor: '#FF5527', 
+                }
+              }
+            >
+              <Ionicons name="thumbs-up" size={30} color="white" style={{ paddingLeft: 20 }} />
+            </Button>            
           </View>
         );  
       }
@@ -95,49 +145,93 @@ class EventCard extends Component {
           >
             <Card
               title={this.props.event.eventTitle}
-              iconComponent={<Image source={eventCategoryToIcon.get(this.props.event.category)}
-                style={{ margin: -20, marginTop:30, alignItems: 'center', justifyContent:'center',
-                  height: 40, width: 40,
-                }}/>}
-              onPress={() => {this.props.navigate('EventInfo', { event: this.props.event });}}
-              topRightText={<Text><Ionicons name={'clock'} size={17} color={'#FF5722'} style={{
-              justifyContent: 'flex-start', paddingRight: 20, paddingLeft: 20}}/>{this.props.event.startTime.substring(11, 16)}</Text>}
+              containerHeight={110}
+              iconComponent={(
+                <Image source={eventCategoryToIcon.get(this.props.event.category)}
+                  style={{
+                    margin: -30,
+                    marginTop: -20,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    height: 40,
+                    width: 40,
+                  }}
+                />
+              )}
+              onPress={() => { this.props.navigate('EventInfo', { event: this.props.event }); }}
+              topRightText={(
+                <Text><Ionicons name="clock"
+                  size={17}
+                  color="#FF5722"
+                  style={{justifyContent: 'flex-start'}}
+                />{this.customFormatTime(this.props.event.startTime)}
+                </Text>
+              )}
               content={this.props.event.description}
-              bottomRightText={this.props.event.skillLevel}
-            />
+              defaultContent="Click on the event to learn more!"
+            /><Button 
+              onPress={() => this.onDown()}
+              style={
+                {
+                  position: 'absolute',
+                  right: 25,
+                  bottom: 15,
+                  width: 60,
+                  height: 50,
+                  backgroundColor: 'white', 
+                }
+              }
+            ><Ionicons name="thumbs-up" size={30} color="#FF5527" style={{ paddingLeft: 20}} />
+            </Button>            
           </View>
-        );  
-      }
+        ); } 
     }
+    else {
+      return (
+        <View style={{
+          borderRadius: 5,
+          padding: 5,
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+        >
+          <Card
+            title={this.props.event.eventTitle}
+            iconComponent={(
+              <Image source={eventCategoryToIcon.get(this.props.event.category)}
+                style={{
+                  margin: -20,
+                  marginTop: 30,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  height: 40,
+                  width: 40,
+                }}
+              />
+            )}
+            onPress={() => { this.props.navigate('EventInfo', { event: this.props.event }); }}
+            topRightText={(
+              <Text><Ionicons name="clock"
+                size={17}
+                color="#FF5722"
+                style={{justifyContent: 'flex-start', paddingRight: 20, paddingLeft: 20}}
+              />{this.customFormatTime(this.props.event.startTime)}
+              </Text>
+            )}
+            content={this.props.event.description}
+            bottomRightText={this.props.event.skillLevel}
+          />
+        </View>
+      );  
+    }
+  }
 }
 
 
-export default EventCard;
+function mapStateToProps(reduxState) {
+  return { 
+    events: reduxState.list,
+  };
+}
 
-
-/* <Card
-
-<Button
-                color= "#FF5722" 
-                onPress={() => this.onDown()}
-                buttonStyle={{borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0}}
-                title='Down?' />
-
-            
-            {this.props.event.category}
-
-
-  title='HELLO WORLD'
-  image={require('../images/pic2.jpg')}>
-  <Text style={{marginBottom: 10}}>
-    The idea with React Native Elements is more about component structure than actual design.
-  </Text>
-  <Button
-    icon={<Icon name='code' color='#ffffff' />}
-    buttonStyle={{borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0}}
-    title='VIEW NOW' />
-</Card> */
-
-//...{this.props.event.startTime.substring(11, 16)}}
-
-//{() => {this.props.navigate('EventInfo', { event: this.props.event });}}
+export default connect(mapStateToProps, { imdownEvent, unimdownEvent, fetchImdownEvents })(EventCard);

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Text } from 'react-native';
+import { Button } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import Ionicons from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
@@ -19,7 +19,7 @@ const Discovery = (props) => {
   return (
     <Stack.Navigator>
       <Stack.Screen name="Map View"
-        component={GeographicDisplay}
+        component={EventList}
         options={{
           title: 'Who\'s Down?',
           headerStyle: {
@@ -74,11 +74,6 @@ const Discovery = (props) => {
       />
     </Stack.Navigator>
   );
-};
-
-const headerLeftHelper = () => {
-  console.log('header left called!');
-  return 'hi';
 };
 
 const mapStateToProps = (state) => {
