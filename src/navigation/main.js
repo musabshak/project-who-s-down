@@ -1,3 +1,5 @@
+/* eslint-disable react/no-unescaped-entities */
+/* eslint-disable global-require */
 /* eslint-disable no-unused-expressions */
 import React, { Component } from 'react';
 import {
@@ -16,7 +18,7 @@ import SignUp from '../components/signup';
 import EventInfo from '../components/event_info';
 import MyEvents from '../components/my_events';
 import NewEventPage from '../components/new_event';
-import Settings from '../components/settings';
+// import Settings from '../components/settings';
 
 const NullComponent = () => null;
 export const navigationRef = React.createRef();
@@ -60,10 +62,7 @@ class Main extends Component {
       console.log(error);
     }
   }
-
-  componentDidMount() {
-    
-  }
+  
 
   render() {
     if (this.state.fontLoaded) {
@@ -175,10 +174,6 @@ class Main extends Component {
       );
     }
   }
-<<<<<<< HEAD
-=======
-  
->>>>>>> 7128aa4dde44d574f711d0ff369448785181bb2f
 }
 
 const mapStateToProps = (state) => {

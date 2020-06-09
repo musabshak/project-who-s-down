@@ -279,7 +279,9 @@ class NewEventPage extends Component {
       skillLevel: this.state.skillCarouselItems[this.state.skillActiveIndex].label,
       startTime: this.state.startDate,
       endTime: this.state.endDate,
+      formattedAddress: this.state.userLocation,
     };
+    // console.log(event);
 
     const eventValidated = this.validateEvent(event);
     // const eventValidated = true;
