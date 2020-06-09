@@ -37,7 +37,7 @@ class Chat extends Component {
       //   console.log(`Chat timer #${this.state.timer} saved to state.`);
       //   this.props.setChatTimer(this.state.timer);
       // })
-      console.log(`Chat timer #${this.timer} saved to state.`);
+      // console.log(`Chat timer #${this.timer} saved to state.`);
       this.props.setChatTimer(this.timer);
     }
   
@@ -47,7 +47,6 @@ class Chat extends Component {
     //   }
 
   callToFetchChat=() => {
-    console.log('This timer: ', this.props.timer, 'test', this.props.test);
     if (this.props.token) {
       this.props.fetchChat(this.props.route.params.eventId, this.props.token);
       // console.log(`${this.props.route.params.eventId} what + 5ede2ebe87d3d0003875cd6e`);

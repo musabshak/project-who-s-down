@@ -14,14 +14,13 @@ export const ActionTypes = {
   NEW_CHAT: 'FETCH_POST_SUCCEEDED',
   NEW_CHAT_ERROR: 'NEW_CHAT_ERROR',
   SET_CHAT_TIMER: 'SET_CHAT_TIMER',
+  CLEAR_CHAT: 'CLEAR_CHAT',
 };
 
 export function fetchEvents() {
-  console.log('Fetching events...');
   return (dispatch) => {
     /* axios post */
     axios.get(`${ROOT_URL}/fetchEvents`).then((response) => {
-      console.log('FetchEvents succeeded in chat.');
       // console.log(response.data);
       dispatch({ type: ActionTypes.FETCH_EVENTS, error: null, payload: response.data });
       // localStorage.setItem('token', response.data.token);
@@ -52,8 +51,7 @@ export function setChatTimer(timer) {
   console.log('setting chat timer: ', timer);
   return (dispatch) => {
     if (timer) {
-      console.log('Dispatched', { type: ActionTypes.SET_CHAT_TIMER, error: null, payload: timer });
-      dispatch({ type: ActionTypes.SET_CHAT_TIMER, error: null, payload: timer, test: 'test' });
+      dispatch({ type: ActionTypes.SET_CHAT_TIMER, error: null, payload: timer, test: 'test'});
     }
      
     else console.log('chat/actions: invalid timer.');
@@ -73,5 +71,12 @@ export function newChat(newMessage, eventID, token) {
         console.log('Unsuccessfully sent chat');
         dispatch({ type: ActionTypes.NEW_CHAT_ERROR});
       });
+  };
+}
+
+export function clearChat() {
+  return (dispatch) => {
+    dispatch({type: ActionTypes.CLEAR_CHAT,
+    });
   };
 }

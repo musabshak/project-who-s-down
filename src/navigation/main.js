@@ -15,6 +15,7 @@ import * as Font from 'expo-font';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import MainTabBar from './main_tab_bar';
 import { signoutUser, loadToken } from '../components/signin/actions';
+import { clearChat} from '../components/chat/actions';
 import SignIn from '../components/signin';
 import SignUp from '../components/signup';
 import EventInfo from '../components/event_info';
@@ -209,7 +210,7 @@ class Main extends Component {
                 headerLeft: () => (
                   <TouchableOpacity
                     activeOpacity={0.6}
-                    onPress={() => { console.log('Clearing timer: ', this.props.timer); clearInterval(this.props.timer); pop(); }}
+                    onPress={() => { console.log('Clearing timer: ', this.props.timer); clearInterval(this.props.timer); this.props.clearChat(); pop(); }}
                     style={{ justifyContent: 'center', alignItems: 'center', paddingRight: 20 }}
                   >
                     <Icon type="MaterialCommunityIcons" name="arrow-left" style={{ fontSize: 30, color: '#FF5722', marginLeft: 15 }} />
@@ -236,10 +237,12 @@ const mapStateToProps = (state) => {
     userName: state.auth.userName,
     token: state.auth.token,
     timer: state.chat.timer,
+    
   });
 };
 
-export default connect(mapStateToProps, { loadToken, signoutUser })(Main);
+
+export default connect(mapStateToProps, { loadToken, signoutUser, clearChat})(Main);
 
 const styles = StyleSheet.create({
   container: {

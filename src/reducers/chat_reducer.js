@@ -16,9 +16,20 @@ const chatReducer = (state = initialState, action) => {
     // console.log('chatReducer: ', action.payload);
     return { ...state, error: action.error, all: action.payload };
   case ActionTypes.NEW_CHAT:
-    return { ...state, newText: action.payload, error: false, success: true}; 
-    case ActionTypes.SET_CHAT_TIMER:
-      return { ...state, error: action.error, timer: action.payload, test: action.test}; 
+    return {
+      ...state, newText: action.payload, error: false, success: true,
+    }; 
+  case ActionTypes.SET_CHAT_TIMER:
+    return {
+      ...state, error: action.error, timer: action.payload, test: action.test,
+    }; 
+  case ActionTypes.CLEAR_CHAT:
+    console.log('clear chat');
+    return {
+      ...state, 
+      all: initialState.all,
+      error: action.error,
+    }; 
   default:
     return state;
   }
