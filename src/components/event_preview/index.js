@@ -97,6 +97,7 @@ class EventPreview extends Component {
       console.log('doing some hacky changefilters stuff');
       this.props.changeFilters(randomFilter);
       this.props.changeFilters(randomFilter);
+      // 
     }
     console.log('this is eventpreviewvisible', this.state.EventPreviewVisible);
   }
