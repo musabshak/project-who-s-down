@@ -7,7 +7,9 @@ import Ionicons from 'react-native-vector-icons/FontAwesome';
 import EventList from '../components/event_list';
 import GeographicView from '../components/geographic_view';
 import AddEvents from '../components/new_event';
-import DownEvents from '../components/my_events';
+import DownEvents from '../components/down_events';
+import myEvents from '../components/my_events';
+
 
 
 const Tab = createBottomTabNavigator();
@@ -108,7 +110,7 @@ const MainTabBar = (props) => {
       />
       <Tab.Screen
         name="EventList"
-        component={(DownEvents)}
+        component={(EventList)}
         options={{
           tabBarLabel: 'My Events',
           tabBarIcon: ({ focused }) => (
