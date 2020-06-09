@@ -65,7 +65,7 @@ class DownEvents extends Component {
         <ScrollView>
           {this.displayEvent()}
         </ScrollView>
-        <FilterMenu />
+        {/* <FilterMenu /> */}
       </View>
       
     );

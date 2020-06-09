@@ -64,7 +64,7 @@ class MyEvents extends Component {
         <ScrollView>
           {this.displayEvent()}
         </ScrollView>
-        <FilterMenu />
+        {/* <FilterMenu /> */}
       </View>
       
     );
