@@ -1,9 +1,8 @@
 /* eslint-disable react/no-unescaped-entities */
 /* eslint-disable global-require */
-/* eslint-disable react/sort-comp */
+
 /* eslint-disable no-unused-expressions */
 import React, { Component } from 'react';
-
 import {
   StyleSheet, Button, Text, ActivityIndicator, View, 
 } from 'react-native';
@@ -21,7 +20,9 @@ import SignUp from '../components/signup';
 import EventInfo from '../components/event_info';
 import MyEvents from '../components/my_events';
 import NewEventPage from '../components/new_event';
+
 import Settings from '../components/settings';
+
 
 const NullComponent = () => null;
 export const navigationRef = React.createRef();
@@ -42,6 +43,12 @@ class Main extends Component {
 
     this.props.loadToken();
     this.loadFont();
+
+  }
+
+  componentDidMount() {
+
+
   }
 
   loadFont = async () => {
@@ -61,6 +68,7 @@ class Main extends Component {
       console.log(error);
     }
   }
+
 
   genSettingsName = (props) => {
     console.log('gen settings name!');
@@ -82,6 +90,7 @@ class Main extends Component {
   settingsHelper = () => {
     navigate('Profile');
   }
+
 
   render() {
     if (this.state.fontLoaded) {
@@ -198,7 +207,9 @@ class Main extends Component {
       );
     } else {
       return (
-        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+
+        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+
           <ActivityIndicator size="large" color="#FF5722" />
         </View>
       );
