@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 /* eslint-disable react/jsx-closing-tag-location */
 /* eslint-disable no-plusplus */
 /* eslint-disable global-require */
@@ -39,7 +40,7 @@ class EventCard extends Component {
   componentDidMount() {
     if (this.props.token) {
       this.props.fetchImdownEvents(this.props.token).then((res) => {
-        for (let i = 0; i < res.length; i++) this.setState({ imdown: 0 });
+        for (let i = 0; i < res.length; i++) { this.setState({ imdown: 0 }); }
         if (res[i].id === this.props.event.id) {
           this.setState({ imdown: 1 });
           console.log(res[i]);
@@ -77,7 +78,6 @@ class EventCard extends Component {
     return `${formattedTime}`;
   }
 
-
   // this.props.post.id
   render() {
     if (this.props.token) {
@@ -111,26 +111,49 @@ class EventCard extends Component {
                   size={17}
                   color="#FF5722"
                   style={{justifyContent: 'flex-start'}}
-                />{this.customFormatTime(this.props.event.startTime)}
+
+                />{`  ${this.customFormatTime(this.props.event.startTime)}`}
+
                 </Text>
               )}
               content={this.props.event.description}
               defaultContent="Click on the event to learn more!"
-            /><Button 
+
+              // bottomRightText={this.props.event.skillLevel}
+              // bottomRightFontSize={15}
+            />
+            <Button 
+
               onPress={() => this.onDown()}
               style={
                 {
                   position: 'absolute',
-                  right: 25,
+
+                  right: 30,
                   bottom: 15,
                   width: 60,
-                  height: 50,
+                  height: 60,
+                  borderRadius: 10,
                   backgroundColor: '#FF5527', 
                 }
               }
-            >
-              <Ionicons name="thumbs-up" size={30} color="white" style={{ paddingLeft: 20 }} />
-            </Button>            
+            ><Ionicons name="thumbs-up" size={30} color="white" style={{ paddingLeft: 20 }} />
+            </Button>        
+            {/* <Button
+              style={
+                {
+                  position: 'absolute',
+                  right: '60%',
+                  bottom: 8,
+                  width: 100,
+                  height: 50,
+                  backgroundColor: 'none', 
+                  justifyContent: 'flex-start',
+                }
+              }
+            ><Text style={{textAlign: 'center', color: 'gray'}}>{this.props.event.skillLevel}</Text>
+            </Button>         */}
+
           </View>
         );  
       }
@@ -146,6 +169,9 @@ class EventCard extends Component {
             <Card
               title={this.props.event.eventTitle}
               containerHeight={110}
+
+              // iconBackgroundColor="red"
+
               iconComponent={(
                 <Image source={eventCategoryToIcon.get(this.props.event.category)}
                   style={{
@@ -164,25 +190,48 @@ class EventCard extends Component {
                   size={17}
                   color="#FF5722"
                   style={{justifyContent: 'flex-start'}}
-                />{this.customFormatTime(this.props.event.startTime)}
+
+                />{`  ${this.customFormatTime(this.props.event.startTime)}`}
+
                 </Text>
               )}
               content={this.props.event.description}
               defaultContent="Click on the event to learn more!"
-            /><Button 
+
+              // bottomRightText={this.props.event.skillLevel}
+              // bottomRightFontSize={15}
+            />
+            <Button 
+
               onPress={() => this.onDown()}
               style={
                 {
                   position: 'absolute',
-                  right: 25,
+
+                  right: 30,
                   bottom: 15,
                   width: 60,
-                  height: 50,
+                  height: 60,
                   backgroundColor: 'white', 
+                  borderRadius: 10,
                 }
               }
             ><Ionicons name="thumbs-up" size={30} color="#FF5527" style={{ paddingLeft: 20}} />
-            </Button>            
+            </Button>    
+            {/* <Button
+              style={
+                {
+                  position: 'absolute',
+                  right: '60%',
+                  bottom: 8,
+                  width: 100,
+                  height: 50,
+                  backgroundColor: 'none', 
+                  justifyContent: 'flex-start',
+                }
+              }
+            ><Text style={{textAlign: 'center', color: 'gray'}}>{this.props.event.skillLevel}</Text>
+            </Button>          */}
           </View>
         ); } 
     }
@@ -197,6 +246,9 @@ class EventCard extends Component {
         >
           <Card
             title={this.props.event.eventTitle}
+            defaultContent="Click on the event to learn more!"
+            containerHeight={110}
+            iconBackground="red"
             iconComponent={(
               <Image source={eventCategoryToIcon.get(this.props.event.category)}
                 style={{
@@ -215,12 +267,28 @@ class EventCard extends Component {
                 size={17}
                 color="#FF5722"
                 style={{justifyContent: 'flex-start', paddingRight: 20, paddingLeft: 20}}
-              />{this.customFormatTime(this.props.event.startTime)}
+              />{`  ${this.customFormatTime(this.props.event.startTime)}`}
               </Text>
             )}
             content={this.props.event.description}
-            bottomRightText={this.props.event.skillLevel}
+            // bottomRightText={this.props.event.skillLevel}
+            // bottomRightFontSize={17}
           />
+          {/* <Button
+            style={
+              {
+                position: 'absolute',
+                right: '60%',
+                bottom: 8,
+                width: 100,
+                height: 50,
+                backgroundColor: 'none', 
+                justifyContent: 'flex-start',
+              }
+            }
+          ><Text style={{textAlign: 'center', color: 'gray'}}>{this.props.event.skillLevel}</Text>
+          </Button>          */}
+
         </View>
       );  
     }
