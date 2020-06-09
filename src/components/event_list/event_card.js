@@ -30,7 +30,7 @@ const eventCategoryToIcon = new Map([
 class EventCard extends Component {
   constructor(props) {
     super(props);
-    this.state={
+    this.state = {
       imdown:0,
     };
   }
@@ -39,6 +39,7 @@ class EventCard extends Component {
     if (this.props.token) {
       this.props.fetchImdownEvents(this.props.token).then((res) => {
         for (let i = 0; i < res.length; i++)
+         this.setState({ imdown: 0 });
           if (res[i].id === this.props.event.id) {
             this.setState({ imdown: 1 });
             console.log(res[i]);
@@ -49,63 +50,28 @@ class EventCard extends Component {
   }
 
     onDown(){
-      if (this.imdown == undefined) {
+      if (this.state.imdown === 0) {
         this.props.imdownEvent(this.props.token, this.props.event.id).then(() => {
         this.setState({ imdown: 1 });
-        console.log(this.imdown);
+        console.log(this.state.imdown);
         });
           
       }
-      else if (this.imdown == 1){
+      else if (this.state.imdown === 1){
         this.setState({ imdown: undefined });
-        this.props.unimdownEvent(this.props.token, this.props.event.id)
+        this.props.unimdownEvent(this.props.token, this.props.event.id).then(() => {
+          this.setState({ imdown: 0 });
+          console.log(this.state.imdown);
+          });
+            
       }
     }
 
     // this.props.post.id
     render() {
-      if (this.props.authenticated) {
-        if(this.imdown == undefined){
+      if (this.props.token) {
+        if(this.state.imdown === 1 || this.imdown === 1){
           return(<View style={{
-            borderRadius: 5,
-            padding: 5,
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-          >
-            <Card
-              title={this.props.event.eventTitle}
-              containerHeight={110}
-              iconComponent={
-              <Image source={eventCategoryToIcon.get(this.props.event.category)}
-                style={{ margin: -30, marginTop:-20, alignItems: 'center', justifyContent:'center',
-                  height: 40, width: 40,
-                }}/>}
-              onPress={() => {this.props.navigate('EventInfo', { event: this.props.event });}}
-              topRightText={<Text><Ionicons name={'clock'} size={17} color={'#FF5722'} style={{
-              justifyContent: 'flex-start'}}/>{this.props.event.startTime.substring(11, 16)}</Text>}
-              content={this.props.event.description}
-              defaultContent="Click on the event to learn more!"
-            /><Button 
-            onPress={() => this.onDown()}
-            style={
-              {
-                position: 'absolute',
-                right: 25,
-                bottom: 15,
-                width: 60,
-                height: 50,
-                backgroundColor: 'none', 
-              }
-            }
-          ><Ionicons name="thumbs-up" size={30} color="#FF5527" style={{ paddingLeft: 20 }} />
-          </Button>            
-          </View>
-        );  
-        }
-        else if(this.imdown == 1) {
-          return (
-          <View style={{
             borderRadius: 5,
             padding: 5,
             justifyContent: 'center',
@@ -137,11 +103,50 @@ class EventCard extends Component {
                 backgroundColor: '#FF5527', 
               }
             }
-          ><Ionicons name="thumbs-up" size={30} color="white" style={{ paddingLeft: 20}} />
+          ><Ionicons name="thumbs-up" size={30} color="white" style={{ paddingLeft: 20 }} />
+          </Button>            
+          </View>
+        );  
+        }
+        else {
+          return (
+          <View style={{
+            borderRadius: 5,
+            padding: 5,
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+          >
+            <Card
+              title={this.props.event.eventTitle}
+              containerHeight={110}
+              iconComponent={
+              <Image source={eventCategoryToIcon.get(this.props.event.category)}
+                style={{ margin: -30, marginTop:-20, alignItems: 'center', justifyContent:'center',
+                  height: 40, width: 40,
+                }}/>}
+              onPress={() => {this.props.navigate('EventInfo', { event: this.props.event });}}
+              topRightText={<Text><Ionicons name={'clock'} size={17} color={'#FF5722'} style={{
+              justifyContent: 'flex-start'}}/>{this.props.event.startTime.substring(11, 16)}</Text>}
+              content={this.props.event.description}
+              defaultContent="Click on the event to learn more!"
+            /><Button 
+            onPress={() => this.onDown()}
+            style={
+              {
+                position: 'absolute',
+                right: 25,
+                bottom: 15,
+                width: 60,
+                height: 50,
+                backgroundColor: 'white', 
+              }
+            }
+          ><Ionicons name="thumbs-up" size={30} color="#FF5527" style={{ paddingLeft: 20}} />
           </Button>            
           </View>
         );} 
-      }
+          }
       else {
         return (
           <View style={{
