@@ -555,7 +555,7 @@ createMarkers = () => {
           }}
           >
             <Icon type="MaterialCommunityIcons" name={this.state.name} style={{ fontSize: 30, color: '#FF5722', margin: 10 }}/>
-            <Text style={{ fontFamily: 'OpenSans-Regular' }}>{this.state.txt}</Text>
+            <Text style={{ fontFamily: 'OpenSans-Regular', color: '#757575' }}>{this.state.txt}</Text>
           </View>
       </Modal>
     );
@@ -575,7 +575,7 @@ createMarkers = () => {
           <View style={styles.headerCont}>
             <View style={styles.headerIcon} name="" size={45} color="#FF5722" />
             <Text style={styles.header}>Details</Text>
-            <Icon type="MaterialCommunityIcons" name='plus' style={{ fontSize: 30, color: '#FF5722' }} onPress={() => { this.setState({ popupVisible: true }) }}/>
+            {/* <Icon type="MaterialCommunityIcons" name='plus' style={{ fontSize: 30, color: '#FF5722' }} onPress={() => { this.setState({ popupVisible: true }) }}/> */}
           </View>
           {this.renderPopup()}
           <ScrollView style={styles.contentCont}>
