@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 import React, { Component } from 'react';
 import {
   StyleSheet,
@@ -8,34 +9,38 @@ import {
 
 } from 'react-native';
 import { connect } from 'react-redux';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-import Ionicons from 'react-native-vector-icons/FontAwesome';
-import { fetchEvents } from './actions';
+import { fetchImdownEvents } from '../event_list/actions';
 import FilterMenu from '../geographic_view/FilterMenu';
-import EventCard from './event_card';
-// import { initializeFilters } from '../geographic_view/FilterMenu/actions'
+import EventCard from '../event_list/event_card';
 
-class EventList extends Component {
+
+class DownEvents extends Component {
   constructor(props) {
     super(props);
   }
 
   componentDidMount = () => {
-    this.props.fetchEvents();
+    this.props.fetchImdownEvents(this.props.token);
     console.log(this.props.events);
   } 
 
 
   displayEvent =() => {
-    if (this.props.events.all !== undefined) {
-      return (
-        this.props.events.all.map((item, key) => {
-          return (
-            <EventCard event={item} key={item.id} navigate={this.props.navigation.navigate} authenticated={this.props.authenticated} />
-          );
-        })
-      );
-    } else {
+    if (this.props.authenticated) {
+      if (this.props.events.imdownEvents !== undefined) {
+        return (
+          this.props.events.imdownEvents.map((item, key) => {
+            return (
+              <EventCard event={item} key={item.id} navigate={this.props.navigation.navigate} authenticated={this.props.authenticated} />
+            );
+          })
+        );
+      }
+      else {
+        return (<View><Text>You aren't down for anything!</Text></View>);
+      }
+    }
+    else {
       return (<View><Text>Waiting for events</Text></View>);
     }
   }
@@ -57,10 +62,12 @@ function mapStateToProps(reduxState) {
   return { 
     events: reduxState.list,
     authenticated: reduxState.auth.authenticated,
+    token: reduxState.auth.token,
+
   };
 }
 
-export default connect(mapStateToProps, { fetchEvents })(EventList);
+export default connect(mapStateToProps, { fetchImdownEvents })(DownEvents);
 
 
 const styles = StyleSheet.create({

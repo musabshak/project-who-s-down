@@ -53,10 +53,12 @@ export function signinUser({ email, password }, navigation, ret) {
       saveValue('token', response.data.token);
       saveValue('userName', response.data.userName);
       dispatch({ type: ActionTypes.AUTH_USER, userName: response.data.userName, token: response.data.token });
+
       console.log('ret', ret);
       if (!ret) navigation.navigate('Main', {}); 
       else navigation.pop();
       // localStorage.setItem('token', response.data.token);
+
     })
       .catch((error) => {
         console.log('Signin failed.');
