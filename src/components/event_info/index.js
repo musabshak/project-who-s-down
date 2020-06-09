@@ -1,3 +1,6 @@
+/* eslint-disable no-nested-ternary */
+/* eslint-disable max-len */
+/* eslint-disable no-plusplus */
 /* eslint-disable react/no-did-update-set-state */
 /* eslint-disable global-require */
 import React, { Component } from 'react';
@@ -5,7 +8,7 @@ import {
   Icon, Fab,
 } from 'native-base';
 import {
-  View, Text, ActivityIndicator, TouchableOpacity, ScrollView, Dimensions
+  View, Text, ActivityIndicator, TouchableOpacity, ScrollView, Dimensions,
 } from 'react-native';
 import Modal from 'react-native-modal';
 import { connect } from 'react-redux';
@@ -57,14 +60,14 @@ class EventInfo extends Component {
 
   async componentDidMount() {
     // try {
-      // await Font.loadAsync({
-      //   'pacifico-regular': require('../../../assets/fonts/Pacifico-Regular.ttf'),
-      //   'TitilliumWeb-SemiBold': require('../../../assets/fonts/TitilliumWeb-SemiBold.ttf'),
-      //   'ReenieBeanie-Regular': require('../../../assets/fonts/ReenieBeanie-Regular.ttf'),
-      //   'Montserrat-Regular': require('../../../assets/fonts/Montserrat-Regular.ttf'),
-      //   'Montserrat-SemiBold': require('../../../assets/fonts/Montserrat-SemiBold.ttf'),
-      //   'OpenSans-Regular': require('../../../assets/fonts/OpenSans-Regular.ttf'),
-      // });
+    // await Font.loadAsync({
+    //   'pacifico-regular': require('../../../assets/fonts/Pacifico-Regular.ttf'),
+    //   'TitilliumWeb-SemiBold': require('../../../assets/fonts/TitilliumWeb-SemiBold.ttf'),
+    //   'ReenieBeanie-Regular': require('../../../assets/fonts/ReenieBeanie-Regular.ttf'),
+    //   'Montserrat-Regular': require('../../../assets/fonts/Montserrat-Regular.ttf'),
+    //   'Montserrat-SemiBold': require('../../../assets/fonts/Montserrat-SemiBold.ttf'),
+    //   'OpenSans-Regular': require('../../../assets/fonts/OpenSans-Regular.ttf'),
+    // });
     //   this.setState({ fontLoaded: true });
     //   console.log('fonts are loaded');
     // } catch (error) {
@@ -88,22 +91,19 @@ class EventInfo extends Component {
     if (this.props.token) {
       this.props.fetchImdownEvents(this.props.token).then((res) => {
         // console.log(res);
-        for (let i = 0; i < res.length; i++)
-          if (res[i].id === this.props.route.params.event.id) {
-            this.setState({ imdown: 1 });
-            break;
-          }
+        for (let i = 0; i < res.length; i++) { if (res[i].id === this.props.route.params.event.id) {
+          this.setState({ imdown: 1 });
+          break;
+        } }
       });
       this.props.fetchSubscribedEvents(this.props.token).then((res) => {
         // console.log(res);
-        for (let i = 0; i < res.length; i++)
-          if (res[i].id === this.props.route.params.event.id) {
-            this.setState({ subscribed: 1 });
-            break;
-          }
+        for (let i = 0; i < res.length; i++) { if (res[i].id === this.props.route.params.event.id) {
+          this.setState({ subscribed: 1 });
+          break;
+        } }
       });
     }
-    
   }
 
   // componentDidUpdate(prevProps) {
@@ -131,6 +131,7 @@ class EventInfo extends Component {
   customFormatTime = (dateString) => {
     const date = new Date(dateString);
     const tks = date.toDateString().split(' ');
+    // eslint-disable-next-line no-nested-ternary
     const hours = date.getHours() === 0 ? '12' : date.getHours() > 12 ? date.getHours() - 12 : date.getHours();
     const minutes = (date.getMinutes() < 10 ? '0' : '') + date.getMinutes();
     const ampm = date.getHours() < 12 ? 'AM' : 'PM';
@@ -141,19 +142,22 @@ class EventInfo extends Component {
   hourDiff = () => {
     const curr = new Date();
     const sTime = new Date(this.state.startTime);
+    // eslint-disable-next-line eqeqeq
     if (!this.state.startTime || sTime.getDate() - curr.getDate() < 0 || (sTime.getDate() - curr.getDate() == 0 && sTime.getHours() - curr.getHours() < 0)) return -1;
     let sHour = sTime.getHours();
     sHour += 24 * (sTime.getDate() - curr.getDate());
     return sHour - curr.getHours();
   }
+
   estimatedTime = (estimatedDist) => {
-    if (estimatedDist/80.4 < 5) return {res: '<5min', name: 'walk'};
-    else if (estimatedDist/80.4 <= 20) return {res: `${(estimatedDist/80.4).toFixed()}min`, name: 'walk'};
-    else if (estimatedDist/1072.88 <= 60) return {res: `${(estimatedDist/1072.88).toFixed()}min`, name: 'car'};
-    else if (estimatedDist/1072.88 <= 120) return {res: `1h${(estimatedDist/1072.88).toFixed() - 60}min`, name: 'car'};
+    if (estimatedDist / 80.4 < 5) return {res: '<5min', name: 'walk'};
+    else if (estimatedDist / 80.4 <= 20) return {res: `${(estimatedDist / 80.4).toFixed()}min`, name: 'walk'};
+    else if (estimatedDist / 1072.88 <= 60) return {res: `${(estimatedDist / 1072.88).toFixed()}min`, name: 'car'};
+    else if (estimatedDist / 1072.88 <= 120) return {res: `1h${(estimatedDist / 1072.88).toFixed() - 60}min`, name: 'car'};
     // else if (this.state.estimatedDist/1072.88 > 120) return {res: '>2h', name: 'car'};
     else return {res: '>2h', name: 'car'};
   }
+
   _getLocation = async () => {
     const { status } = await Permissions.askAsync(Permissions.LOCATION);
   
@@ -196,23 +200,23 @@ createMarkers = () => {
     ['amateur', '#0000FF'],
     ['casual', '#008000'], 
   ]);
-  if (this.state.location) return (
+  if (this.state.location) { return (
     <>
-    <Marker key={this.state.id} coordinate={{ latitude: this.props.route.params.event.latitude, longitude: this.props.route.params.event.longitude}}>
-      <Icon type="MaterialCommunityIcons" name="map-marker" style={styles.eventInfoMarker} />
-      {/* <Callout>
+      <Marker key={this.state.id} coordinate={{ latitude: this.props.route.params.event.latitude, longitude: this.props.route.params.event.longitude}}>
+        <Icon type="MaterialCommunityIcons" name="map-marker" style={styles.eventInfoMarker} />
+        {/* <Callout>
         <Text style={{width: '100%'}}>It&#39;s you</Text>
       </Callout> */}
-    </Marker>
+      </Marker>
     
-    <Marker key='user_location' coordinate={{ latitude: this.state.location.coords.latitude, longitude: this.state.location.coords.longitude}}>
-      <Icon type="MaterialCommunityIcons" name="human-handsup" style={styles.eventInfoUserMarker} />
-      <Callout>
-        <Text style={{width: 100, fontFamily: 'OpenSans-Regular'}}>feeling cute might delete later</Text>
-      </Callout>
-  </Marker>
-  </>
-  );
+      <Marker key="user_location" coordinate={{ latitude: this.state.location.coords.latitude, longitude: this.state.location.coords.longitude}}>
+        <Icon type="MaterialCommunityIcons" name="human-handsup" style={styles.eventInfoUserMarker} />
+        <Callout>
+          <Text style={{width: 100, fontFamily: 'OpenSans-Regular'}}>feeling cute might delete later</Text>
+        </Callout>
+      </Marker>
+    </>
+  ); }
   else return null;
   
   // return this.state.eventList.map((obj) => {
@@ -260,7 +264,7 @@ createMarkers = () => {
         <MapView
           style={styles.mapCard}
           region={this.state.region}
-          ref={(ref) => { this.mapRef = ref }}
+          ref={(ref) => { this.mapRef = ref; }}
           // scrollEnabled={false}
           // onLayout={this.onMapLayout}
           onRegionChangeComplete={this.handleRegionChange}
@@ -279,7 +283,6 @@ createMarkers = () => {
       </View>
     );
   }
-
   
 
   handleRegionChange = (e) => {
@@ -342,28 +345,26 @@ createMarkers = () => {
           });
           // this.setState({ subscribed: 0 });
         });
-    } else {
-      if (!this.props.token) {
-        // popup - go login
-        this.setState({
-          txt: 'Only signed in users can subscribe to events!',
-          name: 'emoticon-neutral-outline',
-          nav: 0,
-          popupVisible: 1,
-        });
-        
-      }
-      else if (!this.state.imdown) {
-        // popup imdown before you can subscribe
-        this.setState({
-          txt: 'You\'ill get automatically subscribed if you\'re down!',
-          name: 'emoticon-neutral-outline',
-          nav: 0,
-          popupVisible: 1,
-        });
-      }
-      else {
-        this.props.subscribeEvent(this.props.token, this.props.route.params.event.id)
+    } else if (!this.props.token) {
+      // popup - go login
+      this.setState({
+        txt: 'Only signed in users can subscribe to events!',
+        name: 'emoticon-neutral-outline',
+        nav: 0,
+        popupVisible: 1,
+      });
+    }
+    else if (!this.state.imdown) {
+      // popup imdown before you can subscribe
+      this.setState({
+        txt: 'You\'ill get automatically subscribed if you\'re down!',
+        name: 'emoticon-neutral-outline',
+        nav: 0,
+        popupVisible: 1,
+      });
+    }
+    else {
+      this.props.subscribeEvent(this.props.token, this.props.route.params.event.id)
         .then(() => {
           this.setState({
             txt: 'Subscribed',
@@ -373,7 +374,6 @@ createMarkers = () => {
             subscribed: 1,
           });
         });
-      };
     }
   }
 
@@ -393,19 +393,18 @@ createMarkers = () => {
             imdown: 0,
           });
         });
-    } else {
-      if (!this.props.token) {
-        // popup - go login
-        this.setState({
-          txt: 'Come join the party once you are logged in!',
-          name: 'emoticon-devil-outline',
-          nav: 1,
-          popupVisible: 1,
-        });
-        // this.props.navigation.push('SignIn', { return: 1 });
-      }
-      else {
-        this.props.imdownEvent(this.props.token, this.props.route.params.event.id)
+    } else if (!this.props.token) {
+      // popup - go login
+      this.setState({
+        txt: 'Come join the party once you are logged in!',
+        name: 'emoticon-devil-outline',
+        nav: 1,
+        popupVisible: 1,
+      });
+      // this.props.navigation.push('SignIn', { return: 1 });
+    }
+    else {
+      this.props.imdownEvent(this.props.token, this.props.route.params.event.id)
         .then(() => {
           this.setState({
             txt: 'This is going to be EPIC!',
@@ -419,12 +418,11 @@ createMarkers = () => {
           //   this.props.navigation.pop();
           // });
         });
-      };
     }
   }
 
   renderSubscribeBtn = () => {
-    if (this.state.subscribed) return (
+    if (this.state.subscribed) { return (
       <TouchableOpacity style={styles.btnSubs} onPress={this.onSubscribe}>
         {/* <SvgUri
           width="50"
@@ -437,8 +435,8 @@ createMarkers = () => {
         {/* <Icon type="MaterialCommunityIcons" name="bell-outline" style={styles.btnSubsImg} /> */}
         <Text style={styles.btnSubsText}>Subscribed</Text>
       </TouchableOpacity>
-    );
-    else return (
+    ); }
+    else { return (
       <TouchableOpacity style={styles.btnSubs} onPress={this.onSubscribe}>
         {/* <SvgUri
           width="50"
@@ -451,11 +449,11 @@ createMarkers = () => {
         <Icon type="MaterialCommunityIcons" name="bell-outline" style={styles.btnSubsImg} />
         <Text style={styles.btnSubsText}>Subscribe</Text>
       </TouchableOpacity>
-    );
+    ); }
   }
 
   renderImdownBtn = () => {
-    if (this.state.imdown) return (
+    if (this.state.imdown) { return (
       <TouchableOpacity
         style={styles.btnContWithBackground}
         activeOpacity={0.8}
@@ -465,8 +463,8 @@ createMarkers = () => {
         <Icon type="MaterialCommunityIcons" name="emoticon-dead-outline" style={{ fontSize: 30, color: '#fff' }} />
         <Text style={styles.tabBarLabel}>Nevermind!</Text>
       </TouchableOpacity>
-    );
-    else return (
+    ); }
+    else { return (
       <TouchableOpacity
         style={styles.btnContWithBackground}
         activeOpacity={0.8}
@@ -476,69 +474,70 @@ createMarkers = () => {
         <Icon type="MaterialCommunityIcons" name="emoticon-devil-outline" style={{ fontSize: 30, color: '#fff' }} />
         <Text style={styles.tabBarLabel}>I&#39;m down!</Text>
       </TouchableOpacity>
-    );
+    ); }
   }
 
   renderCatTag = () => {
     if (!this.state.category) return null;
     switch (this.state.category) {
-      case 'educational':
-        return (
-          <View style={styles.catTag}>
-            <Icon type="MaterialCommunityIcons" name="book-open-page-variant" style={styles.catTagImg} />
-            <Text style={styles.catTagText}>{this.state.category}</Text>
-          </View>
-        );
-      case 'culture':
-        return (
-          <View style={styles.catTag}>
-            <Icon type="MaterialCommunityIcons" name="translate" style={styles.catTagImg} />
-            <Text style={styles.catTagText}>{this.state.category}</Text>
-          </View>
-        );
-      case 'food':
-        return (
-          <View style={styles.catTag}>
-            <Icon type="MaterialCommunityIcons" name="food" style={styles.catTagImg} />
-            <Text style={styles.catTagText}>{this.state.category}</Text>
-          </View>
-        );
-      case 'nightlife':
-        return (
-          <View style={styles.catTag}>
-            <Icon type="MaterialCommunityIcons" name="book-open-page-variant" style={styles.catTagImg} />
-            <Text style={styles.catTagText}>{this.state.category}</Text>
-          </View>
-        );
-      case 'sport':
-        return (
-          <View style={styles.catTag}>
-            <Icon type="MaterialCommunityIcons" name="volleyball" style={styles.catTagImg} />
-            <Text style={styles.catTagText}>{this.state.category}</Text>
-          </View>
-        );
-      case 'game':
-        return (
-          <View style={styles.catTag}>
-            <Icon type="MaterialCommunityIcons" name="gamepad-variant" style={styles.catTagImg} />
-            <Text style={styles.catTagText}>{this.state.category}</Text>
-          </View>
-        );
-      default:
-        return (
-          <View style={styles.catTag}>
-            <Icon type="MaterialCommunityIcons" name="emoticon-cool-outline" style={styles.catTagImg} />
-            <Text style={styles.catTagText}>{this.state.category}</Text>
-          </View>
-        );
+    case 'educational':
+      return (
+        <View style={styles.catTag}>
+          <Icon type="MaterialCommunityIcons" name="book-open-page-variant" style={styles.catTagImg} />
+          <Text style={styles.catTagText}>{this.state.category}</Text>
+        </View>
+      );
+    case 'culture':
+      return (
+        <View style={styles.catTag}>
+          <Icon type="MaterialCommunityIcons" name="translate" style={styles.catTagImg} />
+          <Text style={styles.catTagText}>{this.state.category}</Text>
+        </View>
+      );
+    case 'food':
+      return (
+        <View style={styles.catTag}>
+          <Icon type="MaterialCommunityIcons" name="food" style={styles.catTagImg} />
+          <Text style={styles.catTagText}>{this.state.category}</Text>
+        </View>
+      );
+    case 'nightlife':
+      return (
+        <View style={styles.catTag}>
+          <Icon type="MaterialCommunityIcons" name="book-open-page-variant" style={styles.catTagImg} />
+          <Text style={styles.catTagText}>{this.state.category}</Text>
+        </View>
+      );
+    case 'sport':
+      return (
+        <View style={styles.catTag}>
+          <Icon type="MaterialCommunityIcons" name="volleyball" style={styles.catTagImg} />
+          <Text style={styles.catTagText}>{this.state.category}</Text>
+        </View>
+      );
+    case 'game':
+      return (
+        <View style={styles.catTag}>
+          <Icon type="MaterialCommunityIcons" name="gamepad-variant" style={styles.catTagImg} />
+          <Text style={styles.catTagText}>{this.state.category}</Text>
+        </View>
+      );
+    default:
+      return (
+        <View style={styles.catTag}>
+          <Icon type="MaterialCommunityIcons" name="emoticon-cool-outline" style={styles.catTagImg} />
+          <Text style={styles.catTagText}>{this.state.category}</Text>
+        </View>
+      );
     }
   }
+
   renderPopup() {
     return (
       <Modal
         isVisible={this.state.popupVisible}
         backdropOpacity={0.3}
-        onBackdropPress={ this.state.nav ? () => this.setState({ popupVisible: false }, () => {this.props.navigation.pop()}) : () => this.setState({ popupVisible: false })}
+        onBackdropPress={this.state.nav ? () => this.setState({ popupVisible: false }, () => { this.props.navigation.pop(); }) : () => this.setState({ popupVisible: false })}
         style={{
           // borderColor: 'white',
           // borderWidth: 2, 
@@ -546,26 +545,27 @@ createMarkers = () => {
           alignItems: 'center',
         }}
       >
-          <View style={{
-            // borderColor: 'white',
-            // borderWidth: 2, 
-            width: 0.9*Dimensions.get('window').width,
-            justifyContent: 'center',
-            alignItems: 'center',
-            flexDirection: this.state.rowDisplay ? 'row' : 'column',
-            minHeight: 60,
-            backgroundColor: '#fff',
-            borderRadius: 5,
-            padding: 40,
-            // backgroundColor: '#000',
-          }}
-          >
-            <Icon type="MaterialCommunityIcons" name={this.state.name} style={{ fontSize: 30, color: '#FF5722', margin: 10 }}/>
-            <Text style={{ fontFamily: 'OpenSans-Regular', color: '#757575' }}>{this.state.txt}</Text>
-          </View>
+        <View style={{
+          // borderColor: 'white',
+          // borderWidth: 2, 
+          width: 0.9 * Dimensions.get('window').width,
+          justifyContent: 'center',
+          alignItems: 'center',
+          flexDirection: this.state.rowDisplay ? 'row' : 'column',
+          minHeight: 60,
+          backgroundColor: '#fff',
+          borderRadius: 5,
+          padding: 40,
+          // backgroundColor: '#000',
+        }}
+        >
+          <Icon type="MaterialCommunityIcons" name={this.state.name} style={{ fontSize: 30, color: '#FF5722', margin: 10 }} />
+          <Text style={{ fontFamily: 'OpenSans-Regular', color: '#757575' }}>{this.state.txt}</Text>
+        </View>
       </Modal>
     );
   }
+
   render() {
     // if (this.state.fontLoaded && this.state.addr) {
     if (this.state.addr) {
@@ -588,7 +588,7 @@ createMarkers = () => {
             <View style={styles.titleCardCont}>
               <View style={styles.titleCard}>              
                 <View style={styles.title}>
-                    <Text style={{ color: '#000', fontSize: 24, fontFamily: 'TitilliumWeb-SemiBold' }}>{this.state.title}</Text>
+                  <Text style={{ color: '#000', fontSize: 24, fontFamily: 'TitilliumWeb-SemiBold' }}>{this.state.title}</Text>
                 </View>
                 <View style={styles.addrCont}>
                   <Text style={styles.addr}>{this.state.addr}</Text>
@@ -711,7 +711,7 @@ createMarkers = () => {
               // onPressOut={this.onPressOut}
               // onPressIn={this.onPressIn}
             >
-                <Icon type="MaterialCommunityIcons" name="arrow-left" style={{ fontSize: 30, color: '#FF5722' }} />
+              <Icon type="MaterialCommunityIcons" name="arrow-left" style={{ fontSize: 30, color: '#FF5722' }} />
             </TouchableOpacity>
             {this.renderImdownBtn()}
           </View>
@@ -736,5 +736,7 @@ const mapStateToProps = (state) => {
     token: state.auth.token,
   });
 };
-export default connect(mapStateToProps, { fetchEvents, fetchSubscribedEvents, subscribeEvent, unsubscribeEvent, fetchImdownEvents, imdownEvent, unimdownEvent, })(EventInfo);
+export default connect(mapStateToProps, {
+  fetchEvents, fetchSubscribedEvents, subscribeEvent, unsubscribeEvent, fetchImdownEvents, imdownEvent, unimdownEvent, 
+})(EventInfo);
 // export default connect(null, { fetchEvents })(EventInfo);

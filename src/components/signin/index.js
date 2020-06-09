@@ -52,17 +52,17 @@ class SignIn extends Component {
   //   // console.log(new Date(1990, 3, 12, 14, 27, 11));
   // }
 
-// componentDidUpdate(prevProps) {
-//   if (this.props.msg && !prevProps.msg) {
-//     this.setState({
-//       popupVisible: true,
-//       txt: this.props.msg,
-//       rowDisplay: 1,
-//       nav: 0,
-//     });
-//     // console.log('event is loaded');  
-//   }
-// } 
+  // componentDidUpdate(prevProps) {
+  //   if (this.props.msg && !prevProps.msg) {
+  //     this.setState({
+  //       popupVisible: true,
+  //       txt: this.props.msg,
+  //       rowDisplay: 1,
+  //       nav: 0,
+  //     });
+  //     // console.log('event is loaded');  
+  //   }
+  // } 
 
   onPressOut = () => {
     this.setState({ pressed: false });
@@ -77,11 +77,10 @@ class SignIn extends Component {
       this.props.signinUser({
         email: this.state.email, password: this.state.password, 
       }, this.props.navigation, this.props.route.params?.return).then((res) => {
-        if (res)
-          this.setState({
-            popupVisible: true,
-            txt: this.props.msg
-          });
+        if (res) { this.setState({
+          popupVisible: true,
+          txt: this.props.msg,
+        }); }
       });
     } else {
       if (!this.state.email) this.setState({ emailEmpty: true });
@@ -166,7 +165,7 @@ class SignIn extends Component {
       <Modal
         isVisible={this.state.popupVisible}
         backdropOpacity={0.3}
-        onBackdropPress={ this.state.nav ? () => this.setState({ popupVisible: false }, () => {this.props.navigation.pop()}) : () => this.setState({ popupVisible: false })}
+        onBackdropPress={this.state.nav ? () => this.setState({ popupVisible: false }, () => { this.props.navigation.pop(); }) : () => this.setState({ popupVisible: false })}
         style={{
           // borderColor: 'white',
           // borderWidth: 2, 
@@ -174,104 +173,104 @@ class SignIn extends Component {
           alignItems: 'center',
         }}
       >
-          <View style={{
-            // borderColor: 'white',
-            // borderWidth: 2, 
-            width: 0.9*Dimensions.get('window').width,
-            justifyContent: 'center',
-            alignItems: 'center',
-            flexDirection: this.state.rowDisplay ? 'row' : 'column',
-            minHeight: 20,
-            backgroundColor: '#fff',
-            borderRadius: 5,
-            padding: 40,
-            // backgroundColor: '#000',
-          }}
-          >
-            <Icon type="MaterialCommunityIcons" name={this.state.name} style={{ fontSize: 30, color: '#FF5722', margin: 10 }}/>
-            <Text style={{ fontFamily: 'OpenSans-Regular', color: '#757575' }}>{this.state.txt}</Text>
-          </View>
+        <View style={{
+          // borderColor: 'white',
+          // borderWidth: 2, 
+          width: 0.9 * Dimensions.get('window').width,
+          justifyContent: 'center',
+          alignItems: 'center',
+          flexDirection: this.state.rowDisplay ? 'row' : 'column',
+          minHeight: 20,
+          backgroundColor: '#fff',
+          borderRadius: 5,
+          padding: 40,
+          // backgroundColor: '#000',
+        }}
+        >
+          <Icon type="MaterialCommunityIcons" name={this.state.name} style={{ fontSize: 30, color: '#FF5722', margin: 10 }} />
+          <Text style={{ fontFamily: 'OpenSans-Regular', color: '#757575' }}>{this.state.txt}</Text>
+        </View>
       </Modal>
     );
   }
 
   render() {
     // if (this.state.fontLoaded) {
-      return (
-        <View style={styles.container}>
-          {this.renderPopup()}
-          <ImageBackground blurRadius={0} style={[styles.container, styles.imageBackground]} source={require('../../../assets/images/signup-bg.jpg')}>
-            {/* Join events... */}
-            <View style={[{ flexDirection: 'column'}, styles.headerCont]}>
-              <Text style={styles.headlineFont}>Join Events</Text>
-              <View style={{ flexDirection: 'row' }}>
-                <Text style={styles.headlineFont}>Right </Text>
-                <Text style={styles.headlineFontFocus}>Next</Text>
-                <Text style={styles.headlineFont}> to</Text>
-              </View>
-              <Text style={styles.headlineFont}>you</Text>
+    return (
+      <View style={styles.container}>
+        {this.renderPopup()}
+        <ImageBackground blurRadius={0} style={[styles.container, styles.imageBackground]} source={require('../../../assets/images/signup-bg.jpg')}>
+          {/* Join events... */}
+          <View style={[{ flexDirection: 'column'}, styles.headerCont]}>
+            <Text style={styles.headlineFont}>Join Events</Text>
+            <View style={{ flexDirection: 'row' }}>
+              <Text style={styles.headlineFont}>Right </Text>
+              <Text style={styles.headlineFontFocus}>Next</Text>
+              <Text style={styles.headlineFont}> to</Text>
             </View>
-            {/* signin or signup */}
-            <View style={{ width: '100%', alignItems: 'center' }}>
-              {/* {<Text style={{color: '#fff', marginBottom: 10}}>{this.props.msg}</Text>} */}
-              {this.renderEmail()}
-              {this.renderPassword()}
-              <View style={styles.btnGroup}>
-                {/* <Button title="SIGN UP WITH EMAIL" style={styles.themeBtn} /> */}
-                <TouchableOpacity
-                  style={styles.themeBtnCont}
-                  activeOpacity={0.8}
-                  onPress={this.onSubmit}
-                >
-                  {/* <Text style={styles.themeBtn}>SIGN IN WITH DUO</Text> */}
-                  <Text style={styles.themeBtn}>SIGN IN</Text>
-                </TouchableOpacity>
-                <View>
-                  <Text style={[styles.txt, { marginBottom: 5, marginTop: 5 }]}>———————— OR ————————</Text>
-                </View>
-                
-                <View style={{ width: '100%', alignItems: 'center'}}>
-                  <TouchableOpacity
-                    activeOpacity={0.8}
-                    style={{ width: '60%', alignItems: 'center' }}
-                    onPress={() => this.props.navigation.navigate('SignUp', {})}
-                  >
-                    <BlurView intensity={60} style={styles.blurBtnCont}>
-                      <Text style={styles.blurBtn}>SIGN UP WITH EMAIL</Text>
-                    </BlurView>
-                  </TouchableOpacity>
-                </View>
-                
+            <Text style={styles.headlineFont}>you</Text>
+          </View>
+          {/* signin or signup */}
+          <View style={{ width: '100%', alignItems: 'center' }}>
+            {/* {<Text style={{color: '#fff', marginBottom: 10}}>{this.props.msg}</Text>} */}
+            {this.renderEmail()}
+            {this.renderPassword()}
+            <View style={styles.btnGroup}>
+              {/* <Button title="SIGN UP WITH EMAIL" style={styles.themeBtn} /> */}
+              <TouchableOpacity
+                style={styles.themeBtnCont}
+                activeOpacity={0.8}
+                onPress={this.onSubmit}
+              >
+                {/* <Text style={styles.themeBtn}>SIGN IN WITH DUO</Text> */}
+                <Text style={styles.themeBtn}>SIGN IN</Text>
+              </TouchableOpacity>
+              <View>
+                <Text style={[styles.txt, { marginBottom: 5, marginTop: 5 }]}>———————— OR ————————</Text>
               </View>
+                
+              <View style={{ width: '100%', alignItems: 'center'}}>
+                <TouchableOpacity
+                  activeOpacity={0.8}
+                  style={{ width: '60%', alignItems: 'center' }}
+                  onPress={() => this.props.navigation.navigate('SignUp', {})}
+                >
+                  <BlurView intensity={60} style={styles.blurBtnCont}>
+                    <Text style={styles.blurBtn}>SIGN UP WITH EMAIL</Text>
+                  </BlurView>
+                </TouchableOpacity>
+              </View>
+                
+            </View>
             
-              {/* Terms and conditions
+            {/* Terms and conditions
               <View>
                 <Text style={[styles.txtTerms, styles.txt]}>You are going to sign up. Please review our</Text>
                 <Text style={[styles.txtTermsBold, styles.txt]}>Terms and conditions policies</Text>
               </View> */}
 
-              <View style={{
-                flexDirection: 'column', justifyContent: 'center', alignItems: 'center',
-              }}
-              >
-                <TouchableOpacity style={{}} onPress={() => this.props.navigation.navigate('Main', {})}>
-                  <Text style={[{ width: '100%', textAlign: 'center' }, styles.txt, { fontFamily: 'Montserrat-SemiBold' }]}>SKIP</Text>
-                </TouchableOpacity>
-                {/* <TouchableOpacity style={{ marginTop: 15 }} onPress={() => { this.props.navigation.navigate('MyEvents', { }); }}>
+            <View style={{
+              flexDirection: 'column', justifyContent: 'center', alignItems: 'center',
+            }}
+            >
+              <TouchableOpacity style={{}} onPress={() => this.props.navigation.navigate('Main', {})}>
+                <Text style={[{ width: '100%', textAlign: 'center' }, styles.txt, { fontFamily: 'Montserrat-SemiBold' }]}>SKIP</Text>
+              </TouchableOpacity>
+              {/* <TouchableOpacity style={{ marginTop: 15 }} onPress={() => { this.props.navigation.navigate('MyEvents', { }); }}>
                   <Text style={[{ width: '100%', textAlign: 'center' }, styles.txt, { fontFamily: 'Montserrat-SemiBold' }]}>My EVENTS</Text>
                 </TouchableOpacity> */}
-                {/* <TouchableOpacity style={{ marginTop: 15 }} onPress={() => { this.props.navigation.navigate('newEvent', { }); }}>
+              {/* <TouchableOpacity style={{ marginTop: 15 }} onPress={() => { this.props.navigation.navigate('newEvent', { }); }}>
                   <Text style={[{ width: '100%', textAlign: 'center' }, styles.txt, { fontFamily: 'Montserrat-SemiBold' }]}>NEW EVENT</Text> */}
-                {/* </TouchableOpacity> */}
-                {/* <View style={{ width: '100%', alignItems: 'flex-end', justifyContent: 'center' }}>
+              {/* </TouchableOpacity> */}
+              {/* <View style={{ width: '100%', alignItems: 'flex-end', justifyContent: 'center' }}>
                   <View style={{ marginBottom: 30 }}>
                     
                   </View>
                 </View> */}
-              </View>
-
             </View>
-            {/* <View style={{
+
+          </View>
+          {/* <View style={{
               flexDirection: 'row', justifyContent: 'center', position: 'absolute', bottom: 0,
             }}
             >
@@ -287,9 +286,9 @@ class SignIn extends Component {
                 </View>
               </View>
             </View> */}
-          </ImageBackground>
-        </View>
-      );
+        </ImageBackground>
+      </View>
+    );
     // } else {
     //   return (
     //     <View style={[styles.loading]}>

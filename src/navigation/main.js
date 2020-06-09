@@ -1,10 +1,12 @@
 /* eslint-disable react/no-unescaped-entities */
 /* eslint-disable global-require */
+
 /* eslint-disable no-unused-expressions */
 import React, { Component } from 'react';
 import {
   StyleSheet, Button, Text, ActivityIndicator, View, 
 } from 'react-native';
+
 import { connect } from 'react-redux';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -18,7 +20,9 @@ import SignUp from '../components/signup';
 import EventInfo from '../components/event_info';
 import MyEvents from '../components/my_events';
 import NewEventPage from '../components/new_event';
-// import Settings from '../components/settings';
+
+import Settings from '../components/settings';
+
 
 const NullComponent = () => null;
 export const navigationRef = React.createRef();
@@ -39,9 +43,11 @@ class Main extends Component {
 
     this.props.loadToken();
     this.loadFont();
+
   }
 
   componentDidMount() {
+
 
   }
 
@@ -62,7 +68,29 @@ class Main extends Component {
       console.log(error);
     }
   }
-  
+
+
+  genSettingsName = (props) => {
+    // console.log('gen settings name!');
+    // console.log('props=', props);
+    if (props.notifNumber) {
+      // console.log('we think notifnumber exists here:::!', props);
+      if (props.notifNumber > 9) {
+        return ('Profile(9+)');
+      }
+      else {
+        return (`Profile(${props.notifNumber})`); }
+    }
+    else {
+      console.log('no props detected');
+      return ('Profile');
+    }
+  }
+
+  settingsHelper = () => {
+    navigate('Profile');
+  }
+
 
   render() {
     if (this.state.fontLoaded) {
@@ -103,8 +131,14 @@ class Main extends Component {
                   // shadowRadius: 10,
                 },
                 headerTintColor: '#fff',
+                headerLeft: () => (
+                  <Button
+                    onPress={() => (this.settingsHelper(this.props))}
+                    title={this.props.userName ? this.genSettingsName(this.props) : ''}
+                    color="#fff"
+                  />
+                ),
                 // headerTitle: (props) => <LogoTitle {...props} />,
-                headerLeft: NullComponent,
                 headerRight: () => (
                   <TouchableOpacity
                     activeOpacity={0.6}
@@ -163,12 +197,19 @@ class Main extends Component {
                 headerShown: false,
               }}
             />
+            <Stack.Screen
+              name="Profile"
+              component={Settings}
+              options={{}}
+            />
           </Stack.Navigator>
         </NavigationContainer>
       );
     } else {
       return (
+
         <View style={{flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+
           <ActivityIndicator size="large" color="#FF5722" />
         </View>
       );
@@ -177,10 +218,12 @@ class Main extends Component {
 }
 
 const mapStateToProps = (state) => {
-  return ({
-    userName: state.auth.userName,
-    token: state.auth.token,
-  });
+  return (
+    {
+      userName: state.auth.userName,
+      token: state.auth.token, 
+    }
+  );
 };
 
 export default connect(mapStateToProps, { loadToken, signoutUser })(Main);
