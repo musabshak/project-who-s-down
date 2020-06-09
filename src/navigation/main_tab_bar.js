@@ -11,6 +11,13 @@ import Modal from 'react-native-modal';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import GeographicView from '../components/geographic_view';
 import EventList from '../components/event_list';
+
+import MyEvents from '../components/my_events';
+// import Discovery from './discovery';
+import AddEvents from '../components/new_event';
+import DownEvents from '../components/down_events';
+import myEvents from '../components/my_events';
+
 import { SCREEN_HEIGHT, SCREEN_WIDTH } from '../../assets/styles/event_info';
 
 
@@ -153,7 +160,7 @@ const MainTabBar = (props) => {
                     </Text> */}
                   <Icon type="MaterialCommunityIcons" name="alert-circle-outline" style={{ fontSize: 30, color: '#FF5722' }} />
                   <Text style={{
-                    color: '#000',
+                    color: '#757575',
                     fontFamily: 'OpenSans-Regular',
                     fontSize: 16,
                     textAlign: 'center', 

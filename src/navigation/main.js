@@ -60,7 +60,10 @@ class Main extends Component {
       console.log(error);
     }
   }
-  
+
+  componentDidMount() {
+    
+  }
 
   render() {
     if (this.state.fontLoaded) {
@@ -75,7 +78,6 @@ class Main extends Component {
             <Stack.Screen
               name="Main"
               component={MainTabBar}
-                
               options={{
                 // title: 'Who\'s Down?',
                 headerMode: 'none',
@@ -173,6 +175,10 @@ class Main extends Component {
       );
     }
   }
+<<<<<<< HEAD
+=======
+  
+>>>>>>> 7128aa4dde44d574f711d0ff369448785181bb2f
 }
 
 const mapStateToProps = (state) => {
