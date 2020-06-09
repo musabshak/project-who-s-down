@@ -17,7 +17,7 @@ import EventInfo from '../components/event_info';
 import DownEvents from '../components/down_events';
 import NewEventPage from '../components/new_event';
 import Settings from '../components/settings';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import MyEvents from '../components/my_events';
 
 
 const NullComponent = () => null;
