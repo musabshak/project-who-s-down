@@ -1,6 +1,14 @@
 # Who's Down
 ![](https://i.imgur.com/M3TWiwW.jpg)
 
+## Running locally
+Follow these steps to run the application locally: 
+- Clone the repository 
+- run ```yarn install``` in the root of the repository
+- run ```expo start```
+
+This assumes that you have ```expo-cli``` installed already.
+
 
 ## Project Description
 ReactNative application for event creators and event seekers.
