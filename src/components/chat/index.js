@@ -1,3 +1,4 @@
+/* eslint-disable no-plusplus */
 /* eslint-disable react/jsx-props-no-spreading */
 import React, {Component, useState} from 'react';
 import {
@@ -18,37 +19,49 @@ class Chat extends Component {
     this.state = { 
       messages: [
       ],
-      user: 'userId',
-      FullName: 'AprilZ',
+      user: this.props.token,
+    //   if (this.props.token) {
+    //     this.props.fetchImdownEvents(this.props.token).then((res) => {
+    // };
     };
   }
+
   
+  //   async componentDidMount() {
+  //     if (this.props.token) {
+  //       setInterval(this.callToFetchChat, 1000);
+  //     }
+  //   }
+
+    componentDidMount = () => {
+      setInterval(this.callToFetchChat, 1000);
+    }
+  
+
+    //   setEventId = () => {
+    //     return (this.props.route.params.eventId);
+    //   }
+
   callToFetchChat=() => {
-    this.props.fetchChat(this.props.route.params.eventId);
-    this.setState((previousState) => {
-      return {
-        messages: GiftedChat.append([], this.props.chat),
-      };
-    });
+    if (this.props.token) {
+      this.props.fetchChat(this.props.route.params.eventId, this.props.token);
+      console.log(`${this.props.route.params.eventId} what + 5ede2ebe87d3d0003875cd6e`);
+      // 5edef6985a11ba0038f315b2
+      this.setState((previousState) => {
+        return {
+          messages: GiftedChat.append([], this.props.chat),
+        };
+      });
+    }
   }
   
-
-  componentDidMount = () => {
-    setInterval(this.callToFetchChat, 1000);
-    // this.props.fetchChat(this.props.route.params.eventId);
-    // this.setState({messages: this.props.chat});
-    // console.log(`${this.props.event}event is this`);
-  } 
-
-
   // helper method that is sends a message
-  handleSend=(newMesssage) => {
+  handleSend=(newMessage) => {
     // this.props.newChat()
     const messsageToPost = {
-      text: newMesssage[0].text,
+      text: newMessage[0].text,
     };
-    
-    this.props.newChat(messsageToPost, this.props.route.params.eventId);
+    this.props.newChat(messsageToPost, this.props.route.params.eventId, this.props.token);
   }
 
 
@@ -100,7 +113,7 @@ class Chat extends Component {
         <GiftedChat
           messages={this.state.messages}
           onSend={(newMessage) => { this.handleSend(newMessage); }}
-          user={{ _id: this.state.user, name: this.state.FullName }}
+          user={{ _id: this.props.token }}
           renderBubble={this.renderBubble}
           placeholder="Anything to share for this event?"
           showUserAvatar
@@ -135,4 +148,3 @@ const mapStateToProps = (state) => {
   });
 };
 export default connect(mapStateToProps, { fetchEvents, fetchChat, newChat})(Chat);
-// export default Chat;

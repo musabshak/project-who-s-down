@@ -22,9 +22,7 @@ class EventPreview extends Component {
       //  startTime={obj.startTime} 
       //  description={obj.description} 
       //  id={obj.id}
-     
     };
-    // console.log('eventPreview got this!', props);
   }
  
 

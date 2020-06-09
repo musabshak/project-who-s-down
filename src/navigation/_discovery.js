@@ -8,6 +8,7 @@ import EventInfo from '../components/event_info';
 import Chat from '../components/chat';
 import GeographicDisplay from '../components/geographic_view';
 import { signoutUser } from '../components/signin/actions';
+import DownEvents from '../components/down_events';
 
 
 const Stack = createStackNavigator();
@@ -19,7 +20,7 @@ const Discovery = (props) => {
   return (
     <Stack.Navigator>
       <Stack.Screen name="Map View"
-        component={GeographicDisplay}
+        component={EventList}
         options={{
           title: 'Who\'s Down?',
           headerStyle: {
@@ -37,7 +38,7 @@ const Discovery = (props) => {
         }}
       />
       <Stack.Screen name="EventList"
-        component={EventList}
+        component={DownEvents}
         options={{
           title: 'Who\'s Down?',
           headerStyle: {

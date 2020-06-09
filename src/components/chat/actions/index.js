@@ -33,41 +33,26 @@ export function fetchEvents() {
   };
 }
 
-export function fetchChat(eventID) {
-  const token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI1ZWRiMjM2MTQ5ODAyZTAwMzg0NmEzMmIiLCJpYXQiOjE1OTE0MTk3NDU0MDJ9.eEgeqPpXWJB4teK9D-hG12xjFpUF7A59lce1IgVFUW8'; 
+export function fetchChat(eventID, token) {
+  // const tokendum = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI1ZWRiMjM2MTQ5ODAyZTAwMzg0NmEzMmIiLCJpYXQiOjE1OTE0MTk3NDU0MDJ9.eEgeqPpXWJB4teK9D-hG12xjFpUF7A59lce1IgVFUW8'; 
   return (dispatch) => {
-    /* axios post */
     axios.get(`${ROOT_URL}/chat/${eventID}`, { headers: { authorization: token } }).then((response) => {
-      // console.log('FetchChat succeeded.');
+      // console.log('FetchChat succeeded.'); 5edef6985a11ba0038f315b2
       dispatch({ type: ActionTypes.FETCH_CHAT, error: null, payload: response.data });
     })
       .catch((error) => {
         console.log('Fetch chat failed.');
-        // console.log(error);
         dispatch({ type: ActionTypes.FETCH_CHAT, error: error.response.data, payload: []});
       });
   };
 }
 
-// async function getToken() {
-//   try {
-//     const token = await AsyncStorage.getItem('token');
-//     if (token !== null) {
-//       // console.log(token);
-//       return token;
-//     }
-//   } catch (error) {
-//     console.log(error);
-//   }
-// }
 
-
-export function newChat(newMessage, eventID) {
+export function newChat(newMessage, eventID, token) {
   // console.log(authToken);
-  const token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI1ZWRiMjM2MTQ5ODAyZTAwMzg0NmEzMmIiLCJpYXQiOjE1OTE0MTk3NDU0MDJ9.eEgeqPpXWJB4teK9D-hG12xjFpUF7A59lce1IgVFUW8';
+  // const token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI1ZWRiMjM2MTQ5ODAyZTAwMzg0NmEzMmIiLCJpYXQiOjE1OTE0MTk3NDU0MDJ9.eEgeqPpXWJB4teK9D-hG12xjFpUF7A59lce1IgVFUW8';
 
   return (dispatch) => {
-    // getToken().then((token) => {
     axios.post(`${ROOT_URL}/chat/${eventID}`, newMessage, { headers: { authorization: token } })
       .then((response) => {
         console.log('successful post request');
@@ -75,7 +60,6 @@ export function newChat(newMessage, eventID) {
       .catch((error) => {
         console.log('Unsuccessfully sent chat');
         dispatch({ type: ActionTypes.NEW_CHAT_ERROR});
-      }); 
-  //     });
+      });
   };
 }

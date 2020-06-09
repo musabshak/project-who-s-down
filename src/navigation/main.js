@@ -41,7 +41,10 @@ class Main extends Component {
     this.loadFont();
   }
 
- 
+  componentDidMount() {
+    
+  }
+
     loadFont = async () => {
       try {
         await Font.loadAsync({
@@ -60,7 +63,7 @@ class Main extends Component {
       }
     };
   
-
+    
     render() {
       if (this.state.fontLoaded) {
         return (
@@ -74,7 +77,6 @@ class Main extends Component {
               <Stack.Screen
                 name="Main"
                 component={MainTabBar}
-                
                 options={{
                 // title: 'Who\'s Down?',
                   headerMode: 'none',
@@ -180,6 +182,7 @@ class Main extends Component {
       }
     }
 }
+
 
 const mapStateToProps = (state) => {
   return ({

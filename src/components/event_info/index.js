@@ -61,27 +61,6 @@ class EventInfo extends Component {
   }
 
   async componentDidMount() {
-    // try {
-    // await Font.loadAsync({
-    //   'pacifico-regular': require('../../../assets/fonts/Pacifico-Regular.ttf'),
-    //   'TitilliumWeb-SemiBold': require('../../../assets/fonts/TitilliumWeb-SemiBold.ttf'),
-    //   'ReenieBeanie-Regular': require('../../../assets/fonts/ReenieBeanie-Regular.ttf'),
-    //   'Montserrat-Regular': require('../../../assets/fonts/Montserrat-Regular.ttf'),
-    //   'Montserrat-SemiBold': require('../../../assets/fonts/Montserrat-SemiBold.ttf'),
-    //   'OpenSans-Regular': require('../../../assets/fonts/OpenSans-Regular.ttf'),
-    // });
-    //   this.setState({ fontLoaded: true });
-    //   console.log('fonts are loaded');
-    // } catch (error) {
-    //   console.log(error);
-    // }
-    // console.log(customFormatTime(this.state.startTime));
-    // // fetching events for testing
-    // try {
-    //   await this.props.fetchEvents();
-    // } catch (error) {
-    //   console.log(error);
-    // }
     fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${this.props.route.params.event.latitude},${this.props.route.params.event.longitude}&key=${API_KEY}`)
       .then((response) => response.json())
       .then((responseJson) => {
@@ -644,7 +623,7 @@ createMarkers = () => {
                   <Text style={styles.btnTimeText}>{ this.hourDiff() < 0 ? 'Ended' : (this.hourDiff() ? `${this.hourDiff()}h left` : '<1h left') }</Text>
                 </View>
                 {/* Chat room */}
-                <TouchableOpacity style={styles.btnChat} onPress={() => this.props.navigation.push('Chat', { eventId: this.state.id })}>
+                <TouchableOpacity style={styles.btnChat} onPress={() => this.props.navigation.push('Chat', { eventId: this.props.route.params.event.id})}>
                   {/* <SvgUri
                     width="50"
                     height="50"
@@ -700,30 +679,6 @@ createMarkers = () => {
                   <Text style={styles.addr}>{this.state.description ? this.state.description : 'The host intentionally left this emtpy :)' }</Text>
                 </View>
               </View>
-              {/* Chat room */}
-              {/* this.props.route.params.eventId */}
-              <TouchableOpacity style={styles.btnChat} onPress={() => { this.props.navigation.navigate('Chat', {eventId: '5ede403b87d3d0003875cd97' }); console.log('passedIn: 5ede6f2087d3d0003875cdb0'); }}>
-                <SvgUri
-                  width="50"
-                  height="50"
-                  fill="#FF5722"
-                  source={require('../../../assets/images/icn-chat.svg')}
-                  style={styles.btnChatImg}
-
-                />
-                <Text style={styles.btnChatText}>Chat Board</Text>
-              </TouchableOpacity>
-              {/* Subscribe */}
-              <TouchableOpacity style={styles.btnSubs}>
-                <SvgUri
-                  width="50"
-                  height="50"
-                  fill="#FF5722"
-                  source={require('../../../assets/images/icn-bell-filled.svg')}
-                  style={styles.btnSubsImg}
-                />
-                <Text style={styles.btnSubsText}>Subscribed</Text>
-              </TouchableOpacity>
             </View>
           </ScrollView>
           
