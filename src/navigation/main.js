@@ -39,6 +39,7 @@ const Stack = createStackNavigator();
 
 function Main(props) {
   loadToken();
+  console.log('in Main:', props);
   return (
     
     <NavigationContainer ref={navigationRef}>
@@ -85,7 +86,7 @@ function Main(props) {
             headerLeft: () => (
               <Button
                 onPress={() => (settingsHelper(props))}
-                title={props.userName ? 'Settings' : ''}
+                title={props.userName ? genSettingsName(props) : ''}
                 color="#fff"
               />
             ),
@@ -125,7 +126,7 @@ function Main(props) {
           }}
         />
         <Stack.Screen
-          name="Settings"
+          name="Profile"
           component={Settings}
           options={{}}
         />
@@ -135,13 +136,32 @@ function Main(props) {
 }
 
 const settingsHelper = (props) => {
-  navigate('Settings');
+  navigate('Profile');
+};
+
+const genSettingsName = (props) => {
+  // console.log('gen settings name!');
+  // console.log('props=', props);
+  if (props.notifNumber) {
+    // console.log('we think notifnumber exists here:::!', props);
+    if (props.notifNumber > 9) {
+      return ('Profile(9+)');
+    }
+    else {
+      return (`Profile(${props.notifNumber})`); }
+  }
+  else {
+    console.log('no props detected');
+    return ('Profile');
+  }
 };
 
 const mapStateToProps = (state) => {
+  console.log('mapstatetoprops state', state);
   return ({
     userName: state.auth.userName,
     token: state.auth.token,
+    notifNumber: state.settings.notifNumber,
   });
 };
 

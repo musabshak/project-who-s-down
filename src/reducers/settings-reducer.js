@@ -9,7 +9,7 @@ const settingsReducer = (state = initialState, action) => {
     return {notifNumber: action.payload};
   default:
     console.log('inside setting default reducer');
-    return null;
+    return state;
   }
 };
 

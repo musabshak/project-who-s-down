@@ -51,7 +51,8 @@ class tabFour extends Component {
     };
 
     // this is all basically getting a list of JSON objects
-    const notifList = [];
+    // eslint-disable-next-line react/no-access-state-in-setstate
+    const notifList = this.state.notifs;
     // add a random number of notifs
     for (let i = 0; i < (Math.floor(Math.random() * 4 + 1)); i++) {
       notifList.push(base);
@@ -81,6 +82,7 @@ class tabFour extends Component {
         notifList.splice(i, 1);
         this.setState({notif: notifList});
         console.log('found it!');
+        this.props.updateNotifNumber(notifList.length);
       }
     }
   }
@@ -126,7 +128,7 @@ class tabFour extends Component {
 
 const mapStateToProps = (reduxState) => (
   {
-    notifNumber: reduxState.notifNumber,
+    notifNumber: reduxState.settings.notifNumber,
   }
 );
   
