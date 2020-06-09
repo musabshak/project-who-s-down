@@ -1,11 +1,14 @@
 /* eslint-disable no-unused-expressions */
 import React, { Component } from 'react';
-import { StyleSheet, Button, Text, ActivityIndicator, View } from 'react-native';
+import {
+  StyleSheet, Button, Text, ActivityIndicator, View, 
+} from 'react-native';
 import { connect } from 'react-redux';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import * as Font from 'expo-font';
 
+import { TouchableOpacity } from 'react-native-gesture-handler';
 import MainTabBar from './main_tab_bar';
 import { signoutUser, loadToken } from '../components/signin/actions';
 import SignIn from '../components/signin';
@@ -13,7 +16,6 @@ import SignUp from '../components/signup';
 import EventInfo from '../components/event_info';
 import MyEvents from '../components/my_events';
 import NewEventPage from '../components/new_event';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const NullComponent = () => null;
 export const navigationRef = React.createRef();
@@ -34,7 +36,6 @@ class Main extends Component {
 
     this.props.loadToken();
     this.loadFont();
-    
   }
 
   loadFont = async () => {
@@ -75,17 +76,18 @@ class Main extends Component {
                 
               options={{
                 // title: 'Who\'s Down?',
-                headerMode : 'none',
+                headerMode: 'none',
                 headerTitle: () => (
                   <Text style={{
-                    fontFamily: "pacifico-regular",
+                    fontFamily: 'pacifico-regular',
                     fontSize: 30,
                     // position: 'absolute',
                     // top: 0,
                     color: '#fff',
                     textAlign: 'center',
                     textAlignVertical: 'center',
-                  }}>
+                  }}
+                  >
                     Who's Down?
                   </Text>
                 ),
@@ -106,7 +108,7 @@ class Main extends Component {
                     onPress={() => (this.props.token ? this.props.signoutUser() : this.props.signoutUser(navigate))}
                     style={{ justifyContent: 'center', alignItems: 'center', paddingRight: 20 }}
                   >
-                    <Text style={{ color: "#fff", fontFamily: "TitilliumWeb-SemiBold", fontSize: 16 }}>{this.props.userName ? 'Logout' : 'Login'}</Text>
+                    <Text style={{ color: '#fff', fontFamily: 'TitilliumWeb-SemiBold', fontSize: 16 }}>{this.props.userName ? 'Logout' : 'Login'}</Text>
                   </TouchableOpacity>
                 ),
                 // gestureEnabled: false,
@@ -163,14 +165,12 @@ class Main extends Component {
       );
     } else {
       return (
-        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center',}}>
+        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center' }}>
           <ActivityIndicator size="large" color="#FF5722" />
         </View>
       );
     }
   }
-  
-  
 }
 
 const mapStateToProps = (state) => {

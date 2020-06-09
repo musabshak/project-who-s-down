@@ -407,33 +407,33 @@ class NewEventPage extends Component {
           alignItems: 'center',
         }}
       >
-          <View style={{
-            // borderColor: 'white',
-            // borderWidth: 2, 
-            // display: 'flex',
-            width: 0.9*Dimensions.get('window').width,
-            justifyContent: 'space-around',
-            alignItems: 'center',
-            // backgroundColor: 'floralwhite',
-            backgroundColor: '#fff',
-            borderRadius: 5,
-            minHeight: 60,
-            padding: 15,
+        <View style={{
+          // borderColor: 'white',
+          // borderWidth: 2, 
+          // display: 'flex',
+          width: 0.9 * Dimensions.get('window').width,
+          justifyContent: 'space-around',
+          alignItems: 'center',
+          // backgroundColor: 'floralwhite',
+          backgroundColor: '#fff',
+          borderRadius: 5,
+          minHeight: 60,
+          padding: 15,
+        }}
+        >
+          <Icon type="MaterialCommunityIcons" name="emoticon-wink-outline" style={{ fontSize: 30, color: '#FF5722' }} />
+          <Text style={{
+            color: 'black',
+            fontSize: 16,
+            fontFamily: 'OpenSans-Regular',
+            // borderColor: 'black',
+            // borderWidth: 0,
+            // paddingTop: 15,
+            textAlign: 'center',
           }}
-          >
-            <Icon type="MaterialCommunityIcons" name='emoticon-wink-outline' style={{ fontSize: 30, color: '#FF5722' }}/>
-            <Text style={{
-              color: 'black',
-              fontSize: 16,
-              fontFamily: 'OpenSans-Regular',
-              // borderColor: 'black',
-              // borderWidth: 0,
-              // paddingTop: 15,
-              textAlign: 'center',
-            }}
-            > The following event has been successfully created: "{this.props.createdEventTitle}"
-            </Text>
-            {/* <View>
+          > The following event has been successfully created: "{this.props.createdEventTitle}"
+          </Text>
+          {/* <View>
               <Button 
                 style={{
                   backgroundColor: 'white',
@@ -456,7 +456,7 @@ class NewEventPage extends Component {
               </Button>
             </View> */}
 
-          </View>
+        </View>
       </Modal>
     );
   }
@@ -530,7 +530,7 @@ class NewEventPage extends Component {
     const errors = this.state.validationErrors.map((errorMessage) => {
       return (
         <View style={{ justifyContent: 'center', alignItems: 'center', flexDirection: 'row' }}>
-          <Icon type="MaterialCommunityIcons" name="alert-circle-outline" style={{ fontSize: 15, color: '#FF5722' }}/>
+          <Icon type="MaterialCommunityIcons" name="alert-circle-outline" style={{ fontSize: 15, color: '#FF5722' }} />
           <Text style={{
             color: '#000',
             fontSize: 16,
@@ -563,22 +563,22 @@ class NewEventPage extends Component {
           alignItems: 'center',
         }}
       >
-          <View style={{
-            // borderColor: 'white',
-            // borderWidth: 2, 
-            width: 0.9*Dimensions.get('window').width,
-            // justifyContent: 'space-around',
-            // alignItems: 'center',
-            minHeight: 60,
-            backgroundColor: '#fff',
-            borderRadius: 5,
-            padding: 15,
-          }}
-          >
-            {/* <Text>
+        <View style={{
+          // borderColor: 'white',
+          // borderWidth: 2, 
+          width: 0.9 * Dimensions.get('window').width,
+          // justifyContent: 'space-around',
+          // alignItems: 'center',
+          minHeight: 60,
+          backgroundColor: '#fff',
+          borderRadius: 5,
+          padding: 15,
+        }}
+        >
+          {/* <Text>
               <Icon type="FontAwesome5" name="exclamation-triangle" style={{ color: 'red', fontSize: 40 }} />
             </Text> */}
-            {/* <Text style={{
+          {/* <Text style={{
               // color: 'red',
               fontSize: 20,
               borderColor: 'black',
@@ -589,8 +589,8 @@ class NewEventPage extends Component {
             }}
             >Please fix the following:
             </Text> */}
-            {errors}
-            {/* <View>
+          {errors}
+          {/* <View>
               <Button 
                 style={{
                   backgroundColor: 'white',
@@ -612,7 +612,7 @@ class NewEventPage extends Component {
               </Button>
             </View> */}
 
-          </View>
+        </View>
       </Modal>
     );
   }

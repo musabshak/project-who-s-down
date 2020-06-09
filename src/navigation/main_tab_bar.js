@@ -8,11 +8,10 @@ import Ionicons from 'react-native-vector-icons/FontAwesome';
 import AsyncStorage from '@react-native-community/async-storage';
 import Modal from 'react-native-modal';
 
+import { TouchableOpacity } from 'react-native-gesture-handler';
 import GeographicView from '../components/geographic_view';
 import EventList from '../components/event_list';
 import { SCREEN_HEIGHT, SCREEN_WIDTH } from '../../assets/styles/event_info';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-
 
 
 const Tab = createBottomTabNavigator();
@@ -54,7 +53,7 @@ const MainTabBar = (props) => {
         // activeBackgroundColor: '#FF5722',
         style: {
           backgroundColor: '#fff',
-          height: 0.12*SCREEN_HEIGHT,
+          height: 0.12 * SCREEN_HEIGHT,
         },
       }}
     >
@@ -78,7 +77,7 @@ const MainTabBar = (props) => {
                 // shadowOpacity: 0.50,
               }}
             >
-              <Icon type="MaterialCommunityIcons" name={ focused ? 'compass' : "compass-outline"} style={{ fontSize: 30, color: focused? '#FF5722' : '#ADADAD' }}/>
+              <Icon type="MaterialCommunityIcons" name={focused ? 'compass' : 'compass-outline'} style={{ fontSize: 30, color: focused ? '#FF5722' : '#ADADAD' }} />
               {/* <Icon type="MaterialCommunityIcons" name={ focused ? 'compass' : "compass-outline"} style={{ fontSize: 30, color: '#FF5722' }}/> */}
               {/* <Ionicons name="compass" size={55} color={focused ? 'white' : '#FF5722'} /> */}
             </View>
@@ -97,7 +96,7 @@ const MainTabBar = (props) => {
             // Allow access to new event page only if user is logged in
             AsyncStorage.getItem('token').then(
               (token) => {
-                console.log('token:',token);
+                console.log('token:', token);
                 if (token !== null) {
                   navigation.navigate('NewEvent');
                 } else {
@@ -132,37 +131,37 @@ const MainTabBar = (props) => {
                   alignItems: 'center',
                 }}
               >
-                  <View style={{
-                    // borderColor: 'white',
-                    // borderWidth: 2, 
-                    display: 'flex',
-                    // justifyContent: 'space-around',
-                    alignItems: 'center',
-                    backgroundColor: '#fff',
-                    borderRadius: 5,
-                    minHeight: 60,
-                    maxWidth: '100%',
-                    shadowOffset: { width: 2, height: 2 },
-                    shadowColor: 'black',
-                    shadowOpacity: 0.2,
-                    shadowRadius: 5,
-                    padding: 25,
-                  }}
-                  >
-                    {/* <Text>
+                <View style={{
+                  // borderColor: 'white',
+                  // borderWidth: 2, 
+                  display: 'flex',
+                  // justifyContent: 'space-around',
+                  alignItems: 'center',
+                  backgroundColor: '#fff',
+                  borderRadius: 5,
+                  minHeight: 60,
+                  maxWidth: '100%',
+                  shadowOffset: { width: 2, height: 2 },
+                  shadowColor: 'black',
+                  shadowOpacity: 0.2,
+                  shadowRadius: 5,
+                  padding: 25,
+                }}
+                >
+                  {/* <Text>
                       <Icon type="FontAwesome5" name="exclamation-triangle" style={{color: 'red', fontSize: 40 }} />
                     </Text> */}
-                    <Icon type="MaterialCommunityIcons" name="alert-circle-outline" style={{ fontSize: 30, color: '#FF5722' }}/>
-                    <Text style={{
-                      color: '#000',
-                      fontFamily: 'OpenSans-Regular',
-                      fontSize: 16,
-                      textAlign: 'center', 
-                      padding: 10,
-                    }}
-                    >You need to be signed in to create new events!
-                    </Text>
-                    {/* <View>
+                  <Icon type="MaterialCommunityIcons" name="alert-circle-outline" style={{ fontSize: 30, color: '#FF5722' }} />
+                  <Text style={{
+                    color: '#000',
+                    fontFamily: 'OpenSans-Regular',
+                    fontSize: 16,
+                    textAlign: 'center', 
+                    padding: 10,
+                  }}
+                  >You need to be signed in to create new events!
+                  </Text>
+                  {/* <View>
                       <Button 
                         style={{
                           backgroundColor: 'white',
@@ -182,14 +181,14 @@ const MainTabBar = (props) => {
                         </Text>
                       </Button>
                     </View> */}
-                  </View>
+                </View>
               </Modal>
               <TouchableOpacity
                 activeOpacity={0.6}
                 style={{
                 }}
               >
-                <Icon type="MaterialCommunityIcons" name='plus-circle-outline' style={{ fontSize: 60, color: '#FF5722' }}/>
+                <Icon type="MaterialCommunityIcons" name="plus-circle-outline" style={{ fontSize: 60, color: '#FF5722' }} />
               </TouchableOpacity>
             </View>
           ),
@@ -211,9 +210,9 @@ const MainTabBar = (props) => {
                 // shadowOpacity: 0.50,
               }}
             >
-              <Icon type="MaterialCommunityIcons" name="format-list-bulleted" style={{ fontSize: 30, color: focused ? '#FF5722' : '#ADADAD' }}/>
+              <Icon type="MaterialCommunityIcons" name="format-list-bulleted" style={{ fontSize: 30, color: focused ? '#FF5722' : '#ADADAD' }} />
               {/* <Ionicons name="calendar" size={30} color={focused ? 'white' : '#FF5722'} /> */}
-          </View>
+            </View>
           ),
         }}
       />
