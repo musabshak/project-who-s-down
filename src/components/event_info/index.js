@@ -394,9 +394,6 @@ createMarkers = () => {
             subscribed: 1,
             imdown: 1,
           });
-          // this.setState({ imdown: 1, subscribed: 1 }, () => {
-          //   this.props.navigation.pop();
-          // });
         });
     }
   }

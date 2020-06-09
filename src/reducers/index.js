@@ -5,6 +5,7 @@ import { combineReducers } from 'redux';
 import authReducer from './auth-reducer';
 import newEventStatusReducer from './new_event_status_reducer';
 import eventsReducerSh from './events_reducer_sh';
+import eventPreviewReducer from './events_preview_reducer';
 import geoViewReducer from './geo_view_reducers';
 import alleventsReducer from './list_reducer';
 import chatReducer from './chat_reducer';
@@ -17,6 +18,7 @@ const rootReducer = combineReducers({
   geoViewEvents: geoViewReducer,
   list: alleventsReducer,
   chat: chatReducer,
+  eventPreview: eventPreviewReducer,
 });
 
 export default rootReducer;

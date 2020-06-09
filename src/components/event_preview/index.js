@@ -8,7 +8,11 @@ import {
 // import { Button, Overlay } from 'react-native-elements';
 import Modal from 'react-native-modal';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-// import { fetchEvents } from './actions';
+import { connect } from 'react-redux';
+import {
+  fetchImdownEvents, imdownEvent, unimdownEvent,
+} from './actions';
+
 
 class EventPreview extends Component {
   constructor(props) {
@@ -17,6 +21,7 @@ class EventPreview extends Component {
     this.state = {
       EventPreviewVisible: true,
       success: false,
+      imdown: 0,
       // title: eventTitle
       //  skillLevel={obj.skillLevel} 
       //  startTime={obj.startTime} 
@@ -24,32 +29,56 @@ class EventPreview extends Component {
       //  id={obj.id}
     };
   }
- 
+
+  componentDidMount() {
+    if (this.props.token) {
+      this.props.fetchImdownEvents(this.props.token).then((res) => {
+        // eslint-disable-next-line no-plusplus
+        for (let i = 0; i < res.length; i++) { this.setState({ imdown: 0 }); }
+        if (res[i].id === this.props.event.id) {
+          this.setState({ imdown: 1 });
+          console.log(res[i]);
+          i = res.length;
+        }
+      });
+    }
+  }
+
+  onDown=() => {
+    if (!this.props.token) { alert('You need to login first!'); }
+    else if (this.state.imdown === 0) {
+      this.props.imdownEvent(this.props.token, this.props.event.id).then(() => {
+        this.setState({
+          imdown: 1,
+          success: !this.success,
+        });
+      });
+    } }
+
+  customFormatTime = (dateString) => {
+    const date = new Date(dateString);
+    const tks = date.toDateString().split(' ');
+    // eslint-disable-next-line no-nested-ternary
+    const hours = date.getHours() === 0 ? '12' : date.getHours() > 12 ? date.getHours() - 12 : date.getHours();
+    const minutes = (date.getMinutes() < 10 ? '0' : '') + date.getMinutes();
+    const ampm = date.getHours() < 12 ? 'AM' : 'PM';
+    const formattedTime = `${hours}:${minutes} ${ampm}`;
+    return `${formattedTime}`;
+  }
+  
 
 openPreview = () => {
   this.setState({
     EventPreviewVisible: true,
-
   });
 }
 
-customFormatTime = (dateString) => {
-  const date = new Date(dateString);
-  const tks = date.toDateString().split(' ');
-  // eslint-disable-next-line no-nested-ternary
-  const hours = date.getHours() === 0 ? '12' : date.getHours() > 12 ? date.getHours() - 12 : date.getHours();
-  const minutes = (date.getMinutes() < 10 ? '0' : '') + date.getMinutes();
-  const ampm = date.getHours() < 12 ? 'AM' : 'PM';
-  const formattedTime = `${hours}:${minutes} ${ampm}`;
-  return `${formattedTime}`;
-}
 
-
-toggleModal = () => {
-  this.setState({
-    success: !this.success,
-  });
-}
+// toggleModal = () => {
+//   this.setState({
+//     success: !this.success,
+//   });
+// }
 
 closePreview = () => {
   this.setState({
@@ -110,7 +139,7 @@ render() {
 
             <TouchableOpacity
               onPress={() => {
-                this.toggleModal();
+                this.onDown();
                 console.log(this.state.success);
               }}
               title="I'm Down"
@@ -379,4 +408,13 @@ const styles = StyleSheet.create({
 //     events: state.eventsSh.all,
 //   });
 // };
-export default EventPreview;
+const mapStateToProps = (state) => {
+  return ({
+    subscribeError: state.eventsSh.subscribeError,
+    subscribedEvents: state.eventsSh.subscribedEvents,
+    token: state.auth.token,
+  });
+};
+export default connect(mapStateToProps, {
+  fetchImdownEvents, imdownEvent, unimdownEvent, 
+})(EventPreview);
