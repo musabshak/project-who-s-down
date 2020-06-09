@@ -24,12 +24,13 @@ const saveValue = async (key, value) => {
 export function signupUser({ userName, fullName, email, password }, navigate) {
   return (dispatch) => {
     /* axios post */
-    axios.post(`${ROOT_URL}/signup`, { userName, fullName, email, password }).then((response) => {
+    return axios.post(`${ROOT_URL}/signup`, { userName, fullName, email, password }).then((response) => {
       console.log('Signup succeeded.');
       saveValue('token', response.data.token);
       saveValue('userName', response.data.userName);
       dispatch({ type: ActionTypes.AUTH_USER, userName: response.data.userName, token: response.data.token });
       navigate('Main', {});
+      return 0;
       // console.log('signed up new user');
       // console.log(response.data.token);
       // localStorage.setItem('token', response.data.token);
@@ -38,6 +39,7 @@ export function signupUser({ userName, fullName, email, password }, navigate) {
         console.log('Signup failed.');
         console.log(error.response.data.error);
         dispatch({ type: ActionTypes.AUTH_ERROR, signupMsg: error.response.data.error });
+        return 1;
       });
   };
 }
