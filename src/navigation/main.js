@@ -43,7 +43,6 @@ class Main extends Component {
 
     this.props.loadToken();
     this.loadFont();
-
   }
 
   componentDidMount() {
