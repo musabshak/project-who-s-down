@@ -340,7 +340,7 @@ createMarkers = () => {
             txt: 'Unsubscribed',
             name: 'emoticon-frown-outline',
             nav: 0,
-            popupVisible: 1,
+            popupVisible: true,
             subscribed: 0,
           });
           // this.setState({ subscribed: 0 });
@@ -351,7 +351,7 @@ createMarkers = () => {
         txt: 'Only signed in users can subscribe to events!',
         name: 'emoticon-neutral-outline',
         nav: 0,
-        popupVisible: 1,
+        popupVisible: true,
       });
     }
     else if (!this.state.imdown) {
@@ -360,7 +360,7 @@ createMarkers = () => {
         txt: 'You\'ill get automatically subscribed if you\'re down!',
         name: 'emoticon-neutral-outline',
         nav: 0,
-        popupVisible: 1,
+        popupVisible: true,
       });
     }
     else {
@@ -370,7 +370,7 @@ createMarkers = () => {
             txt: 'Subscribed',
             name: 'emoticon-cool-outline',
             nav: 0,
-            popupVisible: 1,
+            popupVisible: true,
             subscribed: 1,
           });
         });
@@ -379,7 +379,7 @@ createMarkers = () => {
 
   onImdown = () => {
     if (this.state.imdown) {
-      this.props.unimdownEvent(this.props.token, this.props.route.params.event.id)
+      this.props.unimdownEvent(this.props.token, this.props.route.params.event.id, this.props.route.params.event)
         .then(() => {
           // this.setState({ imdown: 0, subscribed: 0 }, () => {
           //   this.props.navigation.pop();
@@ -388,7 +388,7 @@ createMarkers = () => {
             txt: 'Maybe join us next time?',
             name: 'emoticon-cry-outline',
             nav: 1,
-            popupVisible: 1,
+            popupVisible: true,
             subscribed: 0,
             imdown: 0,
           });
@@ -399,18 +399,18 @@ createMarkers = () => {
         txt: 'Come join the party once you are logged in!',
         name: 'emoticon-devil-outline',
         nav: 1,
-        popupVisible: 1,
+        popupVisible: true,
       });
       // this.props.navigation.push('SignIn', { return: 1 });
     }
     else {
-      this.props.imdownEvent(this.props.token, this.props.route.params.event.id)
+      this.props.imdownEvent(this.props.token, this.props.route.params.event.id, this.props.route.params.event)
         .then(() => {
           this.setState({
             txt: 'This is going to be EPIC!',
             name: 'emoticon-devil-outline',
             nav: 1,
-            popupVisible: 1,
+            popupVisible: true,
             subscribed: 1,
             imdown: 1,
           });

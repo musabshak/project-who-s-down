@@ -102,12 +102,12 @@ export function fetchImdownEvents(token) {
   };
 };
 
-export function imdownEvent(token, eventId) {
+export function imdownEvent(token, eventId, event) {
   return (dispatch) => {
     return axios.post(`${ROOT_URL}/imdownEvent/${eventId}`, null ,{ headers: { authorization: token } }).then((response) => {
       console.log('ImdownEvent succeeded.');
       // console.log(response.data);
-      dispatch({ type: ActionTypes.IMDOWN_EVENT, error: null, payload: response.data });
+      dispatch({ type: ActionTypes.IMDOWN_EVENT, error: null, payload: response.data, addedEvent: event });
       // localStorage.setItem('token', response.data.token);
     })
       .catch((error) => {
@@ -117,12 +117,12 @@ export function imdownEvent(token, eventId) {
   }
 }
 
-export function unimdownEvent(token, eventId) {
+export function unimdownEvent(token, eventId, event) {
   return (dispatch) => {
     return axios.post(`${ROOT_URL}/unimdownEvent/${eventId}`, null ,{ headers: { authorization: token } }).then((response) => {
       console.log('UnimdownEvent succeeded.');
       // console.log(response.data);
-      dispatch({ type: ActionTypes.UNIMDOWN_EVENT, error: null, payload: response.data });
+      dispatch({ type: ActionTypes.UNIMDOWN_EVENT, error: null, payload: response.data, removedEvent: event });
       // localStorage.setItem('token', response.data.token);
     })
       .catch((error) => {

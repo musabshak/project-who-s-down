@@ -152,7 +152,10 @@ class GeographicDisplay extends Component {
         if (this.state.region.longitudeDelta < MIN_ZOOM_FOR_MARKER_CHANGE) {
           return (
             <Marker key={obj.id} coordinate={{ latitude: obj.latitude, longitude: obj.longitude }}>
-              <Text> {obj.eventTitle} </Text>
+              <View style={{ backgroundColor:'#ffffff', borderRadius: 5, padding: 5, flexDirection: 'row', alignItems: 'center' }}>
+              <Icon type="MaterialCommunityIcons" name='calendar' style={{ fontSize: 15, color: '#FF5722', margin: 5 }}/>
+                <Text style={{ fontFamily:'OpenSans-Regular' }}> {obj.eventTitle} </Text>
+              </View>
               {/* <Callout>
                 <EventPreview />
               </Callout> */}
@@ -183,10 +186,10 @@ class GeographicDisplay extends Component {
     }
 
     else {
-      console.log('this.props.eventlist does not exist');
-      if (this.masterDebug) { console.log('this is this.props:', this.props); }
-      console.log('attempting to fix automatically by calling fetchevents!');
-      this.props.fetchEvents();
+      // console.log('this.props.eventlist does not exist');
+      // if (this.masterDebug) { console.log('this is this.props:', this.props); }
+      // console.log('attempting to fix automatically by calling fetchevents!');
+      // this.props.fetchEvents();
     }
   }
 
