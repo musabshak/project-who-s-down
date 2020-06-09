@@ -1,8 +1,6 @@
 /* eslint-disable no-unused-expressions */
 import React, { Component } from 'react';
-
 import { StyleSheet, Button, Text, ActivityIndicator, View } from 'react-native';
-
 import { connect } from 'react-redux';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -13,11 +11,9 @@ import { signoutUser, loadToken } from '../components/signin/actions';
 import SignIn from '../components/signin';
 import SignUp from '../components/signup';
 import EventInfo from '../components/event_info';
-import DownEvents from '../components/down_events';
+import MyEvents from '../components/my_events';
 import NewEventPage from '../components/new_event';
-import Settings from '../components/settings';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-
 
 const NullComponent = () => null;
 export const navigationRef = React.createRef();
@@ -58,30 +54,9 @@ class Main extends Component {
       console.log(error);
     }
   }
-  
-settingsHelper = (props) => {
-  navigate('Profile');
-};
 
-genSettingsName = (props) => {
-  // console.log('gen settings name!');
-  // console.log('props=', props);
-  if (props.notifNumber) {
-    // console.log('we think notifnumber exists here:::!', props);
-    if (props.notifNumber > 9) {
-      return ('Profile(9+)');
-    }
-    else {
-      return (`Profile(${props.notifNumber})`); }
-  }
-  else {
-    console.log('no props detected');
-    return ('Profile');
-  }
-};
+  componentDidMount() {
 
- componentDidMount() {
-    console.log('I hope to god I did not mess up this merge')
   }
 
   render() {
@@ -124,13 +99,7 @@ genSettingsName = (props) => {
                 },
                 headerTintColor: '#fff',
                 // headerTitle: (props) => <LogoTitle {...props} />,
-                headerLeft: () => (
-                  <Button
-                    onPress={() => (this.settingsHelper(props))}
-                    title={this.props.userName ? this.genSettingsName(props) : ''}
-                    color="#fff"
-              />
-            ),
+                headerLeft: NullComponent,
                 headerRight: () => (
                   <TouchableOpacity
                     activeOpacity={0.6}
@@ -189,11 +158,6 @@ genSettingsName = (props) => {
                 headerShown: false,
               }}
             />
-       <Stack.Screen
-          name="Profile"
-          component={Settings}
-          options={{}}
-        />
           </Stack.Navigator>
         </NavigationContainer>
       );
@@ -205,14 +169,14 @@ genSettingsName = (props) => {
       );
     }
   }
+  
+  
 }
 
 const mapStateToProps = (state) => {
-  console.log('mapstatetoprops state', state);
   return ({
     userName: state.auth.userName,
     token: state.auth.token,
-    notifNumber: state.settings.notifNumber,
   });
 };
 
