@@ -6,101 +6,52 @@ import {
 // import { App } from 'react-native-firebase';
 import { IconButton } from 'react-native-paper';
 import { View, StyleSheet } from 'react-native';
-import uuid4 from 'uuidv4';
-// import { connect } from 'react-redux';
-// import { fetchEvents } from './actions';
+import { connect } from 'react-redux';
+import { fetchEvents, fetchChat, newChat} from './actions';
 
-// export default function chat() {
 //   // https://github.com/FaridSafi/react-native-gifted-chat
 //   // https://heartbeat.fritz.ai/chat-app-with-react-native-part-4-create-chat-ui-screens-with-react-native-gifted-chat-7ef428a60d30
 
-//     // example of chat message
-//     {
-//       _id: 1,
-//       text: 'no.1',
-//       createdAt: new Date().getTime(),
-//       user: {
-//         _id: 2,
-//         name: 'Test User',
-//         _id: 5,
-//         name: 'Aarish Iyer',
-//       },
-//     },
-//     {
-//       _id: 2,
-//       text: 'no.2',
-//       createdAt: new Date().getTime(),
-//       user: {
-//         _id: 3,
-//         name: 'April Zhang',
-//       },
-//     },
-
-//   ]);
-// const Example = () => {
-//   const [messages, setMessages] = useState([
-//     {
-//       _id: 1,
-//       text: 'Hello developer',
-//       createdAt: new Date(),
-//       user: { _id: 2, name: 'Name' },
-//     },
-//   ]);
-// };  
 class Chat extends Component {
   constructor(props) {
     super(props);
-   
     this.state = { 
-      //   charId: this.props.route.params.event.id,
-      //   title: this.props.route.params.event.eventTitle,
-      //   skillLevel: this.props.route.params.event.skillLevel,
-      //   startTime: this.props.route.params.event.startTime,
-      // description: this.props.route.params.event.description,
-      // category: this.props.route.params.event.category,
-      // eventList: [],
-      // currentTime: new Date(),
-      messages:
-        [
-          {
-            _id: 0,
-            text: 'Welcome to this Event!',
-            createdAt: new Date().getTime(),
-            system: true,
-          },
-          {
-            _id: 2,
-            text: 'no.2',
-            createdAt: new Date().getTime(),
-            user: {
-              _id: 3,
-              name: 'April Zhang',
-            },
-          },
-        ],
+      messages: [
+      ],
       user: 'userId',
       FullName: 'AprilZ',
-     
     };
   }
   
-  
-  // componentDidMount = () => {
-  //   this.props.fetchEvents();
-  //   console.log(`${this.props.event}event is this`);
-  // } 
-
-
-  // helper method that is sends a message
-  handleSend=(messages = []) => {
+  callToFetchChat=() => {
+    this.props.fetchChat(this.props.route.params.eventId);
     this.setState((previousState) => {
       return {
-        messages: GiftedChat.append(previousState.messages, messages),
+        messages: GiftedChat.append([], this.props.chat),
       };
     });
   }
+  
 
-    // setInterval(functionaname, 1000)
+  componentDidMount = () => {
+    setInterval(this.callToFetchChat, 1000);
+    // this.props.fetchChat(this.props.route.params.eventId);
+    // this.setState({messages: this.props.chat});
+    // console.log(`${this.props.event}event is this`);
+  } 
+
+
+  // helper method that is sends a message
+  handleSend=(newMesssage) => {
+    // this.props.newChat()
+    const messsageToPost = {
+      text: newMesssage[0].text,
+    };
+    
+    this.props.newChat(messsageToPost, this.props.route.params.eventId);
+  }
+
+
     scrollToBottomComponent = () => {
       return (
         <View style={styles.bottomComponentContainer}>
@@ -176,11 +127,12 @@ const styles = StyleSheet.create({
 });
 
 
-// const mapStateToProps = (state) => {
-//   return ({
-//     events: state.eventsSh.all,
-//     token: state.auth.token,
-//   });
-// };
-// export default connect(mapStateToProps, { fetchEvents })(Chat);
-export default Chat;
+const mapStateToProps = (state) => {
+  return ({
+    events: state.eventsSh.all,
+    token: state.auth.token,
+    chat: state.chat.all,
+  });
+};
+export default connect(mapStateToProps, { fetchEvents, fetchChat, newChat})(Chat);
+// export default Chat;

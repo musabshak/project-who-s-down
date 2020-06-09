@@ -172,10 +172,8 @@ class GeographicDisplay extends Component {
                 }}
               />
               <Callout>
-                <EventPreview title={obj.eventTitle} skillLevel={obj.skillLevel} startTime={obj.startTime} description={obj.description} id={obj.id} />
+                <EventPreview title={obj.eventTitle} skillLevel={obj.skillLevel} startTime={obj.startTime} description={obj.description} id={obj.id} hostName={obj.hostName} />
               </Callout>
-
-
             </Marker>
           );
         }
@@ -189,6 +187,7 @@ class GeographicDisplay extends Component {
       this.props.fetchEvents();
     }
   }
+  
 
   callInitializeFilters = () => {
     if (this.masterDebug) {

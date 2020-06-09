@@ -34,6 +34,7 @@ class EventInfo extends Component {
       startTime: this.props.route.params.event.startTime,
       description: this.props.route.params.event.description,
       category: this.props.route.params.event.category,
+      // eventId: this.props.route.params.eventId,
       eventList: [],
     };
   }
@@ -299,14 +300,15 @@ createMarkers = () => {
                 <Text style={styles.btnTimeText}>{this.state.startTime}</Text>
               </View>
               {/* Chat room */}
-              <TouchableOpacity style={styles.btnChat} onPress={() => this.props.navigation.navigate('Chat', {})}>
+              {/* this.props.route.params.eventId */}
+              <TouchableOpacity style={styles.btnChat} onPress={() => { this.props.navigation.navigate('Chat', {eventId: '5ede403b87d3d0003875cd97' }); console.log('passedIn: 5ede6f2087d3d0003875cdb0'); }}>
                 <SvgUri
                   width="50"
                   height="50"
                   fill="#FF5722"
                   source={require('../../../assets/images/icn-chat.svg')}
                   style={styles.btnChatImg}
-                  
+
                 />
                 <Text style={styles.btnChatText}>Chat Board</Text>
               </TouchableOpacity>

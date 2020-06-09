@@ -124,7 +124,7 @@ function Main(props) {
           name="Chat"
           component={Chat} 
           options={{
-            // headerShown: true,
+            headerShown: true,
           }}
         />
       </Stack.Navigator>

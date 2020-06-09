@@ -24,7 +24,7 @@ class EventPreview extends Component {
       //  id={obj.id}
      
     };
-    console.log('eventPreview got this!', props);
+    // console.log('eventPreview got this!', props);
   }
  
 
@@ -76,12 +76,12 @@ render() {
           >
             <View style={styles.exclude} />
             <View style={styles.title}>
-              <Text style={styles.titleFont}>cricket{this.props.title} </Text>
-              <Text style={styles.timeFont}>14:30{this.props.startTime} </Text>
+              <Text style={styles.titleFont}>{this.props.title} </Text>
+              <Text style={styles.timeFont}>{this.props.startTime} </Text>
             </View>
             <View style={styles.people}>
               <View style={styles.host}>
-                <Text style={styles.hostFont}>Aarish Iyer{this.props.id} </Text>
+                <Text style={styles.hostFont}>{this.props.hostName} </Text>
               </View>
               <View style={styles.participants}>
                 <FontAwesome name="heart" color="#FF5722" size={20} />
@@ -106,10 +106,12 @@ render() {
               }}
               title="I'm Down"
               style={styles.eventScreenButton}
+              
             >
               <View style={styles.buttonGroup}>
                 <FontAwesome name="thumb-tack" color="white" size={30} style={styles.down} />
                 <Text style={styles.eventText}>I'm down!</Text>
+                
               </View>
             </TouchableOpacity>
             <View style={styles.shortDescription}>

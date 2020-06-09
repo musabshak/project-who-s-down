@@ -1,21 +1,23 @@
-// import { ActionTypes } from '../components/chat/actions';
+import { ActionTypes } from '../components/chat/actions';
 
-// const initialState = {
-//   all: [],
-//   error: null,
-// };
+const initialState = {
+  all: [],
+  error: null,
+  newText: '',
+};
 
-// const EventsReducer = (state = initialState, action) => {
-//   switch (action.type) {
-//   case ActionTypes.FETCH_EVENTS:
-//     return { error: action.error, all: action.payload };
-//   // case ActionTypes.FETCH_EVENT_FAILED:
-//   //   return { error: 1, all: state.all };
-//   // case ActionTypes.FETCH_EVENT_SUCCEEDED:
-//   //   return { error: 0, all: state.all };
-//   default:
-//     return state;
-//   }
-// };
 
-// export default chatReducer;
+const chatReducer = (state = initialState, action) => {
+  switch (action.type) {
+  case ActionTypes.FETCH_EVENTS:
+    return { error: action.error, all: action.payload };
+  case ActionTypes.FETCH_CHAT:
+    return { error: action.error, all: action.payload };
+  case ActionTypes.NEW_CHAT:
+    return {newText: action.payload, error: false, success: true}; 
+  default:
+    return state;
+  }
+};
+
+export default chatReducer;
