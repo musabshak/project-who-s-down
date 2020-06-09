@@ -83,7 +83,7 @@ openPreview = () => {
 
 closePreview = () => {
   this.props.increment();
-  // console.log(this.props.count);
+  console.log(this.props.count);
   this.setState({
     EventPreviewVisible: false,
   });
@@ -416,6 +416,7 @@ const mapStateToProps = (state) => {
     subscribeError: state.eventsSh.subscribeError,
     subscribedEvents: state.eventsSh.subscribedEvents,
     token: state.auth.token,
+    count: state.modal,
   
   });
 };

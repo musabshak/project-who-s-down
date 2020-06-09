@@ -8,7 +8,7 @@ import {
 import { IconButton } from 'react-native-paper';
 import { View, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
-import { fetchEvents, fetchChat, newChat} from './actions';
+import { fetchChat, newChat, setChatTimer } from './actions';
 
 //   // https://github.com/FaridSafi/react-native-gifted-chat
 //   // https://heartbeat.fritz.ai/chat-app-with-react-native-part-4-create-chat-ui-screens-with-react-native-gifted-chat-7ef428a60d30
@@ -28,7 +28,17 @@ class Chat extends Component {
   
   
     componentDidMount = () => {
-      setInterval(this.callToFetchChat, 1000);
+      // 
+      // setInterval(this.callToFetchChat, 1000);
+      this.timer = setInterval(this.callToFetchChat, 1000);
+      // this.setState({
+      //   timer: setInterval(this.callToFetchChat, 1000),
+      // }, () => {
+      //   console.log(`Chat timer #${this.state.timer} saved to state.`);
+      //   this.props.setChatTimer(this.state.timer);
+      // })
+      console.log(`Chat timer #${this.timer} saved to state.`);
+      this.props.setChatTimer(this.timer);
     }
   
 
@@ -37,9 +47,10 @@ class Chat extends Component {
     //   }
 
   callToFetchChat=() => {
+    console.log('This timer: ', this.props.timer, 'test', this.props.test);
     if (this.props.token) {
       this.props.fetchChat(this.props.route.params.eventId, this.props.token);
-      console.log(`${this.props.route.params.eventId} what + 5ede2ebe87d3d0003875cd6e`);
+      // console.log(`${this.props.route.params.eventId} what + 5ede2ebe87d3d0003875cd6e`);
       // 5edef6985a11ba0038f315b2
       this.setState((previousState) => {
         return {
@@ -102,8 +113,8 @@ class Chat extends Component {
     };
   
     render() {
-      return (
-      
+      // console.log('messages: ',this.state.messages);
+      if (this.state.messages) { return (
         <GiftedChat
           messages={this.state.messages}
           onSend={(newMessage) => { this.handleSend(newMessage); }}
@@ -118,9 +129,11 @@ class Chat extends Component {
           renderUsernameOnMessage
           scrollToBottomComponent={this.scrollToBottomComponent}
         />
-     
-      );
-    }}
+      
+      ); }
+      else return null;
+    }
+}
 
 const styles = StyleSheet.create({
   sendingContainer: {
@@ -136,9 +149,10 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
   return ({
-    events: state.eventsSh.all,
     token: state.auth.token,
     chat: state.chat.all,
+    timer: state.chat.timer,
+    test: state.chat.test,
   });
 };
-export default connect(mapStateToProps, { fetchEvents, fetchChat, newChat})(Chat);
+export default connect(mapStateToProps, { fetchChat, newChat, setChatTimer})(Chat);
