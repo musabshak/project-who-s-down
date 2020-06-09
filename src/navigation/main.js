@@ -6,9 +6,9 @@ import React, { Component } from 'react';
 import {
   StyleSheet, Button, Text, ActivityIndicator, View, 
 } from 'react-native';
-import { Icon } from 'native-base';
+
 import { connect } from 'react-redux';
-import { NavigationContainer, StackActions } from '@react-navigation/native';
+import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import * as Font from 'expo-font';
 
@@ -20,7 +20,6 @@ import SignUp from '../components/signup';
 import EventInfo from '../components/event_info';
 import MyEvents from '../components/my_events';
 import NewEventPage from '../components/new_event';
-import Chat from '../components/chat';
 
 import Settings from '../components/settings';
 
@@ -29,10 +28,6 @@ const NullComponent = () => null;
 export const navigationRef = React.createRef();
 export function navigate(name, params) {
   navigationRef.current && navigationRef.current.navigate(name, params);
-}
-export function pop(params) {
-  if (params) navigationRef.current?.dispatch(StackActions.pop(...params));
-  else navigationRef.current?.dispatch(StackActions.pop());
 }
 
 const Stack = createStackNavigator();
@@ -202,27 +197,18 @@ class Main extends Component {
               }}
             />
             <Stack.Screen
-              name="Chat"
-              component={Chat} 
-              options={{
-                headerShown: true,
-                headerLeft: () => (
-                  <TouchableOpacity
-                    activeOpacity={0.6}
-                    onPress={() => { console.log('Clearing timer: ', this.props.timer); clearInterval(this.props.timer); pop(); }}
-                    style={{ justifyContent: 'center', alignItems: 'center', paddingRight: 20 }}
-                  >
-                    <Icon type="MaterialCommunityIcons" name="arrow-left" style={{ fontSize: 30, color: '#FF5722', marginLeft: 15 }} />
-                  </TouchableOpacity>
-                ),
-              }}
+              name="Profile"
+              component={Settings}
+              options={{}}
             />
           </Stack.Navigator>
         </NavigationContainer>
       );
     } else {
       return (
+
         <View style={{flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+
           <ActivityIndicator size="large" color="#FF5722" />
         </View>
       );
@@ -230,13 +216,14 @@ class Main extends Component {
   }
 }
 
-
 const mapStateToProps = (state) => {
-  return ({
-    userName: state.auth.userName,
-    token: state.auth.token,
-    timer: state.chat.timer,
-  });
+  return (
+    {
+      userName: state.auth.userName,
+      token: state.auth.token,
+      notifNumber: state.settings.notifNumber, 
+    }
+  );
 };
 
 export default connect(mapStateToProps, { loadToken, signoutUser })(Main);
