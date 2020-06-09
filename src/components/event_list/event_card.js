@@ -13,6 +13,9 @@ import {Button} from 'native-base';
 import {Card} from '@paraboly/react-native-card'
 import Ionicons from 'react-native-vector-icons/FontAwesome5';
 import { connect } from 'react-redux';
+import {imdownEvent,unimdownEvent, fetchImdownEvents} from './actions';
+
+
 
 
 const eventCategoryToIcon = new Map([
@@ -28,16 +31,26 @@ class EventCard extends Component {
   constructor(props) {
     super(props);
   }
+   componentDidMount(){
+    if (this.props.token) {
+      this.props.fetchImdownEvents(this.props.token).then((res) => {
+        // console.log(res);
+        for (let i = 0; i < res.length; i++)
+          if (res[i].id === this.props.route.params.event.id) {
+            this.setState({ imdown: 1 });
+            break;
+          }
+      });
+
+  }
+}
 
     onDown = (event) => {
-      if (this.props.event.imdown == true) {
-        this.props.event.setState({
-          down: false,
-        }); }
+      if (this.state.imdown == 1) {
+        this.props.imdownEvent(this.props.token, this.props.route.params.event.id)
+      }
       else {
-        this.props.event.setState({
-          down: true,
-        });
+        this.props.unimdownEvent(this.props.token, this.props.route.params.event.id)
       }
     }
 
@@ -52,35 +65,46 @@ class EventCard extends Component {
             alignItems: 'center',
           }}
           >
-          <View style={{
-            zIndex: 0,
-          }}
-          >
-            <TouchableOpacity >
             <Card
               title={this.props.event.eventTitle}
-              iconComponent={<Image source={eventCategoryToIcon.get(this.props.event.category)}
-                style={{ margin: -20, marginTop:-50, alignItems: 'center', justifyContent:'center',
+              containerHeight={100}
+              iconComponent={
+              <Image source={eventCategoryToIcon.get(this.props.event.category)}
+                style={{ margin: -30, marginTop:-20, alignItems: 'center', justifyContent:'center',
                   height: 40, width: 40,
                 }}/>}
               onPress={() => {this.props.navigate('EventInfo', { event: this.props.event });}}
               topRightText={<Text><Ionicons name={'clock'} size={17} color={'#FF5722'} style={{
               justifyContent: 'flex-start'}}/>{this.props.event.startTime.substring(11, 16)}</Text>}
               content={this.props.event.description}
-              bottomRightComponent={<View style={{
-                alignSelf:'flex-end',
-
-              }}
-              >
-               <TouchableOpacity onPress={() => e.stopPropogation()}>
-                 <Button onPress={() => e.stopPropogation()} style={{backgroundColor:'#fff', borderColor:'#FF5722',}}><Ionicons name={'thumbs-up'} size={30} color={'#FF5722'} style={{paddingLeft: 20}}/>
-                 </Button>
-               </TouchableOpacity>
-               </View >}
               defaultContent="Click on the event to learn more!"
-            />
-            </TouchableOpacity>
-            </View>
+              bottomRightComponent={<Button 
+              onPress={() => this.onDown}
+              style={
+                {
+                  position: 'absolute',
+                  right: 25,
+                  bottom: 15,
+                  width: 60,
+                  height: 50,
+                  backgroundColor: 'none', 
+                }
+              }
+            />}
+            /><Button 
+            onPress={() => this.onDown}
+            style={
+              {
+                position: 'absolute',
+                right: 25,
+                bottom: 15,
+                width: 60,
+                height: 50,
+                backgroundColor: 'none', 
+              }
+            }
+          ><Ionicons name="thumbs-up" size={30} color="#FF5722" style={{ paddingLeft: 20 }} />
+          </Button>            
           </View>
         );  
       }
@@ -108,11 +132,17 @@ class EventCard extends Component {
           </View>
         );  
       }
-    }
+    };
 }
 
 
-export default EventCard;
+function mapStateToProps(reduxState) {
+  return { 
+    events: reduxState.list,
+  };
+}
+
+export default connect(mapStateToProps, { imdownEvent, unimdownEvent, fetchImdownEvents })(EventCard);
 
 
 /* <Card

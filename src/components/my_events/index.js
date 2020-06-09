@@ -13,7 +13,7 @@ import FilterMenu from '../geographic_view/FilterMenu';
 import EventCard from '../event_list/event_card';
 
 
-class myEvents extends Component {
+class MyEvents extends Component {
   constructor(props) {
     super(props);
   }
@@ -66,7 +66,7 @@ function mapStateToProps(reduxState) {
   };
 }
 
-export default connect(mapStateToProps, { fetchMyEvents })(myEvents);
+export default connect(mapStateToProps, { fetchMyEvents })(MyEvents);
 
 
 const styles = StyleSheet.create({

@@ -22,8 +22,8 @@ class EventList extends Component {
 
   componentDidMount = () => {
     this.props.fetchEvents();
-    console.log(this.props.events)
   } 
+
 
 
   displayEvent =() => {
@@ -31,7 +31,7 @@ class EventList extends Component {
       return (
         this.props.events.all.map((item, key) => {
           return (
-            <EventCard event={item} key={item.id} navigate={this.props.navigation.navigate} authenticated ={this.props.authenticated}/>
+            <EventCard event={item} key={item.id} navigate={this.props.navigation.navigate} token = {this.props.token} authenticated ={this.props.authenticated} imdown={this.imdown}/>
           );
         })
       );
@@ -56,7 +56,8 @@ class EventList extends Component {
 function mapStateToProps(reduxState) {
   return { 
     events: reduxState.list,
-    authenticated: reduxState.auth.authenticated
+    authenticated: reduxState.auth.authenticated,
+    token: reduxState.auth.token,
   };
 }
 
