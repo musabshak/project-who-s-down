@@ -7,32 +7,37 @@ import {
   Text,
 } from 'react-native';
 import { connect } from 'react-redux';
-import { fetchEvents } from '../event_list/actions';
+import { fetchImDownEventsByUser } from '../event_list/actions';
 import FilterMenu from '../geographic_view/FilterMenu';
 import EventCard from '../event_list/event_card';
 
 
-class EventList extends Component {
+class DownEvents extends Component {
   constructor(props) {
     super(props);
   }
 
   componentDidMount = () => {
-    this.props.fetchEvents();
+    this.props.fetchImDownEventsByUser();
     console.log('mounting my event');
-    console.log(this.props.events);
   } 
 
   displayEvent =() => {
-    if (this.props.events.all !== undefined) {
-      return (
-        this.props.events.all.map((item, key) => {
-          return (
-            <EventCard event={item} key={item.id} />
-          );
-        })
-      );
-    } else {
+    if(this.props.authenticated){
+      if (this.props.events.mine !== undefined) {
+        return (
+          this.props.events.mine.map((item, key) => {
+            return (
+              <EventCard event={item} key={item.id} authenticated={this.props.authenticated}/>
+            );
+          })
+        );
+      }
+      else{
+        return (<View><Text>You aren't down for anything!</Text></View>)
+      }
+    }
+     else {
       return (<View><Text>Start by signing in and adding events!</Text></View>);
     }
   }
@@ -40,14 +45,6 @@ class EventList extends Component {
   render() {
     return (
       <View>
-        <Search
-          backgroundColor="#c4302b"
-          showsCancelButton={false}
-          textFieldBackgroundColor="#c4302b"
-          onChangeText={(query) => {
-            this.setState({ query });
-          }}
-        />
         <FilterMenu />
         {this.displayEvent()}
       </View>
@@ -59,10 +56,11 @@ class EventList extends Component {
 function mapStateToProps(reduxState) {
   return { 
     events: reduxState.list,
+    authenticated: reduxState.auth.authenticated,
   };
 }
 
-export default connect(mapStateToProps, { fetchEvents })(EventList);
+export default connect(mapStateToProps, { fetchImDownEventsByUser })(DownEvents);
 
 
 const styles = StyleSheet.create({

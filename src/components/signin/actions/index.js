@@ -40,7 +40,7 @@ export function signinUser({ email, password }, navigate) {
       saveValue('userName', response.data.userName);
       dispatch({ type: ActionTypes.AUTH_USER, userName: response.data.userName, token: response.data.token });
       navigate('Main', {}); 
-      // localStorage.setItem('token', response.data.token);
+      //localStorage.setItem('token', response.data.token);
     })
       .catch((error) => {
         console.log('Signin failed.');
