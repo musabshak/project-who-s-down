@@ -7,7 +7,7 @@ import Tab2 from './tabTwo';
 import Tab3 from './tabThree'; 
 import Tab4 from './tabFour';
 
-export default class Settings extends Component { // maybe rename user panel
+export default class Settings extends Component { // maybe rename user panel 
   render() {
     return (
 
