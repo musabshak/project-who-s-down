@@ -15,7 +15,7 @@ import { connect } from 'react-redux';
 import * as Permissions from 'expo-permissions';
 import * as Location from 'expo-location';
 // import * as Font from 'expo-font';
-// import SvgUri from 'react-native-svg-uri';
+import SvgUri from 'react-native-svg-uri';
 import MapView, { Marker, Callout } from 'react-native-maps';
 import { getDistance } from 'geolib';
 import { API_KEY } from '../new_event';
@@ -48,6 +48,7 @@ class EventInfo extends Component {
       description: this.props.route.params.event.description,
       hostName: this.props.route.params.event.hostName,
       category: this.props.route.params.event.category,
+      // eventId: this.props.route.params.eventId,
       eventList: [],
       currentTime: new Date(),
       popupVisible: false,
@@ -170,6 +171,7 @@ class EventInfo extends Component {
     }
 
     const location = await Location.getCurrentPositionAsync();
+    // eslint-disable-next-line max-len
     const estimatedDist = getDistance({ latitude: this.props.route.params.event.latitude, longitude: this.props.route.params.event.longitude }, { latitude: location.coords.latitude, longitude: location.coords.longitude });
     this.setState({
       location,
@@ -414,9 +416,6 @@ createMarkers = () => {
             subscribed: 1,
             imdown: 1,
           });
-          // this.setState({ imdown: 1, subscribed: 1 }, () => {
-          //   this.props.navigation.pop();
-          // });
         });
     }
   }
@@ -643,7 +642,7 @@ createMarkers = () => {
                   <Text style={styles.btnTimeText}>{ this.hourDiff() < 0 ? 'Ended' : (this.hourDiff() ? `${this.hourDiff()}h left` : '<1h left') }</Text>
                 </View>
                 {/* Chat room */}
-                <TouchableOpacity style={styles.btnChat} onPress={() => this.props.navigation.push('Chat', { eventId: this.state.id })}>
+                <TouchableOpacity style={styles.btnChat} onPress={() => this.props.navigation.push('Chat', { eventId: this.props.route.params.event.id})}>
                   {/* <SvgUri
                     width="50"
                     height="50"

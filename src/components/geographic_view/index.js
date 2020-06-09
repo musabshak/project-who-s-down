@@ -153,11 +153,6 @@ class GeographicDisplay extends Component {
           return (
             <Marker key={obj.id} coordinate={{ latitude: obj.latitude, longitude: obj.longitude }}>
               <Text> {obj.eventTitle} </Text>
-              {/* <Callout>
-                <EventPreview />
-              </Callout> */}
-
-
             </Marker>
           );
         }
@@ -165,17 +160,26 @@ class GeographicDisplay extends Component {
         // show event Icon 
         else {
           return (
+            // eslint-disable-next-line react/jsx-boolean-value
             <Marker key={obj.id} coordinate={{ latitude: obj.latitude, longitude: obj.longitude }}>
               <Image source={eventCategoryToIcon.get(obj.category)}
                 style={{
                   height: 35, width: 35, borderWidth: 4, borderColor: eventLevelToIcon.get(obj.level), opacity: eventOpacity,
                 }}
               />
-              <Callout>
-                <EventPreview title={obj.eventTitle} skillLevel={obj.skillLevel} startTime={obj.startTime} description={obj.description} id={obj.id} />
+              <Callout tooltip>
+                
+                <EventPreview
+                  event={obj}
+                  navigate={this.props.navigation.navigate} 
+                  title={obj.eventTitle} 
+                  skillLevel={obj.skillLevel} 
+                  startTime={obj.startTime} 
+                  description={obj.description} 
+                  id={obj.id} 
+                  hostName={obj.hostName}
+                />
               </Callout>
-
-
             </Marker>
           );
         }
@@ -189,6 +193,7 @@ class GeographicDisplay extends Component {
       this.props.fetchEvents();
     }
   }
+ 
 
   callInitializeFilters = () => {
     if (this.masterDebug) {

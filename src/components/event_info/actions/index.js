@@ -52,11 +52,11 @@ export function fetchSubscribedEvents(token) {
         dispatch({ type: ActionTypes.FETCH_SUBSCRIBED_EVENTS, error: error.response.data, payload: []});
       });
   };
-};
+}
 
 export function subscribeEvent(token, eventId) {
   return (dispatch) => {
-    return axios.post(`${ROOT_URL}/subscribeEvent/${eventId}`, null ,{ headers: { authorization: token } }).then((response) => {
+    return axios.post(`${ROOT_URL}/subscribeEvent/${eventId}`, null, { headers: { authorization: token } }).then((response) => {
       console.log('SubscribeEvent succeeded.');
       // console.log(response.data);
       dispatch({ type: ActionTypes.SUBSCRIBE_EVENT, error: null, payload: response.data });
@@ -66,12 +66,12 @@ export function subscribeEvent(token, eventId) {
         console.log('SubscribeEvent failed.', error.response.data);
         dispatch({ type: ActionTypes.SUBSCRIBE_EVENT, error: error.response.data, payload: []});
       });
-  }
+  };
 }
 
 export function unsubscribeEvent(token, eventId) {
   return (dispatch) => {
-    return axios.post(`${ROOT_URL}/unsubscribeEvent/${eventId}`, null ,{ headers: { authorization: token } }).then((response) => {
+    return axios.post(`${ROOT_URL}/unsubscribeEvent/${eventId}`, null, { headers: { authorization: token } }).then((response) => {
       console.log('UnsubscribeEvent succeeded.');
       // console.log(response.data);
       dispatch({ type: ActionTypes.SUBSCRIBE_EVENT, error: null, payload: response.data });
@@ -81,7 +81,7 @@ export function unsubscribeEvent(token, eventId) {
         console.log('UnsubscribeEvent failed.', error.response.data);
         dispatch({ type: ActionTypes.SUBSCRIBE_EVENT, error: error.response.data, payload: []});
       });
-  }
+  };
 }
 
 export function fetchImdownEvents(token) {
@@ -100,11 +100,11 @@ export function fetchImdownEvents(token) {
         dispatch({ type: ActionTypes.FETCH_IMDOWN_EVENTS, error: error.response.data, payload: []});
       });
   };
-};
+}
 
 export function imdownEvent(token, eventId) {
   return (dispatch) => {
-    return axios.post(`${ROOT_URL}/imdownEvent/${eventId}`, null ,{ headers: { authorization: token } }).then((response) => {
+    return axios.post(`${ROOT_URL}/imdownEvent/${eventId}`, null, { headers: { authorization: token } }).then((response) => {
       console.log('ImdownEvent succeeded.');
       // console.log(response.data);
       dispatch({ type: ActionTypes.IMDOWN_EVENT, error: null, payload: response.data });
@@ -114,12 +114,12 @@ export function imdownEvent(token, eventId) {
         console.log('ImdownEvent failed.', error.response.data);
         dispatch({ type: ActionTypes.IMDOWN_EVENT, error: error.response.data, payload: []});
       });
-  }
+  };
 }
 
 export function unimdownEvent(token, eventId) {
   return (dispatch) => {
-    return axios.post(`${ROOT_URL}/unimdownEvent/${eventId}`, null ,{ headers: { authorization: token } }).then((response) => {
+    return axios.post(`${ROOT_URL}/unimdownEvent/${eventId}`, null, { headers: { authorization: token } }).then((response) => {
       console.log('UnimdownEvent succeeded.');
       // console.log(response.data);
       dispatch({ type: ActionTypes.UNIMDOWN_EVENT, error: null, payload: response.data });
@@ -129,5 +129,5 @@ export function unimdownEvent(token, eventId) {
         console.log('UnimdownEvent failed.', error.response.data);
         dispatch({ type: ActionTypes.UNIMDOWN_EVENT, error: error.response.data, payload: []});
       });
-  }
+  };
 }
