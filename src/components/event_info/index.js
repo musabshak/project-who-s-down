@@ -5,8 +5,9 @@ import {
   Icon, Fab,
 } from 'native-base';
 import {
-  View, Text, ActivityIndicator, TouchableOpacity, ScrollView, Dimensions, Modal,
+  View, Text, ActivityIndicator, TouchableOpacity, ScrollView, Dimensions
 } from 'react-native';
+import Modal from 'react-native-modal';
 import { connect } from 'react-redux';
 import * as Permissions from 'expo-permissions';
 import * as Location from 'expo-location';
@@ -47,7 +48,10 @@ class EventInfo extends Component {
       eventList: [],
       currentTime: new Date(),
       popupVisible: false,
-
+      txt: 'Fallback',
+      rowDisplay: 1,
+      nav: 0,
+      name: 'emoticon-wink-outline',
     };
   }
 
@@ -329,20 +333,45 @@ createMarkers = () => {
     if (this.state.subscribed) {
       this.props.unsubscribeEvent(this.props.token, this.props.route.params.event.id)
         .then(() => {
-          this.setState({ subscribed: 0 });
+          this.setState({
+            txt: 'Unsubscribed',
+            name: 'emoticon-frown-outline',
+            nav: 0,
+            popupVisible: 1,
+            subscribed: 0,
+          });
+          // this.setState({ subscribed: 0 });
         });
     } else {
       if (!this.props.token) {
         // popup - go login
-        this.props.navigation.push('SignIn', { return: 1 });
+        this.setState({
+          txt: 'Only signed in users can subscribe to events!',
+          name: 'emoticon-neutral-outline',
+          nav: 0,
+          popupVisible: 1,
+        });
+        
       }
       else if (!this.state.imdown) {
         // popup imdown before you can subscribe
+        this.setState({
+          txt: 'You\'ill get automatically subscribed if you\'re down!',
+          name: 'emoticon-neutral-outline',
+          nav: 0,
+          popupVisible: 1,
+        });
       }
       else {
         this.props.subscribeEvent(this.props.token, this.props.route.params.event.id)
         .then(() => {
-          this.setState({ subscribed: 1 });
+          this.setState({
+            txt: 'Subscribed',
+            name: 'emoticon-cool-outline',
+            nav: 0,
+            popupVisible: 1,
+            subscribed: 1,
+          });
         });
       };
     }
@@ -352,8 +381,16 @@ createMarkers = () => {
     if (this.state.imdown) {
       this.props.unimdownEvent(this.props.token, this.props.route.params.event.id)
         .then(() => {
-          this.setState({ imdown: 0, subscribed: 0 }, () => {
-            this.props.navigation.pop();
+          // this.setState({ imdown: 0, subscribed: 0 }, () => {
+          //   this.props.navigation.pop();
+          // });
+          this.setState({
+            txt: 'Maybe join us next time?',
+            name: 'emoticon-cry-outline',
+            nav: 1,
+            popupVisible: 1,
+            subscribed: 0,
+            imdown: 0,
           });
         });
     } else {
@@ -364,9 +401,17 @@ createMarkers = () => {
       else {
         this.props.imdownEvent(this.props.token, this.props.route.params.event.id)
         .then(() => {
-          this.setState({ imdown: 1, subscribed: 1 }, () => {
-            this.props.navigation.pop();
+          this.setState({
+            txt: 'This is going to be EPIC!',
+            name: 'emoticon-devil-outline',
+            nav: 1,
+            popupVisible: 1,
+            subscribed: 1,
+            imdown: 1,
           });
+          // this.setState({ imdown: 1, subscribed: 1 }, () => {
+          //   this.props.navigation.pop();
+          // });
         });
       };
     }
@@ -487,7 +532,7 @@ createMarkers = () => {
       <Modal
         isVisible={this.state.popupVisible}
         backdropOpacity={0.3}
-        onBackdropPress={() => this.setState({ popupVisible: false })}
+        onBackdropPress={ this.state.nav ? () => this.setState({ popupVisible: false }, () => {this.props.navigation.pop()}) : () => this.setState({ popupVisible: false })}
         style={{
           // borderColor: 'white',
           // borderWidth: 2, 
@@ -499,15 +544,18 @@ createMarkers = () => {
             // borderColor: 'white',
             // borderWidth: 2, 
             width: 0.9*Dimensions.get('window').width,
-            // justifyContent: 'space-around',
-            // alignItems: 'center',
+            justifyContent: 'center',
+            alignItems: 'center',
+            flexDirection: this.state.rowDisplay ? 'row' : 'column',
             minHeight: 60,
             backgroundColor: '#fff',
             borderRadius: 5,
-            padding: 15,
+            padding: 40,
+            // backgroundColor: '#000',
           }}
           >
-            <Text>Yesss</Text>
+            <Icon type="MaterialCommunityIcons" name={this.state.name} style={{ fontSize: 30, color: '#FF5722', margin: 10 }}/>
+            <Text style={{ fontFamily: 'OpenSans-Regular' }}>{this.state.txt}</Text>
           </View>
       </Modal>
     );
@@ -527,8 +575,9 @@ createMarkers = () => {
           <View style={styles.headerCont}>
             <View style={styles.headerIcon} name="" size={45} color="#FF5722" />
             <Text style={styles.header}>Details</Text>
-            {/* <Icon type="MaterialCommunityIcons" name='user-circle' style={{ fontSize: 30, color: '#FF5722' }}/> */}
+            <Icon type="MaterialCommunityIcons" name='plus' style={{ fontSize: 30, color: '#FF5722' }} onPress={() => { this.setState({ popupVisible: true }) }}/>
           </View>
+          {this.renderPopup()}
           <ScrollView style={styles.contentCont}>
             <View style={styles.titleCardCont}>
               <View style={styles.titleCard}>              
@@ -645,7 +694,6 @@ createMarkers = () => {
                 </View>
               </View>
             </View>
-            {/* {this.renderPopup()} */}
           </ScrollView>
           
           <View style={styles.tabBarCont}>

@@ -154,7 +154,7 @@ const MainTabBar = (props) => {
                     </Text> */}
                     <Icon type="MaterialCommunityIcons" name="alert-circle-outline" style={{ fontSize: 30, color: '#FF5722' }}/>
                     <Text style={{
-                      color: '#000',
+                      color: '#757575',
                       fontFamily: 'OpenSans-Regular',
                       fontSize: 16,
                       textAlign: 'center', 
