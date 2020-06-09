@@ -29,7 +29,7 @@ const alleventsReducer = (state = initialState, action) => {
   case ActionTypes.UNIMDOWN_EVENT:
     return { ...state, error: action.error};
   default:
-    console.log('inside reducer cant fetch cases');
+    // console.log('inside reducer cant fetch cases');
     return state;
   }
 };

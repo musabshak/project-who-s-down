@@ -1,6 +1,7 @@
 /* eslint-disable no-unreachable */
 /* eslint-disable object-curly-newline */
 import axios from 'axios';
+import AsyncStorage from '@react-native-community/async-storage';
 
 // const ROOT_URL = 'https://platform.cs52.me/api';
 // const ROOT_URL = 'http://localhost:9090/api';
