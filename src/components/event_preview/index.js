@@ -12,6 +12,7 @@ import { connect } from 'react-redux';
 import {
   fetchImdownEvents, imdownEvent, unimdownEvent, increment,
 } from './actions';
+import { changeFilters } from '../geographic_view/actions';
 
 
 class EventPreview extends Component {
@@ -54,7 +55,8 @@ class EventPreview extends Component {
           success: !this.success,
         });
       });
-    } }
+    }
+  }
 
   customFormatTime = (dateString) => {
     const date = new Date(dateString);
@@ -68,128 +70,142 @@ class EventPreview extends Component {
   }
   
 
-openPreview = () => {
-  this.setState({
-    EventPreviewVisible: true,
-  });
-}
+  openPreview = () => {
+    this.setState({
+      EventPreviewVisible: true,
+    });
+  }
 
 
-// toggleModal = () => {
-//   this.setState({
-//     success: !this.success,
-//   });
-// }
+  // toggleModal = () => {
+  //   this.setState({
+  //     success: !this.success,
+  //   });
+  // }
 
-closePreview = () => {
-  this.props.increment();
-  console.log(this.props.count);
-  this.setState({
-    EventPreviewVisible: false,
-  });
-}
+  closePreview = () => {
+    console.log('hi!');
+    this.setState({
+      EventPreviewVisible: false,
+    }, this.closePreviewPt2);
+  }
 
+  closePreviewPt2 = () => {
+    console.log('preview pt 2 called!');
+    if (this.props.changeFilters) { 
+      const randomFilter = {FilterType: 'categories', SpecificFilter: 'nightlife'};
+      console.log('doing some hacky changefilters stuff');
+      this.props.changeFilters(randomFilter);
+      this.props.changeFilters(randomFilter);
+    }
+    console.log('this is eventpreviewvisible', this.state.EventPreviewVisible);
+  }
 
-render() {
-  return (
-    <View style={styles.container}>
-      <Modal animationIn="slideInUp" animationOut="slideOutDown" isVisible={this.state.EventPreviewVisible} onBackdropPress={() => this.closePreview()}>
+  render() {
+    if (this.state.EventPreviewVisible) {
+      return (
+        <View style={styles.container}>
+          <Modal animationIn="slideInUp" animationOut="slideOutDown" isVisible={this.state.EventPreviewVisible} onBackdropPress={() => this.closePreview()}>
 
-        <Modal animationIn="slideInUp" animationOut="slideOutDown" isVisible={this.state.success} onBackdropPress={() => { this.setState({success: false }); }}>
+            <Modal animationIn="slideInUp" animationOut="slideOutDown" isVisible={this.state.success} onBackdropPress={() => { this.setState({success: false }); }}>
 
-          <View style={styles.modal2}>
-            <Text style={{
-              textAlign: 'center', fontFamily: 'Futura', color: '#FF5722', fontSize: 18, padding: 10, 
-            }}
-            >Added to My Event! 
-            </Text>
-            <Text style={{
-              textAlign: 'center', color: 'grey', fontStyle: 'italic', fontSize: '10', 
-            }}
-            >click outside to go back to the main page 
-            </Text>
-          </View>
-        </Modal>
-
-        <View style={styles.modal1}>
-          <ImageBackground source={require('../../../assets/background.jpg')}
-            style={styles.bgImage}
-          >
-            <View style={styles.exclude} />
-            <View style={styles.title}>
-              <Text style={styles.titleFont}>{this.props.title} </Text>
-              <Text style={styles.timeFont}>{this.customFormatTime(this.props.startTime)} </Text>
-            </View>
-            <View style={styles.people}>
-              <View style={styles.host}>
-                <Text style={styles.hostFont}>{this.props.hostName} </Text>
+              <View style={styles.modal2}>
+                <Text style={{
+                  textAlign: 'center', fontFamily: 'Futura', color: '#FF5722', fontSize: 18, padding: 10, 
+                }}
+                >Added to My Event! 
+                </Text>
+                <Text style={{
+                  textAlign: 'center', color: 'grey', fontStyle: 'italic', fontSize: '10', 
+                }}
+                >click outside to go back to the main page 
+                </Text>
               </View>
-              <View style={styles.participants}>
-                <FontAwesome name="heart" color="#FF5722" size={20} />
-                <Text style={{ marginLeft: 5, color: '#FF5722', fontFamily: 'GillSans-SemiBold' }}>20+</Text>
-              </View>
-            </View>
-            <View style={styles.people}>
-              <View style={styles.skillLevel1}>
-                <Text style={styles.hostFont}>
+            </Modal>
+
+            <View style={styles.modal1}>
+              <ImageBackground source={require('../../../assets/background.jpg')}
+                style={styles.bgImage}
+              >
+                <View style={styles.exclude} />
+                <View style={styles.title}>
+                  <Text style={styles.titleFont}>{this.props.title} </Text>
+                  <Text style={styles.timeFont}>{this.customFormatTime(this.props.startTime)} </Text>
+                </View>
+                <View style={styles.people}>
+                  <View style={styles.host}>
+                    <Text style={styles.hostFont}>{this.props.hostName} </Text>
+                  </View>
+                  <View style={styles.participants}>
+                    <FontAwesome name="heart" color="#FF5722" size={20} />
+                    <Text style={{ marginLeft: 5, color: '#FF5722', fontFamily: 'GillSans-SemiBold' }}>20+</Text>
+                  </View>
+                </View>
+                <View style={styles.people}>
+                  <View style={styles.skillLevel1}>
+                    <Text style={styles.hostFont}>
                   skill level
-                </Text>
-              </View>
-              <View style={styles.skillLevel2}>
-                <Text style={styles.hostFont}>{this.props.skillLevel} </Text>
-              </View>
-            </View>
+                    </Text>
+                  </View>
+                  <View style={styles.skillLevel2}>
+                    <Text style={styles.hostFont}>{this.props.skillLevel} </Text>
+                  </View>
+                </View>
 
-            <TouchableOpacity
-              onPress={() => {
-                this.onDown();
-                console.log(this.state.success);
-              }}
-              title="I'm Down"
-              style={styles.eventScreenButton}
+                <TouchableOpacity
+                  onPress={() => {
+                    this.onDown();
+                    console.log(this.state.success);
+                  }}
+                  title="I'm Down"
+                  style={styles.eventScreenButton}
               
-            >
-              <View style={styles.buttonGroup}>
-                <FontAwesome name="thumb-tack" color="white" size={30} style={styles.down} />
-                <Text style={styles.eventText}>I'm down!</Text>
+                >
+                  <View style={styles.buttonGroup}>
+                    <FontAwesome name="thumb-tack" color="white" size={30} style={styles.down} />
+                    <Text style={styles.eventText}>I'm down!</Text>
 
-              </View>
-            </TouchableOpacity>
-            <View style={styles.shortDescription}>
-              <Text style={styles.bioFont1}>Short Description</Text>
+                  </View>
+                </TouchableOpacity>
+                <View style={styles.shortDescription}>
+                  <Text style={styles.bioFont1}>Short Description</Text>
               
-              <ScrollView style={styles.bio}>
-                {/* <View style={styles.bio}> */}
-                <Text style={styles.bioFont2}>
-                  {this.props.description}
-                </Text>
-              </ScrollView>
+                  <ScrollView style={styles.bio}>
+                    {/* <View style={styles.bio}> */}
+                    <Text style={styles.bioFont2}>
+                      {this.props.description}
+                    </Text>
+                  </ScrollView>
              
+                </View>
+                <View style={styles.participants}>
+                  <TouchableOpacity 
+                    onPress={() => { 
+                      this.props.navigate('Chat', {eventId: this.props.eventId }); 
+                      this.closePreview();
+                    }}
+                  >
+                    <FontAwesome name="commenting" color="#FF5722" size={22} style={styles.icon1} />
+                  </TouchableOpacity>
+                  <TouchableOpacity 
+                    onPress={() => { 
+                      this.props.navigate('EventInfo', {event: this.props.event }); 
+                      this.closePreview();
+                    }}
+                  >
+                    <FontAwesome name="ellipsis-h" color="#FF5722" size={22} style={styles.icon2} />
+                  </TouchableOpacity>
+                </View>
+              </ImageBackground>
             </View>
-            <View style={styles.participants}>
-              <TouchableOpacity 
-                onPress={() => { 
-                  this.props.navigate('Chat', {eventId: this.props.eventId }); 
-                  this.closePreview();
-                }}
-              >
-                <FontAwesome name="commenting" color="#FF5722" size={22} style={styles.icon1} />
-              </TouchableOpacity>
-              <TouchableOpacity 
-                onPress={() => { 
-                  this.props.navigate('EventInfo', {event: this.props.event }); 
-                  this.closePreview();
-                }}
-              >
-                <FontAwesome name="ellipsis-h" color="#FF5722" size={22} style={styles.icon2} />
-              </TouchableOpacity>
-            </View>
-          </ImageBackground>
+          </Modal>
         </View>
-      </Modal>
-    </View>
-  );
-}
+      );
+    }
+    else {
+      return (<View />);
+    }
+  }
 }
 
 const styles = StyleSheet.create({
@@ -421,5 +437,5 @@ const mapStateToProps = (state) => {
   });
 };
 export default connect(mapStateToProps, {
-  fetchImdownEvents, imdownEvent, unimdownEvent, increment,
+  fetchImdownEvents, imdownEvent, unimdownEvent, increment, changeFilters,
 })(EventPreview);

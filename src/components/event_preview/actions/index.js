@@ -65,6 +65,7 @@ export function unimdownEvent(token, eventId) {
 }
 
 export function increment() {
+  console.log('in increment!');
   return {
     type: ActionTypes.INCREMENT,
     payload: null,
