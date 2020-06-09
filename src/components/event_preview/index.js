@@ -169,7 +169,7 @@ render() {
             <View style={styles.participants}>
               <TouchableOpacity 
                 onPress={() => { 
-                  this.props.navigate('Chat', {eventId: this.props.eventId }); 
+                  this.props.navigate('Chat', {eventId: this.props.event.id }); 
                   this.closePreview();
                 }}
               >
