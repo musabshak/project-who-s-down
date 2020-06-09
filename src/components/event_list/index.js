@@ -50,7 +50,6 @@ class EventList extends Component {
         <ScrollView>
           {this.displayEvent()}
         </ScrollView>
-        <FilterMenu/>
         <Fab
           onPress={() => this.handleFetchClick()}
           position="bottomLeft"
