@@ -17,7 +17,7 @@ import {Button} from 'native-base';
 import {Card} from '@paraboly/react-native-card';
 import Ionicons from 'react-native-vector-icons/FontAwesome5';
 import { connect } from 'react-redux';
-import {imdownEvent, unimdownEvent, fetchImdownEvents} from './actions';
+import { subscribeEvent, unsubscribeEvent, imdownEvent, unimdownEvent, fetchImdownEvents} from '../event_info/actions';
 
 
 const eventCategoryToIcon = new Map([
@@ -32,37 +32,41 @@ const eventCategoryToIcon = new Map([
 class EventCard extends Component {
   constructor(props) {
     super(props);
+
     this.state = {
-      imdown: 0,
+      imdown: this.props.highlight,
     };
   }
 
   componentDidMount() {
-    if (this.props.token) {
-      this.props.fetchImdownEvents(this.props.token).then((res) => {
-        for (let i = 0; i < res.length; i++) { this.setState({ imdown: 0 }); }
-        if (res[i].id === this.props.event.id) {
-          this.setState({ imdown: 1 });
-          console.log(res[i]);
-          i = res.length;
-        }
-      });
-    }
+    // if (this.props.token) {
+    //   this.props.fetchImdownEvents(this.props.token).then((res) => {
+    //     for (let i = 0; i < res.length; i++) { this.setState({ imdown: 0 }); }
+    //     if (res[i].id === this.props.event.id) {
+    //       this.setState({ imdown: 1 });
+    //       console.log(res[i]);
+    //       i = res.length;
+    //     }
+    //   });
+    // }
   }
 
 
   onDown() {
-    if (this.state.imdown === 0) {
-      this.props.imdownEvent(this.props.token, this.props.event.id).then(() => {
-        this.setState({ imdown: 1 });
-        console.log(this.state.imdown);
+    console.log('clicked, highlight: ', this.props.highlight);
+    if (this.props.highlight === 0) {
+      this.props.imdownEvent(this.props.token, this.props.event.id, this.props.event).then(() => {
+        this.props.subscribeEvent(this.props.token, this.props.event.id);
+        // this.setState({ imdown: 1 });
+        // console.log(this.state.imdown);
       });
     }
-    else if (this.state.imdown === 1) {
-      this.setState({ imdown: undefined });
-      this.props.unimdownEvent(this.props.token, this.props.event.id).then(() => {
-        this.setState({ imdown: 0 });
-        console.log(this.state.imdown);
+    else if (this.props.highlight === 1) {
+      // this.setState({ imdown: undefined });
+      this.props.unimdownEvent(this.props.token, this.props.event.id, this.props.event).then(() => {
+        this.props.unsubscribeEvent(this.props.token, this.props.event.id);
+        // this.setState({ imdown: 0 });
+        // console.log(this.state.imdown);
       });
     }
   }
@@ -81,7 +85,9 @@ class EventCard extends Component {
   // this.props.post.id
   render() {
     if (this.props.token) {
-      if (this.state.imdown === 1 || this.imdown === 1) {
+      // if (this.state.imdown === 1 || this.imdown === 1) {
+      // if (this.props.highlight) {
+      if (this.props.highlight) {
         return (
           <View style={{
             borderRadius: 5,
@@ -298,8 +304,8 @@ class EventCard extends Component {
 
 function mapStateToProps(reduxState) {
   return { 
-    events: reduxState.list,
+    // events: reduxState.list,
   };
 }
 
-export default connect(mapStateToProps, { imdownEvent, unimdownEvent, fetchImdownEvents })(EventCard);
+export default connect(mapStateToProps, {subscribeEvent, unsubscribeEvent, imdownEvent, unimdownEvent, fetchImdownEvents })(EventCard);
