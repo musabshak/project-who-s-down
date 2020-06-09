@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
-import {Text} from 'react-native';
+import {Text, View} from 'react-native';
+import MyEvents from '../my_events';
 
 class tabTwo extends Component {
   constructor(props) {
@@ -7,7 +8,12 @@ class tabTwo extends Component {
   }
 
   render() {
-    return (<Text>Created events, this is coming from Anjali and will be called my created events</Text>);
+    return (
+      <View>
+        <Text>Created events, this is coming from Anjali and will be called my created events</Text>
+        <MyEvents />
+      </View>
+    );
   }
 }
 

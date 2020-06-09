@@ -8,12 +8,12 @@ import {
 
 } from 'react-native';
 import { connect } from 'react-redux';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import Ionicons from 'react-native-vector-icons/FontAwesome';
 import { fetchEvents } from './actions';
 import FilterMenu from '../geographic_view/FilterMenu';
 import EventCard from './event_card';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-//import { initializeFilters } from '../geographic_view/FilterMenu/actions'
-import Ionicons from 'react-native-vector-icons/FontAwesome';
+// import { initializeFilters } from '../geographic_view/FilterMenu/actions'
 
 class EventList extends Component {
   constructor(props) {
@@ -22,7 +22,7 @@ class EventList extends Component {
 
   componentDidMount = () => {
     this.props.fetchEvents();
-    console.log(this.props.events)
+    console.log(this.props.events);
   } 
 
 
@@ -31,7 +31,7 @@ class EventList extends Component {
       return (
         this.props.events.all.map((item, key) => {
           return (
-            <EventCard event={item} key={item.id} navigate={this.props.navigation.navigate} authenticated ={this.props.authenticated}/>
+            <EventCard event={item} key={item.id} navigate={this.props.navigation.navigate} authenticated={this.props.authenticated} />
           );
         })
       );
@@ -46,7 +46,7 @@ class EventList extends Component {
         <ScrollView>
           {this.displayEvent()}
         </ScrollView>
-        <FilterMenu/>
+        <FilterMenu />
       </View>
       
     );
@@ -56,7 +56,7 @@ class EventList extends Component {
 function mapStateToProps(reduxState) {
   return { 
     events: reduxState.list,
-    authenticated: reduxState.auth.authenticated
+    authenticated: reduxState.auth.authenticated,
   };
 }
 
