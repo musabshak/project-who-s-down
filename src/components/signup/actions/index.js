@@ -30,6 +30,7 @@ export function signupUser({ userName, fullName, email, password }, navigate) {
       saveValue('userName', response.data.userName);
       dispatch({ type: ActionTypes.AUTH_USER, userName: response.data.userName, token: response.data.token });
       navigate('Main', {});
+      // console.log('signed up new user');
       // console.log(response.data.token);
       // localStorage.setItem('token', response.data.token);
     })

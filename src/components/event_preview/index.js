@@ -4,10 +4,11 @@ import { Text } from 'react-native';
 class eventPreview extends Component {
   constructor(props) {
     super(props);
+    console.log('eventPreview got this!', props);
   }
 
   render() {
-    return (<Text>INSERT EVENT PREVIEW COMPONENT HERE</Text>
+    return (<Text>{this.props.title}</Text>
     );
   }
 }

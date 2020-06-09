@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-expressions */
 import React, { Component } from 'react';
-import { StyleSheet, Button } from 'react-native';
+import { StyleSheet, Button, Text } from 'react-native';
 import { connect } from 'react-redux';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -13,6 +13,7 @@ import SignUp from '../components/signup';
 import EventInfo from '../components/event_info';
 import DownEvents from '../components/down_events';
 import NewEventPage from '../components/new_event';
+import Settings from '../components/settings';
 
 const NullComponent = () => null;
 export const navigationRef = React.createRef();
@@ -38,6 +39,7 @@ const Stack = createStackNavigator();
 
 function Main(props) {
   loadToken();
+  console.log('in Main:', props);
   return (
     
     <NavigationContainer ref={navigationRef}>
@@ -81,7 +83,13 @@ function Main(props) {
             },
             headerTintColor: '#fff',
             // headerTitle: (props) => <LogoTitle {...props} />,
-            headerLeft: NullComponent,
+            headerLeft: () => (
+              <Button
+                onPress={() => (settingsHelper(props))}
+                title={props.userName ? genSettingsName(props) : ''}
+                color="#fff"
+              />
+            ),
             headerRight: () => (
               <Button
                 // onPress={() => (props.token ? props.signoutUser() : props.signoutUser(props.navigation.navigate))}
@@ -117,15 +125,43 @@ function Main(props) {
             headerShown: false,
           }}
         />
+        <Stack.Screen
+          name="Profile"
+          component={Settings}
+          options={{}}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
 }
 
+const settingsHelper = (props) => {
+  navigate('Profile');
+};
+
+const genSettingsName = (props) => {
+  // console.log('gen settings name!');
+  // console.log('props=', props);
+  if (props.notifNumber) {
+    // console.log('we think notifnumber exists here:::!', props);
+    if (props.notifNumber > 9) {
+      return ('Profile(9+)');
+    }
+    else {
+      return (`Profile(${props.notifNumber})`); }
+  }
+  else {
+    console.log('no props detected');
+    return ('Profile');
+  }
+};
+
 const mapStateToProps = (state) => {
+  console.log('mapstatetoprops state', state);
   return ({
     userName: state.auth.userName,
     token: state.auth.token,
+    notifNumber: state.settings.notifNumber,
   });
 };
 
