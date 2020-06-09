@@ -396,7 +396,13 @@ createMarkers = () => {
     } else {
       if (!this.props.token) {
         // popup - go login
-        this.props.navigation.push('SignIn', { return: 1 });
+        this.setState({
+          txt: 'Come join the party once you are logged in!',
+          name: 'emoticon-devil-outline',
+          nav: 1,
+          popupVisible: 1,
+        });
+        // this.props.navigation.push('SignIn', { return: 1 });
       }
       else {
         this.props.imdownEvent(this.props.token, this.props.route.params.event.id)
