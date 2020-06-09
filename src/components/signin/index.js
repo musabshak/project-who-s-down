@@ -54,7 +54,7 @@ class SignIn extends Component {
     if (this.state.email && this.state.password) {
       this.props.signinUser({
         email: this.state.email, password: this.state.password, 
-      }, this.props.navigation.navigate);
+      }, this.props.navigation, this.props.route.params?.return);
     } else {
       if (!this.state.email) this.setState({ emailEmpty: true });
       if (!this.state.password) this.setState({ passwordEmpty: true });
