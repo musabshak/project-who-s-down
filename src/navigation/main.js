@@ -13,6 +13,7 @@ import SignUp from '../components/signup';
 import EventInfo from '../components/event_info';
 import MyEvents from '../components/my_events';
 import NewEventPage from '../components/new_event';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const NullComponent = () => null;
 export const navigationRef = React.createRef();
@@ -100,13 +101,13 @@ class Main extends Component {
                 // headerTitle: (props) => <LogoTitle {...props} />,
                 headerLeft: NullComponent,
                 headerRight: () => (
-                  <Button
-                    // onPress={() => (props.token ? props.signoutUser() : props.signoutUser(props.navigation.navigate))}
+                  <TouchableOpacity
+                    activeOpacity={0.6}
                     onPress={() => (this.props.token ? this.props.signoutUser() : this.props.signoutUser(navigate))}
-                    title={this.props.userName ? 'Logout' : 'Login'}
-                    // title="tmp"
-                    color="#fff"
-                  />
+                    style={{ justifyContent: 'center', alignItems: 'center', paddingRight: 20 }}
+                  >
+                    <Text style={{ color: "#fff", fontFamily: "TitilliumWeb-SemiBold", fontSize: 16 }}>{this.props.userName ? 'Logout' : 'Login'}</Text>
+                  </TouchableOpacity>
                 ),
                 // gestureEnabled: false,
               }}

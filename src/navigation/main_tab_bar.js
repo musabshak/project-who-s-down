@@ -11,6 +11,7 @@ import Modal from 'react-native-modal';
 import GeographicView from '../components/geographic_view';
 import EventList from '../components/event_list';
 import { SCREEN_HEIGHT, SCREEN_WIDTH } from '../../assets/styles/event_info';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 
 
@@ -48,9 +49,9 @@ const MainTabBar = (props) => {
       initialRouteName="GeographicView"
       // shifting
       tabBarOptions={{
-        showLabel: false,
-        activeTintColor: '#e91e63',
-        activeBackgroundColor: '#FF5722',
+        // showLabel: false,
+        activeTintColor: '#FF5722',
+        // activeBackgroundColor: '#FF5722',
         style: {
           backgroundColor: '#fff',
           height: 0.12*SCREEN_HEIGHT,
@@ -65,10 +66,10 @@ const MainTabBar = (props) => {
           tabBarIcon: ({ focused }) => (
             <View
               style={{
-                position: 'absolute',
-                bottom: -7, // space from bottombar
-                height: 75,
-                width: 75,
+                // position: 'absolute',
+                // bottom: -7, // space from bottombar
+                height: 1000,
+                // width: 75,
                 activeBackgroundColor: 'yellow',
                 justifyContent: 'center',
                 alignItems: 'center',
@@ -77,7 +78,9 @@ const MainTabBar = (props) => {
                 // shadowOpacity: 0.50,
               }}
             >
-              <Ionicons name="compass" size={55} color={focused ? 'white' : '#FF5722'} />
+              <Icon type="MaterialCommunityIcons" name={ focused ? 'compass' : "compass-outline"} style={{ fontSize: 30, color: focused? '#FF5722' : '#ADADAD' }}/>
+              {/* <Icon type="MaterialCommunityIcons" name={ focused ? 'compass' : "compass-outline"} style={{ fontSize: 30, color: '#FF5722' }}/> */}
+              {/* <Ionicons name="compass" size={55} color={focused ? 'white' : '#FF5722'} /> */}
             </View>
           ),
         }}
@@ -105,10 +108,11 @@ const MainTabBar = (props) => {
           },
         })}
         options={{
+          tabBarLabel: NullComponent,
           tabBarIcon: ({focused}) => (
             <View
               style={{
-                position: 'absolute',
+                // position: 'absolute',
                 borderRadius: 100,
                 backgroundColor: 'white',
                 activeBackgroundColor: 'yellow',
@@ -121,39 +125,44 @@ const MainTabBar = (props) => {
             >
               <Modal 
                 isVisible={modalVisible}
-                backdropOpacity={0.3}
+                backdropOpacity={0.5}
                 onBackdropPress={() => setModalVisible(false)}
-              >
-                <View style={{
-                  flex: 1, 
-                  // borderColor: 'white',
-                  // borderWidth: 2, 
+                style={{
                   justifyContent: 'center',
                   alignItems: 'center',
                 }}
-                >
+              >
                   <View style={{
                     // borderColor: 'white',
                     // borderWidth: 2, 
                     display: 'flex',
-                    justifyContent: 'space-around',
+                    // justifyContent: 'space-around',
                     alignItems: 'center',
-                    backgroundColor: 'floralwhite',
-                    borderRadius: 10,
-                    minHeight: 180,
+                    backgroundColor: '#fff',
+                    borderRadius: 5,
+                    minHeight: 60,
+                    maxWidth: '100%',
+                    shadowOffset: { width: 2, height: 2 },
+                    shadowColor: 'black',
+                    shadowOpacity: 0.2,
+                    shadowRadius: 5,
+                    padding: 25,
                   }}
                   >
-                    <Text>
+                    {/* <Text>
                       <Icon type="FontAwesome5" name="exclamation-triangle" style={{color: 'red', fontSize: 40 }} />
-                    </Text>
+                    </Text> */}
+                    <Icon type="MaterialCommunityIcons" name="alert-circle-outline" style={{ fontSize: 30, color: '#FF5722' }}/>
                     <Text style={{
-                      color: 'red',
-                      fontSize: 20,
+                      color: '#000',
+                      fontFamily: 'OpenSans-Regular',
+                      fontSize: 16,
                       textAlign: 'center', 
+                      padding: 10,
                     }}
                     >You need to be signed in to create new events!
                     </Text>
-                    <View>
+                    {/* <View>
                       <Button 
                         style={{
                           backgroundColor: 'white',
@@ -166,18 +175,22 @@ const MainTabBar = (props) => {
                       >
                         <Text style={{
                           color: 'black',
-                          // fontFamily: 'TitilliumWeb-Regular',
-                          fontSize: 17, 
+                          fontFamily: 'TitilliumWeb-Regular',
+                          fontSize: 14, 
                         }}
-                        >Okay
+                        >Dismiss
                         </Text>
                       </Button>
-                    </View>
+                    </View> */}
                   </View>
-                </View>
               </Modal>
-
-              <Ionicons name="plus-circle" size={65} color="#FF5722" />
+              <TouchableOpacity
+                activeOpacity={0.6}
+                style={{
+                }}
+              >
+                <Icon type="MaterialCommunityIcons" name='plus-circle-outline' style={{ fontSize: 60, color: '#FF5722' }}/>
+              </TouchableOpacity>
             </View>
           ),
           tabBarVisible: false,
@@ -187,7 +200,7 @@ const MainTabBar = (props) => {
         name="EventList"
         component={(EventList)}
         options={{
-          tabBarLabel: 'My Events',
+          tabBarLabel: 'Feed',
           tabBarIcon: ({ focused }) => (
             <View
               style={{
@@ -198,7 +211,8 @@ const MainTabBar = (props) => {
                 // shadowOpacity: 0.50,
               }}
             >
-              <Ionicons name="calendar" size={30} color={focused ? 'white' : '#FF5722'} />
+              <Icon type="MaterialCommunityIcons" name="format-list-bulleted" style={{ fontSize: 30, color: focused ? '#FF5722' : '#ADADAD' }}/>
+              {/* <Ionicons name="calendar" size={30} color={focused ? 'white' : '#FF5722'} /> */}
           </View>
           ),
         }}

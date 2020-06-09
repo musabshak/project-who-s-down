@@ -68,6 +68,7 @@ export const styles = StyleSheet.create({
     // flex: 1,
     width: '50%',
     alignItems: 'center',
+    // justifyContent: 'center',
     padding: 20,
     alignSelf: 'stretch',
   },
@@ -114,7 +115,7 @@ export const styles = StyleSheet.create({
   },
   titleCard: {
     width: '90%',
-    backgroundColor: '#fff',
+    backgroundColor: 'floralwhite',
     shadowOffset: { width: 2, height: 2 },
     shadowColor: 'black',
     shadowOpacity: 0.2,
@@ -379,7 +380,7 @@ export const styles = StyleSheet.create({
     shadowRadius: 3,
   },
   tabBarLabel: {
-    fontSize: 16,
+    fontSize: 14,
     textAlign: 'center',
     fontFamily: 'TitilliumWeb-SemiBold',
     color: '#fff',

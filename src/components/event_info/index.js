@@ -5,7 +5,7 @@ import {
   Icon, Fab,
 } from 'native-base';
 import {
-  View, Text, ActivityIndicator, TouchableOpacity, ScrollView, Dimensions,
+  View, Text, ActivityIndicator, TouchableOpacity, ScrollView, Dimensions, Modal,
 } from 'react-native';
 import { connect } from 'react-redux';
 import * as Permissions from 'expo-permissions';
@@ -28,6 +28,8 @@ class EventInfo extends Component {
   constructor(props) {
     super(props);
 
+
+    this.mapRef = null;
     this.state = { 
       region: { // default just set it to NC b/c my event markers were located here; feel free to change for your testing purposes
         latitude: this.props.route.params.event.latitude,
@@ -44,6 +46,8 @@ class EventInfo extends Component {
       category: this.props.route.params.event.category,
       eventList: [],
       currentTime: new Date(),
+      popupVisible: false,
+
     };
   }
 
@@ -79,7 +83,7 @@ class EventInfo extends Component {
     this._getLocation();
     if (this.props.token) {
       this.props.fetchImdownEvents(this.props.token).then((res) => {
-        console.log(res);
+        // console.log(res);
         for (let i = 0; i < res.length; i++)
           if (res[i].id === this.props.route.params.event.id) {
             this.setState({ imdown: 1 });
@@ -87,7 +91,7 @@ class EventInfo extends Component {
           }
       });
       this.props.fetchSubscribedEvents(this.props.token).then((res) => {
-        console.log(res);
+        // console.log(res);
         for (let i = 0; i < res.length; i++)
           if (res[i].id === this.props.route.params.event.id) {
             this.setState({ subscribed: 1 });
@@ -252,6 +256,7 @@ createMarkers = () => {
         <MapView
           style={styles.mapCard}
           region={this.state.region}
+          ref={(ref) => { this.mapRef = ref }}
           // scrollEnabled={false}
           // onLayout={this.onMapLayout}
           onRegionChangeComplete={this.handleRegionChange}
@@ -331,6 +336,9 @@ createMarkers = () => {
         // popup - go login
         this.props.navigation.push('SignIn', { return: 1 });
       }
+      else if (!this.state.imdown) {
+        // popup imdown before you can subscribe
+      }
       else {
         this.props.subscribeEvent(this.props.token, this.props.route.params.event.id)
         .then(() => {
@@ -403,7 +411,7 @@ createMarkers = () => {
         onPress={this.onImdown}
       >
         {/* <Ionicons name="thumbs-up" size={45} color="#FFF" /> */}
-        <Icon type="MaterialCommunityIcons" name="emoticon-dead-outline" style={{ fontSize: 45, color: '#fff' }} />
+        <Icon type="MaterialCommunityIcons" name="emoticon-dead-outline" style={{ fontSize: 30, color: '#fff' }} />
         <Text style={styles.tabBarLabel}>Nevermind!</Text>
       </TouchableOpacity>
     );
@@ -414,7 +422,7 @@ createMarkers = () => {
         onPress={this.onImdown}
       >
         {/* <Ionicons name="thumbs-up" size={45} color="#FFF" /> */}
-        <Icon type="MaterialCommunityIcons" name="emoticon-devil-outline" style={{ fontSize: 45, color: '#fff' }} />
+        <Icon type="MaterialCommunityIcons" name="emoticon-devil-outline" style={{ fontSize: 30, color: '#fff' }} />
         <Text style={styles.tabBarLabel}>I&#39;m down!</Text>
       </TouchableOpacity>
     );
@@ -474,7 +482,36 @@ createMarkers = () => {
         );
     }
   }
-
+  renderPopup() {
+    return (
+      <Modal
+        isVisible={this.state.popupVisible}
+        backdropOpacity={0.3}
+        onBackdropPress={() => this.setState({ popupVisible: false })}
+        style={{
+          // borderColor: 'white',
+          // borderWidth: 2, 
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
+          <View style={{
+            // borderColor: 'white',
+            // borderWidth: 2, 
+            width: 0.9*Dimensions.get('window').width,
+            // justifyContent: 'space-around',
+            // alignItems: 'center',
+            minHeight: 60,
+            backgroundColor: '#fff',
+            borderRadius: 5,
+            padding: 15,
+          }}
+          >
+            <Text>Yesss</Text>
+          </View>
+      </Modal>
+    );
+  }
   render() {
     // if (this.state.fontLoaded && this.state.addr) {
     if (this.state.addr) {
@@ -490,9 +527,8 @@ createMarkers = () => {
           <View style={styles.headerCont}>
             <View style={styles.headerIcon} name="" size={45} color="#FF5722" />
             <Text style={styles.header}>Details</Text>
-            {/* <Ionicons style={styles.headerIcon} name="user-circle" size={45} color="#FF5722" /> */}
+            {/* <Icon type="MaterialCommunityIcons" name='user-circle' style={{ fontSize: 30, color: '#FF5722' }}/> */}
           </View>
-          
           <ScrollView style={styles.contentCont}>
             <View style={styles.titleCardCont}>
               <View style={styles.titleCard}>              
@@ -572,7 +608,20 @@ createMarkers = () => {
               <View style={styles.mapCardCont}>
                 {this.createMap()}
                 {/* <Fab
-                  onPress={this.handleFetchClick}
+                  onPress={() => {
+                    console.log('Called');
+                    this.mapRef.fitToCoordinates(
+                      {latitude: this.props.route.params.event.latitude, longitude: this.props.route.params.event.longitude}
+                    );
+                    // this.setState({
+                    //   region: { // default just set it to NC b/c my event markers were located here; feel free to change for your testing purposes
+                    //     latitude: this.props.route.params.event.latitude,
+                    //     longitude: this.props.route.params.event.longitude,
+                    //     latitudeDelta: 0.0004,
+                    //     longitudeDelta: 0.008,
+                    //   },
+                    // });
+                  }}
                   position="bottomRight"
                   style={{ }}
                 >
@@ -596,6 +645,7 @@ createMarkers = () => {
                 </View>
               </View>
             </View>
+            {/* {this.renderPopup()} */}
           </ScrollView>
           
           <View style={styles.tabBarCont}>
@@ -607,7 +657,7 @@ createMarkers = () => {
               // onPressOut={this.onPressOut}
               // onPressIn={this.onPressIn}
             >
-                <Icon type="MaterialCommunityIcons" name="arrow-left" style={{ fontSize: 45, color: '#FF5722' }} />
+                <Icon type="MaterialCommunityIcons" name="arrow-left" style={{ fontSize: 30, color: '#FF5722' }} />
             </TouchableOpacity>
             {this.renderImdownBtn()}
           </View>
