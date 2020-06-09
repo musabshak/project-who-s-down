@@ -204,6 +204,7 @@ class GeographicDisplay extends Component {
         {this.masterDebug && (<Text>This should be the map view!</Text>)}
         <MapView
           style={{
+            height: '100%',
             minHeight: 500, // may need to change based on device, maybe we take device dimensions in App and put it in the store?
           }}
           region={this.state.region}
@@ -240,15 +241,14 @@ class GeographicDisplay extends Component {
 
         <Text>This is the mapview component</Text>
         <Text>I think youre at {JSON.stringify(this.state.location)}</Text> */}
+        {this.createMap()}
         <Fab
           onPress={this.handleFetchClick}
           position="bottomLeft"
-          style={{}}
+          style={{ }}
         >
           <Icon name="ios-refresh" />
         </Fab>
-
-        {this.createMap()}
         <FilterMenu />
         {this.masterDebug && (<Button title="show geographic display state" onPress={this.debugHelper}> show GeographicDisplay state</Button>)}
 

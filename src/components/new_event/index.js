@@ -178,8 +178,8 @@ class NewEventPage extends Component {
 
     const token = await AsyncStorage.getItem('token');
 
-    console.log('Printing token');
-    console.log(token);
+    // console.log('Printing token');
+    // console.log(token);
 
     navigator.geolocation.getCurrentPosition(
       (position) => {
@@ -399,40 +399,41 @@ class NewEventPage extends Component {
           // this.props.navigation.navigate('Main');
           this.props.navigation.pop();
         }}
-      >
-        <View style={{
+        style={{
           flex: 1,
           // borderColor: 'white',
           // borderWidth: 2, 
           justifyContent: 'center',
           alignItems: 'center',
         }}
-        >
+      >
           <View style={{
             // borderColor: 'white',
             // borderWidth: 2, 
-            display: 'flex',
-            width: Dimensions.get('window').width,
+            // display: 'flex',
+            width: 0.9*Dimensions.get('window').width,
             justifyContent: 'space-around',
             alignItems: 'center',
-            backgroundColor: 'floralwhite',
-            borderRadius: 10,
-            minHeight: 150,
+            // backgroundColor: 'floralwhite',
+            backgroundColor: '#fff',
+            borderRadius: 5,
+            minHeight: 60,
             padding: 15,
           }}
           >
-
+            <Icon type="MaterialCommunityIcons" name='emoticon-wink-outline' style={{ fontSize: 30, color: '#FF5722' }}/>
             <Text style={{
               color: 'black',
-              fontSize: 20,
-              borderColor: 'black',
-              borderWidth: 0,
+              fontSize: 16,
+              fontFamily: 'OpenSans-Regular',
+              // borderColor: 'black',
+              // borderWidth: 0,
               // paddingTop: 15,
               textAlign: 'center',
             }}
             > The following event has been successfully created: "{this.props.createdEventTitle}"
             </Text>
-            <View>
+            {/* <View>
               <Button 
                 style={{
                   backgroundColor: 'white',
@@ -453,10 +454,9 @@ class NewEventPage extends Component {
                 >Okay
                 </Text>
               </Button>
-            </View>
+            </View> */}
 
           </View>
-        </View>
       </Modal>
     );
   }
@@ -529,19 +529,23 @@ class NewEventPage extends Component {
   renderErrorModal = () => {
     const errors = this.state.validationErrors.map((errorMessage) => {
       return (
-       
-        <Text style={{
-          color: 'red',
-          fontSize: 17,
-          borderColor: 'black',
-          borderWidth: 0,
-          flex: 1,
-          alignSelf: 'flex-start',
-          padding: 5,
-        }}
-        >{'\u2B24'} {errorMessage}
-        </Text>
-        
+        <View style={{ justifyContent: 'center', alignItems: 'center', flexDirection: 'row' }}>
+          <Icon type="MaterialCommunityIcons" name="alert-circle-outline" style={{ fontSize: 15, color: '#FF5722' }}/>
+          <Text style={{
+            color: '#000',
+            fontSize: 16,
+            borderColor: 'black',
+            borderWidth: 0,
+            fontFamily: 'OpenSans-Regular',
+            // alignSelf: 'flex-start',
+            textAlign: 'center',
+            padding: 5,
+          }}
+          >
+            {/* {'\u2B24'} {errorMessage} */}
+            {errorMessage}
+          </Text>
+        </View>
       );
     });
 
@@ -552,43 +556,41 @@ class NewEventPage extends Component {
         isVisible={this.state.errorModalVisible}
         backdropOpacity={0.3}
         onBackdropPress={() => this.setState({ errorModalVisible: false, validationErrors: [] })}
-      >
-        <View style={{
-          flex: 1,
+        style={{
           // borderColor: 'white',
           // borderWidth: 2, 
           justifyContent: 'center',
           alignItems: 'center',
         }}
-        >
+      >
           <View style={{
             // borderColor: 'white',
             // borderWidth: 2, 
-            width: Dimensions.get('window').width,
-            justifyContent: 'space-around',
-            alignItems: 'center',
-            minHeight: 300,
-            backgroundColor: 'floralwhite',
-            borderRadius: 10,
+            width: 0.9*Dimensions.get('window').width,
+            // justifyContent: 'space-around',
+            // alignItems: 'center',
+            minHeight: 60,
+            backgroundColor: '#fff',
+            borderRadius: 5,
             padding: 15,
           }}
           >
-            <Text>
+            {/* <Text>
               <Icon type="FontAwesome5" name="exclamation-triangle" style={{ color: 'red', fontSize: 40 }} />
-            </Text>
-            <Text style={{
-              color: 'red',
+            </Text> */}
+            {/* <Text style={{
+              // color: 'red',
               fontSize: 20,
               borderColor: 'black',
               borderWidth: 0,
-              flex: 1,
-              alignSelf: 'flex-start',
-              paddingTop: 15,
+              // flex: 1,
+              // alignSelf: 'flex-start',
+              // paddingTop: 15,
             }}
             >Please fix the following:
-            </Text>
+            </Text> */}
             {errors}
-            <View>
+            {/* <View>
               <Button 
                 style={{
                   backgroundColor: 'white',
@@ -608,10 +610,9 @@ class NewEventPage extends Component {
                 >Okay
                 </Text>
               </Button>
-            </View>
+            </View> */}
 
           </View>
-        </View>
       </Modal>
     );
   }
