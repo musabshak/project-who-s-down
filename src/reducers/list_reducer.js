@@ -2,7 +2,7 @@ import { ActionTypes } from '../components/event_list/actions';
 
 const initialState = {
   all: [],
-  myEvents:[],
+  myEvents: [],
   subscribedEvents: [],
   imdownEvents: [],
   error: null,
@@ -23,16 +23,15 @@ const alleventsReducer = (state = initialState, action) => {
   case ActionTypes.FETCH_IMDOWN_EVENTS:
     return { ...state, error: action.error, imdownEvents: action.payload};
   case ActionTypes.FETCH_MY_EVENTS:
-      return { ...state, error: action.error, myEvents: action.payload};
+    return { ...state, error: action.error, myEvents: action.payload};
   case ActionTypes.IMDOWN_EVENT:
     return { ...state, error: action.error};
   case ActionTypes.UNIMDOWN_EVENT:
     return { ...state, error: action.error};
   default:
-    console.log('inside reducer cant fetch cases');
+    // console.log('inside reducer cant fetch cases');
     return state;
   }
 };
 
 export default alleventsReducer;
-

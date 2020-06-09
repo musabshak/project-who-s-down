@@ -37,36 +37,36 @@ class tabFour extends Component {
 
   componentDidMount() {
     this.fetchNotifsFromServer();
-    this.timer = setInterval(() => this.fetchNotifsFromServer(), 30000);
+    // this.timer = setInterval(() => this.fetchNotifsFromServer(), 30000);
   }
 
   fetchNotifsFromServer = () => {
-    // so from the backend you want a list of json objects
-    // each json object should have notif type ("New Chat Message", "Event Starting soon!", "Event Cancelled"), source (event title), and ID (event ID)
-    const base = {
-      type: 'New Chat Message',
-      source: 'Sample Event Title',
-      id: 'sample ID',
-      dismiss: 'Dismiss Notification',
-    };
+    // // so from the backend you want a list of json objects
+    // // each json object should have notif type ("New Chat Message", "Event Starting soon!", "Event Cancelled"), source (event title), and ID (event ID)
+    // const base = {
+    //   type: 'New Chat Message',
+    //   source: 'Sample Event Title',
+    //   id: 'sample ID',
+    //   dismiss: 'Dismiss Notification',
+    // };
 
-    // this is all basically getting a list of JSON objects
-    // eslint-disable-next-line react/no-access-state-in-setstate
-    const notifList = this.state.notifs;
-    // add a random number of notifs
-    for (let i = 0; i < (Math.floor(Math.random() * 4 + 1)); i++) {
-      notifList.push(base);
-    }
+    // // this is all basically getting a list of JSON objects
+    // // eslint-disable-next-line react/no-access-state-in-setstate
+    // const notifList = this.state.notifs;
+    // // add a random number of notifs
+    // for (let i = 0; i < (Math.floor(Math.random() * 4 + 1)); i++) {
+    //   // notifList.push(base);
+    // }
 
-    // make each notif different
-    for (let i = 0; i < notifList.length; i++)
-    {
-      notifList[i].type += (Math.floor(Math.random() * 99) + 1);
-      notifList[i].id += (Math.floor(Math.random() * 999) + 1);
-    }
+    // // make each notif different
+    // for (let i = 0; i < notifList.length; i++)
+    // {
+    //   notifList[i].type += (Math.floor(Math.random() * 99) + 1);
+    //   notifList[i].id += (Math.floor(Math.random() * 999) + 1);
+    // }
 
-    this.setState({notifs: notifList});
-    this.props.updateNotifNumber(notifList.length);
+    // this.setState({notifs: notifList});
+    // this.props.updateNotifNumber(notifList.length);
   }
 
   renderAllNotifs = () => {
@@ -117,7 +117,7 @@ class tabFour extends Component {
     // console.log('rerendering!');
     return (
       <View>
-        {this.renderAllNotifs()}
+        {/* {this.renderAllNotifs()} */}
         <Button onPress={() => { console.log(this.props); }}><Text>log props</Text></Button>
         <Button onPress={() => { console.log(this.state); }}><Text>log state</Text></Button>
 
