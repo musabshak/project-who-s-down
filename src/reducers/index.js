@@ -9,6 +9,7 @@ import eventsReducerSh from './events_reducer_sh';
 import geoViewReducer from './geo_view_reducers';
 import alleventsReducer from './list_reducer';
 import settingsReducer from './settings-reducer';
+import chatReducer from './chat_reducer';
 
 
 const rootReducer = combineReducers({
@@ -19,6 +20,7 @@ const rootReducer = combineReducers({
   eventsSh: eventsReducerSh,
   geoViewEvents: geoViewReducer,
   list: alleventsReducer,
+  chat: chatReducer,
 });
 
 export default rootReducer;

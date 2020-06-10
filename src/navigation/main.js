@@ -6,9 +6,9 @@ import React, { Component } from 'react';
 import {
   StyleSheet, Button, Text, ActivityIndicator, View, 
 } from 'react-native';
-
+import { Icon } from 'native-base';
 import { connect } from 'react-redux';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, StackActions } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import * as Font from 'expo-font';
 
@@ -22,6 +22,7 @@ import EventInfo from '../components/event_info';
 import MyEvents from '../components/my_events';
 import DownEvents from '../components/down_events';
 import NewEventPage from '../components/new_event';
+import Chat from '../components/chat';
 
 import Settings from '../components/settings';
 
@@ -30,6 +31,11 @@ const NullComponent = () => null;
 export const navigationRef = React.createRef();
 export function navigate(name, params) {
   navigationRef.current && navigationRef.current.navigate(name, params);
+}
+
+export function pop(params) {
+  if (params) navigationRef.current?.dispatch(StackActions.pop(...params));
+  else navigationRef.current?.dispatch(StackActions.pop());
 }
 
 const Stack = createStackNavigator();
@@ -207,7 +213,6 @@ class Main extends Component {
               }}
             />
             <Stack.Screen
-<<<<<<< HEAD
               name="Chat"
               component={Chat} 
               options={{
@@ -222,11 +227,11 @@ class Main extends Component {
                   </TouchableOpacity>
                 ),
               }}
-=======
+            />
+            <Stack.Screen
               name="Profile"
               component={Settings}
               options={{}}
->>>>>>> master
             />
           </Stack.Navigator>
         </NavigationContainer>
@@ -244,7 +249,6 @@ class Main extends Component {
 }
 
 const mapStateToProps = (state) => {
-  
   return (
     {
       userName: state.auth.userName,
