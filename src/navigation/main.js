@@ -6,21 +6,23 @@ import React, { Component } from 'react';
 import {
   StyleSheet, Button, Text, ActivityIndicator, View, 
 } from 'react-native';
-
+import { Icon } from 'native-base';
 import { connect } from 'react-redux';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, StackActions } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import * as Font from 'expo-font';
 
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import MainTabBar from './main_tab_bar';
 import { signoutUser, loadToken } from '../components/signin/actions';
+import { clearChat} from '../components/chat/actions';
 import SignIn from '../components/signin';
 import SignUp from '../components/signup';
 import EventInfo from '../components/event_info';
 import MyEvents from '../components/my_events';
 import DownEvents from '../components/down_events';
 import NewEventPage from '../components/new_event';
+import Chat from '../components/chat';
 
 import Settings from '../components/settings';
 
@@ -29,6 +31,11 @@ const NullComponent = () => null;
 export const navigationRef = React.createRef();
 export function navigate(name, params) {
   navigationRef.current && navigationRef.current.navigate(name, params);
+}
+
+export function pop(params) {
+  if (params) navigationRef.current?.dispatch(StackActions.pop(...params));
+  else navigationRef.current?.dispatch(StackActions.pop());
 }
 
 const Stack = createStackNavigator();
@@ -206,6 +213,22 @@ class Main extends Component {
               }}
             />
             <Stack.Screen
+              name="Chat"
+              component={Chat} 
+              options={{
+                headerShown: true,
+                headerLeft: () => (
+                  <TouchableOpacity
+                    activeOpacity={0.6}
+                    onPress={() => { console.log('Clearing timer: ', this.props.timer); clearInterval(this.props.timer); this.props.clearChat(); pop(); }}
+                    style={{ justifyContent: 'center', alignItems: 'center', paddingRight: 20 }}
+                  >
+                    <Icon type="MaterialCommunityIcons" name="arrow-left" style={{ fontSize: 30, color: '#FF5722', marginLeft: 15 }} />
+                  </TouchableOpacity>
+                ),
+              }}
+            />
+            <Stack.Screen
               name="Profile"
               component={Settings}
               options={{}}
@@ -231,11 +254,13 @@ const mapStateToProps = (state) => {
       userName: state.auth.userName,
       token: state.auth.token,
       notifNumber: state.settings.notifNumber, 
+      timer: state.chat.timer,
     }
   );
 };
 
-export default connect(mapStateToProps, { loadToken, signoutUser })(Main);
+
+export default connect(mapStateToProps, { loadToken, signoutUser, clearChat})(Main);
 
 const styles = StyleSheet.create({
   container: {
