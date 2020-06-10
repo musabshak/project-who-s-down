@@ -15,7 +15,7 @@ import { connect } from 'react-redux';
 import * as Permissions from 'expo-permissions';
 import * as Location from 'expo-location';
 // import * as Font from 'expo-font';
-import SvgUri from 'react-native-svg-uri';
+// import SvgUri from 'react-native-svg-uri';
 import MapView, { Marker, Callout } from 'react-native-maps';
 import { getDistance } from 'geolib';
 import { API_KEY } from '../new_event';
@@ -48,7 +48,6 @@ class EventInfo extends Component {
       description: this.props.route.params.event.description,
       hostName: this.props.route.params.event.hostName,
       category: this.props.route.params.event.category,
-      // eventId: this.props.route.params.eventId,
       eventList: [],
       currentTime: new Date(),
       popupVisible: false,
@@ -171,7 +170,6 @@ class EventInfo extends Component {
     }
 
     const location = await Location.getCurrentPositionAsync();
-    // eslint-disable-next-line max-len
     const estimatedDist = getDistance({ latitude: this.props.route.params.event.latitude, longitude: this.props.route.params.event.longitude }, { latitude: location.coords.latitude, longitude: location.coords.longitude });
     this.setState({
       location,
@@ -342,7 +340,7 @@ createMarkers = () => {
             txt: 'Unsubscribed',
             name: 'emoticon-frown-outline',
             nav: 0,
-            popupVisible: 1,
+            popupVisible: true,
             subscribed: 0,
           });
           // this.setState({ subscribed: 0 });
@@ -353,7 +351,7 @@ createMarkers = () => {
         txt: 'Only signed in users can subscribe to events!',
         name: 'emoticon-neutral-outline',
         nav: 0,
-        popupVisible: 1,
+        popupVisible: true,
       });
     }
     else if (!this.state.imdown) {
@@ -362,7 +360,7 @@ createMarkers = () => {
         txt: 'You\'ill get automatically subscribed if you\'re down!',
         name: 'emoticon-neutral-outline',
         nav: 0,
-        popupVisible: 1,
+        popupVisible: true,
       });
     }
     else {
@@ -372,7 +370,7 @@ createMarkers = () => {
             txt: 'Subscribed',
             name: 'emoticon-cool-outline',
             nav: 0,
-            popupVisible: 1,
+            popupVisible: true,
             subscribed: 1,
           });
         });
@@ -381,7 +379,7 @@ createMarkers = () => {
 
   onImdown = () => {
     if (this.state.imdown) {
-      this.props.unimdownEvent(this.props.token, this.props.route.params.event.id)
+      this.props.unimdownEvent(this.props.token, this.props.route.params.event.id, this.props.route.params.event)
         .then(() => {
           // this.setState({ imdown: 0, subscribed: 0 }, () => {
           //   this.props.navigation.pop();
@@ -390,7 +388,7 @@ createMarkers = () => {
             txt: 'Maybe join us next time?',
             name: 'emoticon-cry-outline',
             nav: 1,
-            popupVisible: 1,
+            popupVisible: true,
             subscribed: 0,
             imdown: 0,
           });
@@ -401,21 +399,24 @@ createMarkers = () => {
         txt: 'Come join the party once you are logged in!',
         name: 'emoticon-devil-outline',
         nav: 1,
-        popupVisible: 1,
+        popupVisible: true,
       });
       // this.props.navigation.push('SignIn', { return: 1 });
     }
     else {
-      this.props.imdownEvent(this.props.token, this.props.route.params.event.id)
+      this.props.imdownEvent(this.props.token, this.props.route.params.event.id, this.props.route.params.event)
         .then(() => {
           this.setState({
             txt: 'This is going to be EPIC!',
             name: 'emoticon-devil-outline',
             nav: 1,
-            popupVisible: 1,
+            popupVisible: true,
             subscribed: 1,
             imdown: 1,
           });
+          // this.setState({ imdown: 1, subscribed: 1 }, () => {
+          //   this.props.navigation.pop();
+          // });
         });
     }
   }
@@ -642,7 +643,7 @@ createMarkers = () => {
                   <Text style={styles.btnTimeText}>{ this.hourDiff() < 0 ? 'Ended' : (this.hourDiff() ? `${this.hourDiff()}h left` : '<1h left') }</Text>
                 </View>
                 {/* Chat room */}
-                <TouchableOpacity style={styles.btnChat} onPress={() => this.props.navigation.push('Chat', { eventId: this.props.route.params.event.id})}>
+                <TouchableOpacity style={styles.btnChat} onPress={() => this.props.navigation.push('Chat', { eventId: this.state.id })}>
                   {/* <SvgUri
                     width="50"
                     height="50"

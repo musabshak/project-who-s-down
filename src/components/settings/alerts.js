@@ -37,6 +37,7 @@ class tabFour extends Component {
 
   componentDidMount() {
     this.fetchNotifsFromServer();
+
     this.timer = setInterval(() => this.fetchNotifsFromServer(), 30000);
   }
 
@@ -117,9 +118,11 @@ class tabFour extends Component {
     // console.log('rerendering!');
     return (
       <View>
+
         {this.renderAllNotifs()}
-        <Button onPress={() => { console.log(this.props); }}><Text>log props</Text></Button>
-        <Button onPress={() => { console.log(this.state); }}><Text>log state</Text></Button>
+
+        {/* <Button onPress={() => { console.log(this.props); }}><Text>log props</Text></Button>
+         <Button onPress={() => { console.log(this.state); }}><Text>log state</Text></Button> */}
 
       </View>
     );

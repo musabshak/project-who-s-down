@@ -6,6 +6,7 @@ import {
   Text,
   ScrollView,
   FlatList,
+  ActivityIndicator,
 
 } from 'react-native';
 import { connect } from 'react-redux';
@@ -17,17 +18,26 @@ import EventCard from '../event_list/event_card';
 class MyEvents extends Component {
   constructor(props) {
     super(props);
+
+    this.props.navigation.addListener(
+      'focus',
+      (payload) => {
+        this.props.fetchMyEvents(this.props.token);
+        console.log('navigation event listener', 'in focus');
+      },
+    );
   }
 
   componentDidMount = () => {
     this.props.fetchMyEvents(this.props.token);
-    console.log(this.props.events);
+    // console.log(this.props.events);
+    console.log('my events page mounted');
   } 
 
 
   displayEvent =() => {
     if (this.props.authenticated) {
-      if (this.props.events.myEvents !== undefined) {
+      if (this.props.events.myEvents && this.props.events.myEvents.length) {
         return (
           this.props.events.myEvents.map((item, key) => {
             return (
@@ -36,8 +46,11 @@ class MyEvents extends Component {
           })
         );
       }
+      else if (!(this.props.events.myEvents && this.props.events.myEvents.length)) {
+        return (<View><Text>You haven't created any events!</Text></View>);
+      }
       else {
-        return (<View><Text>You aren't down for anything!</Text></View>);
+        return (<ActivityIndicator size="large" color="#FF5722" />);
       }
     }
     else {
@@ -51,7 +64,7 @@ class MyEvents extends Component {
         <ScrollView>
           {this.displayEvent()}
         </ScrollView>
-        <FilterMenu />
+        {/* <FilterMenu /> */}
       </View>
       
     );

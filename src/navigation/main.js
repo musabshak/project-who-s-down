@@ -6,9 +6,9 @@ import React, { Component } from 'react';
 import {
   StyleSheet, Button, Text, ActivityIndicator, View, 
 } from 'react-native';
-import { Icon } from 'native-base';
+
 import { connect } from 'react-redux';
-import { NavigationContainer, StackActions } from '@react-navigation/native';
+import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import * as Font from 'expo-font';
 
@@ -20,8 +20,8 @@ import SignIn from '../components/signin';
 import SignUp from '../components/signup';
 import EventInfo from '../components/event_info';
 import MyEvents from '../components/my_events';
+import DownEvents from '../components/down_events';
 import NewEventPage from '../components/new_event';
-import Chat from '../components/chat';
 
 import Settings from '../components/settings';
 
@@ -30,10 +30,6 @@ const NullComponent = () => null;
 export const navigationRef = React.createRef();
 export function navigate(name, params) {
   navigationRef.current && navigationRef.current.navigate(name, params);
-}
-export function pop(params) {
-  if (params) navigationRef.current?.dispatch(StackActions.pop(...params));
-  else navigationRef.current?.dispatch(StackActions.pop());
 }
 
 const Stack = createStackNavigator();
@@ -76,8 +72,8 @@ class Main extends Component {
 
 
   genSettingsName = (props) => {
-    console.log('gen settings name!');
-    console.log('props=', props);
+    // console.log('gen settings name!');
+    // console.log('props=', props);
     if (props.notifNumber) {
       // console.log('we think notifnumber exists here:::!', props);
       if (props.notifNumber > 9) {
@@ -87,7 +83,7 @@ class Main extends Component {
         return (`Profile(${props.notifNumber})`); }
     }
     else {
-      console.log('no props detected');
+      // console.log('no props detected');
       return ('Profile');
     }
   }
@@ -188,6 +184,14 @@ class Main extends Component {
               }}
             />
             <Stack.Screen
+              name="DownEvents"
+              component={DownEvents} 
+              options={{
+                // gestureEnabled: false,
+                // headerShown: true,
+              }}
+            />
+            <Stack.Screen
               name="NewEvent"
               component={NewEventPage} 
               options={{
@@ -203,6 +207,7 @@ class Main extends Component {
               }}
             />
             <Stack.Screen
+<<<<<<< HEAD
               name="Chat"
               component={Chat} 
               options={{
@@ -217,13 +222,20 @@ class Main extends Component {
                   </TouchableOpacity>
                 ),
               }}
+=======
+              name="Profile"
+              component={Settings}
+              options={{}}
+>>>>>>> master
             />
           </Stack.Navigator>
         </NavigationContainer>
       );
     } else {
       return (
+
         <View style={{flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+
           <ActivityIndicator size="large" color="#FF5722" />
         </View>
       );
@@ -231,14 +243,16 @@ class Main extends Component {
   }
 }
 
-
 const mapStateToProps = (state) => {
-  return ({
-    userName: state.auth.userName,
-    token: state.auth.token,
-    timer: state.chat.timer,
-    
-  });
+  
+  return (
+    {
+      userName: state.auth.userName,
+      token: state.auth.token,
+      notifNumber: state.settings.notifNumber, 
+      timer: state.chat.timer,
+    }
+  );
 };
 
 

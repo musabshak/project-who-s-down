@@ -8,7 +8,6 @@ export const ActionTypes = {
   NEW_EVENT_SUCCESS: 'NEW_EVENT_SUCCESS',
   NEW_EVENT_ERROR: 'NEW_EVENT_ERROR',
   RESET_BACKEND_STATUS: 'RESET_BACKEND_STATUS',
-  
 };
 
 async function getToken() {

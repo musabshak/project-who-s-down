@@ -152,7 +152,15 @@ class GeographicDisplay extends Component {
         if (this.state.region.longitudeDelta < MIN_ZOOM_FOR_MARKER_CHANGE) {
           return (
             <Marker key={obj.id} coordinate={{ latitude: obj.latitude, longitude: obj.longitude }}>
-              <Text> {obj.eventTitle} </Text>
+              <View style={{ backgroundColor:'#ffffff', borderRadius: 5, padding: 5, flexDirection: 'row', alignItems: 'center' }}>
+              <Icon type="MaterialCommunityIcons" name='calendar' style={{ fontSize: 15, color: '#FF5722', margin: 5 }}/>
+                <Text style={{ fontFamily:'OpenSans-Regular' }}> {obj.eventTitle} </Text>
+              </View>
+              {/* <Callout>
+                <EventPreview />
+              </Callout> */}
+
+
             </Marker>
           );
         }
@@ -160,26 +168,17 @@ class GeographicDisplay extends Component {
         // show event Icon 
         else {
           return (
-            // eslint-disable-next-line react/jsx-boolean-value
             <Marker key={obj.id} coordinate={{ latitude: obj.latitude, longitude: obj.longitude }}>
               <Image source={eventCategoryToIcon.get(obj.category)}
                 style={{
                   height: 35, width: 35, borderWidth: 4, borderColor: eventLevelToIcon.get(obj.level), opacity: eventOpacity,
                 }}
               />
-              <Callout tooltip>
-                
-                <EventPreview
-                  event={obj}
-                  navigate={this.props.navigation.navigate} 
-                  title={obj.eventTitle} 
-                  skillLevel={obj.skillLevel} 
-                  startTime={obj.startTime} 
-                  description={obj.description} 
-                  id={obj.id} 
-                  hostName={obj.hostName}
-                />
+              <Callout>
+                <EventPreview title={obj.eventTitle} skillLevel={obj.skillLevel} startTime={obj.startTime} description={obj.description} id={obj.id} />
               </Callout>
+
+
             </Marker>
           );
         }
@@ -187,13 +186,12 @@ class GeographicDisplay extends Component {
     }
 
     else {
-      console.log('this.props.eventlist does not exist');
-      if (this.masterDebug) { console.log('this is this.props:', this.props); }
-      console.log('attempting to fix automatically by calling fetchevents!');
-      this.props.fetchEvents();
+      // console.log('this.props.eventlist does not exist');
+      // if (this.masterDebug) { console.log('this is this.props:', this.props); }
+      // console.log('attempting to fix automatically by calling fetchevents!');
+      // this.props.fetchEvents();
     }
   }
- 
 
   callInitializeFilters = () => {
     if (this.masterDebug) {
