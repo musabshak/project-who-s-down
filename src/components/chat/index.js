@@ -26,22 +26,26 @@ class Chat extends Component {
     };
   }
   
-  
     componentDidMount = () => {
       // 
+      if (this.props.token) {
       // setInterval(this.callToFetchChat, 1000);
-      this.timer = setInterval(this.callToFetchChat, 1000);
-      // this.setState({
-      //   timer: setInterval(this.callToFetchChat, 1000),
-      // }, () => {
-      //   console.log(`Chat timer #${this.state.timer} saved to state.`);
-      //   this.props.setChatTimer(this.state.timer);
-      // })
-      // console.log(`Chat timer #${this.timer} saved to state.`);
-      this.props.setChatTimer(this.timer);
+        this.timer = setInterval(this.callToFetchChat, 1000);
+        // this.setState({
+        //   timer: setInterval(this.callToFetchChat, 1000),
+        // }, () => {
+        //   console.log(`Chat timer #${this.state.timer} saved to state.`);
+        //   this.props.setChatTimer(this.state.timer);
+        // })
+        // console.log(`Chat timer #${this.timer} saved to state.`);
+        this.props.setChatTimer(this.timer);
+      }
+    
+      else {
+        alert('you must log in to see the chat board!');
+        this.props.navigation.pop();
+      }
     }
-  
-
     //   setEventId = () => {
     //     return (this.props.route.params.eventId);
     //   }
@@ -67,7 +71,6 @@ class Chat extends Component {
     };
     this.props.newChat(messsageToPost, this.props.route.params.eventId, this.props.token);
   }
-
 
     scrollToBottomComponent = () => {
       return (
@@ -99,7 +102,6 @@ class Chat extends Component {
         />
       );
     };
-
 
     renderSend = (props) => {
       return (
@@ -144,7 +146,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
 });
-
 
 const mapStateToProps = (state) => {
   return ({

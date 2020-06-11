@@ -26,7 +26,6 @@ import Chat from '../components/chat';
 
 import Settings from '../components/settings';
 
-
 const NullComponent = () => null;
 export const navigationRef = React.createRef();
 export function navigate(name, params) {
@@ -55,7 +54,6 @@ class Main extends Component {
 
   componentDidMount() {
 
-
   }
 
   loadFont = async () => {
@@ -75,7 +73,6 @@ class Main extends Component {
       console.log(error);
     }
   }
-
 
   genSettingsName = (props) => {
     // console.log('gen settings name!');
@@ -97,7 +94,6 @@ class Main extends Component {
   settingsHelper = () => {
     navigate('Profile');
   }
-
 
   render() {
     if (this.state.fontLoaded) {
@@ -258,7 +254,6 @@ const mapStateToProps = (state) => {
     }
   );
 };
-
 
 export default connect(mapStateToProps, { loadToken, signoutUser, clearChat})(Main);
 
