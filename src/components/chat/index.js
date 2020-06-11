@@ -26,8 +26,8 @@ class Chat extends Component {
     };
   }
   
-  
     componentDidMount = () => {
+
       if (this.props.token) {
       // setInterval(this.callToFetchChat, 1000);
         this.timer = setInterval(this.callToFetchChat, 1000);
@@ -46,8 +46,6 @@ class Chat extends Component {
         this.props.navigation.pop();
       }
     }
-  
-
     //   setEventId = () => {
     //     return (this.props.route.params.eventId);
     //   }
@@ -73,7 +71,6 @@ class Chat extends Component {
     };
     this.props.newChat(messsageToPost, this.props.route.params.eventId, this.props.token);
   }
-
 
     scrollToBottomComponent = () => {
       return (
@@ -105,7 +102,6 @@ class Chat extends Component {
         />
       );
     };
-
 
     renderSend = (props) => {
       return (
@@ -150,7 +146,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
 });
-
 
 const mapStateToProps = (state) => {
   return ({

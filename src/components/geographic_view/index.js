@@ -46,7 +46,6 @@ class GeographicDisplay extends Component {
     this.props.initializeFilters();
   }
 
-
   componentDidMount() {
     if (this.masterDebug) { console.log('component mounted!'); }
     this._getLocation();
@@ -55,7 +54,6 @@ class GeographicDisplay extends Component {
 
   _getLocation = async () => {
     const { status } = await Permissions.askAsync(Permissions.LOCATION);
-
 
     if (status !== 'granted') {
       console.log('location permission not granted');
@@ -152,14 +150,16 @@ class GeographicDisplay extends Component {
         if (this.state.region.longitudeDelta < MIN_ZOOM_FOR_MARKER_CHANGE) {
           return (
             <Marker key={obj.id} coordinate={{ latitude: obj.latitude, longitude: obj.longitude }}>
-              <View style={{ backgroundColor:'#ffffff', borderRadius: 5, padding: 5, flexDirection: 'row', alignItems: 'center' }}>
-              <Icon type="MaterialCommunityIcons" name='calendar' style={{ fontSize: 15, color: '#FF5722', margin: 5 }}/>
-                <Text style={{ fontFamily:'OpenSans-Regular' }}> {obj.eventTitle} </Text>
+              <View style={{
+                backgroundColor: '#ffffff', borderRadius: 5, padding: 5, flexDirection: 'row', alignItems: 'center', 
+              }}
+              >
+                <Icon type="MaterialCommunityIcons" name="calendar" style={{ fontSize: 15, color: '#FF5722', margin: 5 }} />
+                <Text style={{ fontFamily: 'OpenSans-Regular' }}> {obj.eventTitle} </Text>
               </View>
               {/* <Callout>
                 <EventPreview />
               </Callout> */}
-
 
             </Marker>
           );
@@ -174,10 +174,19 @@ class GeographicDisplay extends Component {
                   height: 35, width: 35, borderWidth: 4, borderColor: eventLevelToIcon.get(obj.level), opacity: eventOpacity,
                 }}
               />
-              <Callout>
-                <EventPreview title={obj.eventTitle} skillLevel={obj.skillLevel} startTime={obj.startTime} description={obj.description} id={obj.id} />
+              <Callout tooltip>
+                
+                <EventPreview
+                  event={obj}
+                  navigate={this.props.navigation.navigate} 
+                  title={obj.eventTitle} 
+                  skillLevel={obj.skillLevel} 
+                  startTime={obj.startTime} 
+                  description={obj.description} 
+                  id={obj.id} 
+                  hostName={obj.hostName}
+                />
               </Callout>
-
 
             </Marker>
           );
@@ -269,7 +278,6 @@ const mapStateToProps = (reduxState) => (
   }
 );
 
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -308,6 +316,5 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
 });
-
 
 export default connect(mapStateToProps, { fetchEvents, initializeFilters })(GeographicDisplay);
