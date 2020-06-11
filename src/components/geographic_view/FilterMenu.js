@@ -15,7 +15,6 @@ import {
 import { connect } from 'react-redux';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import { changeFilters, fetchEvents, initializeFilters } from './actions';
-
   
 class FilterMenu extends Component {
   constructor(props) {
@@ -27,9 +26,7 @@ class FilterMenu extends Component {
     if (this.filterMasterDebug) { console.log('in filter menu!'); }
   }
 
-
   // -------------- CATEGORY AND LEVEL FILTER BELOW ---------------------
-
 
   onCategoryFilterPress = (event) => {
     if (this.filterMasterDebug) { console.log('category filter pressed!'); }
@@ -60,9 +57,7 @@ class FilterMenu extends Component {
     });
   }
 
-
   // -------------- TIME FILTER BELOW --------------------
-
 
   onTimeFilterLongPress = () => {
     this.setState({setTimePickerVisibilityBefore: !this.state.setTimePickerVisibilityBefore});
@@ -86,7 +81,6 @@ class FilterMenu extends Component {
     this.props.fetchEvents();
   };
 
-
   hideDatePicker = () => {
     this.setState({setTimePickerVisibility: false});
   };
@@ -99,7 +93,6 @@ class FilterMenu extends Component {
     if (this.filterMasterDebug) { console.log('time filter pressed!'); }
     this.setState({setTimePickerVisibility: !this.state.setTimePickerVisibility});
   }
-
 
   // ----------- GENERAL METHODS BELOW ------------
 
@@ -116,7 +109,6 @@ class FilterMenu extends Component {
     console.log('clear all filters called!');
     this.props.initializeFilters();
   }
-
 
   render() {
     return (
@@ -170,7 +162,6 @@ class FilterMenu extends Component {
                 )}
               </View>
             </Button>
-
 
             {/* so this chunk below is the category menu */}
             {this.state.main_active && (
@@ -264,6 +255,5 @@ class FilterMenu extends Component {
 const mapStateToProps = (reduxState) => (
   {filteredOut: reduxState.geoViewEvents.filteredOut}
 );
-
 
 export default connect(mapStateToProps, {changeFilters, fetchEvents, initializeFilters})(FilterMenu);
