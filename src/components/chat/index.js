@@ -27,7 +27,7 @@ class Chat extends Component {
   }
   
     componentDidMount = () => {
-      // 
+
       if (this.props.token) {
       // setInterval(this.callToFetchChat, 1000);
         this.timer = setInterval(this.callToFetchChat, 1000);
