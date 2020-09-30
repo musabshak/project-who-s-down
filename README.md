@@ -1,6 +1,8 @@
 # Who's Down
 ![](https://i.imgur.com/M3TWiwW.jpg)
 
+![demo](assets/GIF-200608_232258.gif)
+
 ## Running locally
 Follow these steps to run the application locally: 
 - Clone the repository 
