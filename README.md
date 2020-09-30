@@ -2,7 +2,10 @@
 
 
 ## Project Description
-React Native application for event creators and event seekers. Developed as the final project for CS 52 at Dartmouth College. Contributors: 
+React Native application for event creators and event seekers. Developed as the final project for CS52 Web Full-Stack Web Development at Dartmouth College. Application uses a REST API server written using the Express.js framework. The server is hosted on Heroku.
+
+
+Contributors: 
 * Aarish Iyer
 * Anjali Chikkula
 * April Zhang
